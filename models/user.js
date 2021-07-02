@@ -48,6 +48,7 @@ const userSchema = mongoose.Schema({
     type: Date,
     required: true,
   },
+  is_admin: Boolean,
   passwordHash: String,
 });
 

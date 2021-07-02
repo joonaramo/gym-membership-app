@@ -1,10 +1,11 @@
 const config = require('../../utils/config');
 const router = require('express').Router();
 const axios = require('axios');
-const jwt = require('jsonwebtoken');
 const Order = require('../../models/order');
 const Membership = require('../../models/membership');
 const User = require('../../models/user');
+const { checkAuth } = require('../../utils/middleware');
+const Product = require('../../models/product');
 
 const axiosConfig = {
   headers: {
@@ -15,11 +16,12 @@ const axiosConfig = {
   },
 };
 
-router.post('/', async (req, res, next) => {
+router.post('/', checkAuth, async (req, res, next) => {
   const defaultData = {
     purchase_country: 'FI',
     purchase_currency: 'EUR',
     locale: 'fi-FI',
+    merchant_reference2: req.user.id,
     merchant_urls: {
       terms: 'http://localhost:3000/terms',
       checkout: 'http://localhost:3000?order_id={checkout.order.id}',
@@ -28,18 +30,6 @@ router.post('/', async (req, res, next) => {
       push: 'http://localhost:5000/api/klarna/confirm/{checkout.order.id}',
     },
   };
-
-  const initialOrderLines = [
-    {
-      type: 'physical',
-      reference: 'GYM-01',
-      name: '1 Month Gym Membership',
-      quantity: 1,
-      quantity_unit: 'pcs',
-      unit_price: 4000,
-      tax_rate: 1000,
-    },
-  ];
 
   const calculateOrderLinesValues = (orderLines) => {
     let amount = 0,
@@ -66,8 +56,24 @@ router.post('/', async (req, res, next) => {
     };
   };
 
+  let selectedProducts = await Product.find({
+    _id: { $in: req.body.products },
+  });
+
+  selectedProducts = selectedProducts.map((product, i) => {
+    return {
+      type: product.type,
+      quantity_unit: product.quantity_unit,
+      reference: product.reference,
+      name: product.name,
+      unit_price: product.unit_price,
+      tax_rate: product.tax_rate,
+      quantity: req.body.quantities[i],
+    };
+  });
+
   const { amount, taxAmount, orderLines } =
-    calculateOrderLinesValues(initialOrderLines);
+    calculateOrderLinesValues(selectedProducts);
 
   const postData = {
     ...defaultData,
@@ -103,7 +109,6 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/confirm/:order_id', async (req, res, next) => {
   try {
-    const decodedToken = jwt.verify(req.token, config.JWT_SECRET);
     const {
       data: {
         order_id,
@@ -112,11 +117,17 @@ router.post('/confirm/:order_id', async (req, res, next) => {
         order_tax_amount,
         started_at,
         completed_at,
+        merchant_reference2,
       },
     } = await axios.get(
       `${config.KLARNA_API_URL}/checkout/v3/orders/${req.params.order_id}`,
       axiosConfig
     );
+
+    // Check if checkout is in completed-state
+    if (status !== 'checkout_complete') {
+      return res.status(400).json({ error: 'Checkout not completed' });
+    }
 
     // Acknowledge the order
     try {
@@ -125,13 +136,8 @@ router.post('/confirm/:order_id', async (req, res, next) => {
         {},
         axiosConfig
       );
-    } catch (error) {
-      console.log(error);
-    }
-
-    // Check if checkout is in completed-state
-    if (status !== 'checkout_complete') {
-      return res.status(400).json({ error: 'Checkout not completed' });
+    } catch (err) {
+      console.log(err);
     }
 
     // Check if order has already been saved to DB
@@ -141,9 +147,9 @@ router.post('/confirm/:order_id', async (req, res, next) => {
       return res.status(400).json({ error: 'Order is already completed' });
     }
 
-    // Save to DB
+    // Save order to DB
     order = new Order({
-      user: decodedToken.user.id,
+      user: merchant_reference2,
       order_id,
       status,
       order_amount,
@@ -152,14 +158,29 @@ router.post('/confirm/:order_id', async (req, res, next) => {
       completed_at,
     });
     const newOrder = await order.save();
+
+    // Set Order ID as merchant reference to Klarna
+    try {
+      await axios.patch(
+        `${config.KLARNA_API_URL}/ordermanagement/v1/orders/{order_id}/merchant-references`,
+        {
+          merchant_reference1: newOrder._id,
+        },
+        axiosConfig
+      );
+    } catch (err) {
+      console.log(err);
+    }
+
+    // Save membership to DB, assign membership and order to the logged in user
     const date = new Date();
     const membership = new Membership({
-      user: decodedToken.user.id,
+      user: merchant_reference2,
       order: newOrder._id,
       end_date: date.setMonth(date.getMonth() + 1),
     });
     const newMembership = await membership.save();
-    const user = await User.findById(decodedToken.user.id);
+    const user = await User.findById(merchant_reference2);
     user.memberships = user.memberships.concat(newMembership._id);
     user.orders = user.orders.concat(newOrder._id);
     await user.save();
