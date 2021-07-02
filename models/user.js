@@ -8,6 +8,12 @@ const userSchema = mongoose.Schema({
       ref: 'Membership',
     },
   ],
+  orders: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Order',
+    },
+  ],
   email: {
     type: String,
     unique: true,

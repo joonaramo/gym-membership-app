@@ -69,7 +69,7 @@ router.post(
         payload,
         config.JWT_SECRET,
         {
-          expiresIn: '1d',
+          expiresIn: '7d',
         },
         (err, token) => {
           if (err) throw err;

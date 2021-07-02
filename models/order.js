@@ -5,10 +5,12 @@ const orderSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
-  created_at: {
-    type: Date,
-    default: Date.now,
-  },
+  order_id: String,
+  status: String,
+  order_amount: Number,
+  order_tax_amount: Number,
+  started_at: Date,
+  completed_at: Date,
 });
 
 orderSchema.set('toJSON', {

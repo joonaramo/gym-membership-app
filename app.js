@@ -4,6 +4,8 @@ const app = express();
 const mongoose = require('mongoose');
 const authRouter = require('./routes/api/auth');
 const ordersRouter = require('./routes/api/orders');
+const klarnaRouter = require('./routes/api/klarna');
+const middleware = require('./utils/middleware');
 
 mongoose.connect(config.MONGODB_URI, {
   useNewUrlParser: true,
@@ -12,10 +14,12 @@ mongoose.connect(config.MONGODB_URI, {
   useCreateIndex: true,
 });
 
+app.use(middleware.tokenExtractor);
 app.use(express.json());
 
 app.use('/api/auth', authRouter);
 app.use('/api/orders', ordersRouter);
+app.use('/api/klarna', klarnaRouter);
 
 const errorHandler = (error, request, response, next) => {
   console.error(error.message);
