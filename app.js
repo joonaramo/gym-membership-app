@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const authRouter = require('./routes/api/auth');
+const ordersRouter = require('./routes/api/orders');
 
 mongoose.connect(config.MONGODB_URI, {
   useNewUrlParser: true,
@@ -14,6 +15,7 @@ mongoose.connect(config.MONGODB_URI, {
 app.use(express.json());
 
 app.use('/api/auth', authRouter);
+app.use('/api/orders', ordersRouter);
 
 const errorHandler = (error, request, response, next) => {
   console.error(error.message);

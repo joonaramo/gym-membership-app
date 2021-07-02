@@ -1,9 +1,9 @@
-const bcrypt = require('bcrypt');
+const config = require('../../utils/config');
 const router = require('express').Router();
 const { check, validationResult } = require('express-validator');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+const User = require('../../models/user');
 
 router.post(
   '/signup',
@@ -41,8 +41,8 @@ router.post(
           .json({ errors: [{ msg: 'User already exists' }] });
       }
 
-      const salt = await bcrypt.genSalt(10);
-      passwordHash = await bcrypt.hash(password, salt);
+      const saltRounds = 10;
+      passwordHash = await bcrypt.hash(password, saltRounds);
 
       user = new User({
         email,
@@ -67,7 +67,7 @@ router.post(
 
       jwt.sign(
         payload,
-        process.env.JWT_SECRET,
+        config.JWT_SECRET,
         {
           expiresIn: '1d',
         },
@@ -122,7 +122,7 @@ router.post(
 
       jwt.sign(
         payload,
-        process.env.JWT_SECRET,
+        config.JWT_SECRET,
         {
           expiresIn: '7d',
         },
