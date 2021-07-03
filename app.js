@@ -6,6 +6,7 @@ const authRouter = require('./routes/api/auth');
 const ordersRouter = require('./routes/api/orders');
 const klarnaRouter = require('./routes/api/klarna');
 const productsRouter = require('./routes/api/products');
+const usersRouter = require('./routes/api/users');
 const middleware = require('./utils/middleware');
 
 mongoose.connect(config.MONGODB_URI, {
@@ -22,6 +23,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/orders', ordersRouter);
 app.use('/api/klarna', klarnaRouter);
 app.use('/api/products', productsRouter);
+app.use('/api/users', usersRouter);
 
 const errorHandler = (error, request, response, next) => {
   console.error(error.message);

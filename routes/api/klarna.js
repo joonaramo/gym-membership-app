@@ -113,6 +113,7 @@ router.post('/confirm/:order_id', async (req, res, next) => {
       data: {
         order_id,
         status,
+        order_lines,
         order_amount,
         order_tax_amount,
         started_at,
@@ -147,11 +148,22 @@ router.post('/confirm/:order_id', async (req, res, next) => {
       return res.status(400).json({ error: 'Order is already completed' });
     }
 
+    // Find purchased products and append their times purchased value
+    let products = [];
+
+    order_lines.map(async (line) => {
+      const product = await Product.findOne({ reference: line.reference });
+      product.times_purchased++;
+      const savedProduct = await product.save();
+      products.concat(savedProduct);
+    });
+
     // Save order to DB
     order = new Order({
       user: merchant_reference2,
       order_id,
       status,
+      products,
       order_amount,
       order_tax_amount,
       started_at,
@@ -172,7 +184,7 @@ router.post('/confirm/:order_id', async (req, res, next) => {
       console.log(err);
     }
 
-    // Save membership to DB, assign membership and order to the logged in user
+    // Save membership to DB, assign membership id and order id to the user
     const date = new Date();
     const membership = new Membership({
       user: merchant_reference2,

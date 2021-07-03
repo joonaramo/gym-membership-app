@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const productSchema = mongoose.Schema({
   type: {
@@ -8,6 +9,7 @@ const productSchema = mongoose.Schema({
   reference: {
     type: String,
     required: true,
+    unique: true,
   },
   name: {
     type: String,
@@ -30,6 +32,8 @@ const productSchema = mongoose.Schema({
     default: 0,
   },
 });
+
+productSchema.plugin(uniqueValidator);
 
 const Product = mongoose.model('Product', productSchema);
 
