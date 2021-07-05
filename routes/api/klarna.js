@@ -69,6 +69,7 @@ router.post('/', checkAuth, async (req, res, next) => {
       unit_price: product.unit_price,
       tax_rate: product.tax_rate,
       quantity: req.body.quantities[i],
+      merchant_data: product._id,
     };
   });
 
@@ -149,13 +150,14 @@ router.post('/confirm/:order_id', async (req, res, next) => {
     }
 
     // Find purchased products and append their times purchased value
-    let products = [];
-
     order_lines.map(async (line) => {
-      const product = await Product.findOne({ reference: line.reference });
+      const product = await Product.findById(line.merchant_data);
       product.times_purchased++;
-      const savedProduct = await product.save();
-      products.concat(savedProduct);
+      await product.save();
+    });
+    let products = [];
+    order_lines.forEach((line) => {
+      products.push(line.merchant_data);
     });
 
     // Save order to DB
@@ -174,7 +176,7 @@ router.post('/confirm/:order_id', async (req, res, next) => {
     // Set Order ID as merchant reference to Klarna
     try {
       await axios.patch(
-        `${config.KLARNA_API_URL}/ordermanagement/v1/orders/{order_id}/merchant-references`,
+        `${config.KLARNA_API_URL}/ordermanagement/v1/orders/${order_id}/merchant-references`,
         {
           merchant_reference1: newOrder._id,
         },
