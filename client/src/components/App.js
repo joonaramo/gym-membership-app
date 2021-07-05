@@ -1,7 +1,13 @@
+import Header from './Header';
 import Router from './Router';
 
 const App = () => {
-  return <Router />;
+  return (
+    <>
+      <Header />
+      <Router />
+    </>
+  );
 };
 
 export default App;
