@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import * as yup from 'yup';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { login } from '../../actions/auth';
 
 const initialValues = {
   email: '',
@@ -16,11 +18,13 @@ const validationSchema = yup.object({
   password: yup.string().required('Password is required'),
 });
 
-const LogIn = () => {
+const LogIn = ({ login }) => {
   const onSubmit = async (values) => {
     const { email, password } = values;
     try {
-      console.log(email, password);
+      setTimeout(() => {
+        login({ email, password });
+      }, 400);
     } catch (e) {
       console.log(e);
     }
@@ -53,11 +57,8 @@ const LogIn = () => {
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={(values, { setSubmitting }) => {
-              setTimeout(() => {
-                console.log(values);
-                setSubmitting(false);
-              }, 400);
+            onSubmit={(values) => {
+              onSubmit(values);
             }}
           >
             <Form className='space-y-6'>
@@ -141,4 +142,4 @@ const LogIn = () => {
   );
 };
 
-export default LogIn;
+export default connect(null, { login })(LogIn);

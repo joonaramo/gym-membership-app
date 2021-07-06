@@ -2,11 +2,26 @@ import React from 'react';
 import Image from './Image';
 import Text from './Text';
 
-const ImageSection = ({ reversed }) => {
+const ImageSection = ({
+  reversed,
+  imageUrl,
+  title,
+  subtitle,
+  content,
+  buttonText,
+  buttonUrl,
+}) => {
   return (
-    <div className='relative bg-gray-800'>
-      <Image reversed={reversed} />
-      <Text reversed={reversed} />
+    <div id='about' className='relative bg-gray-800'>
+      <Image imageUrl={imageUrl} reversed={reversed} />
+      <Text
+        reversed={reversed}
+        title={title}
+        subtitle={subtitle}
+        content={content}
+        buttonText={buttonText}
+        buttonUrl={buttonUrl}
+      />
     </div>
   );
 };
