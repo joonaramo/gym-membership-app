@@ -24,9 +24,8 @@ router.post('/', checkAuth, async (req, res, next) => {
     merchant_reference2: req.user.id,
     merchant_urls: {
       terms: 'http://localhost:3000/terms',
-      checkout: 'http://localhost:3000?order_id={checkout.order.id}',
-      confirmation:
-        'http://localhost:3000/confirmation?order_id={checkout.order.id}',
+      checkout: 'http://localhost:3000/checkout',
+      confirmation: 'http://localhost:3000/confirmation',
       push: 'http://localhost:5000/api/klarna/confirm/{checkout.order.id}',
     },
   };
@@ -120,6 +119,7 @@ router.post('/confirm/:order_id', async (req, res, next) => {
         started_at,
         completed_at,
         merchant_reference2,
+        html_snippet,
       },
     } = await axios.get(
       `${config.KLARNA_API_URL}/checkout/v3/orders/${req.params.order_id}`,
@@ -198,7 +198,7 @@ router.post('/confirm/:order_id', async (req, res, next) => {
     user.memberships = user.memberships.concat(newMembership._id);
     user.orders = user.orders.concat(newOrder._id);
     await user.save();
-    res.json(newOrder);
+    res.json({ html_snippet });
   } catch (err) {
     next(err);
   }

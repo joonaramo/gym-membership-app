@@ -1,7 +1,10 @@
-import { setAuthToken } from '../utils/helpers';
-import loginService from '../services/login';
 import axios from 'axios';
 import { API_URL } from '../utils/constants';
+import { setAuthToken } from '../utils/helpers';
+import { format } from 'date-fns';
+import authService from '../services/auth';
+import userService from '../services/users';
+import { setNotification } from './notification';
 
 export const loadUser = () => async (dispatch) => {
   if (localStorage.token) {
@@ -25,8 +28,7 @@ export const login =
   async (dispatch) => {
     const body = JSON.stringify({ email, password });
     try {
-      const { token } = await loginService.login(body);
-      console.log(token);
+      const { token } = await authService.login(body);
       dispatch({
         type: 'LOGIN_SUCCESS',
         payload: token,
@@ -35,11 +37,90 @@ export const login =
     } catch (err) {
       const errors = err?.response?.data.errors;
       if (errors) {
-        errors.forEach((error) => console.log(error.msg, 'error'));
+        errors.forEach((error) => dispatch(setNotification(error.msg, 5000)));
       }
       dispatch({
         type: 'LOGIN_FAIL',
       });
+    }
+  };
+
+export const signup =
+  ({
+    email,
+    password,
+    first_name,
+    last_name,
+    phone_number,
+    street_address,
+    postal_code,
+    city,
+    birth_date,
+  }) =>
+  async (dispatch) => {
+    const body = JSON.stringify({
+      email,
+      password,
+      first_name,
+      last_name,
+      phone_number,
+      street_address,
+      postal_code,
+      city,
+      birth_date,
+    });
+    try {
+      const { token } = await authService.signup(body);
+      dispatch({
+        type: 'REGISTER_SUCCESS',
+        payload: token,
+      });
+      dispatch(loadUser());
+    } catch (err) {
+      const errors = err.response.data.errors;
+      if (errors) {
+        errors.forEach((error) => dispatch(setNotification(error.msg, 5000)));
+      }
+      dispatch({
+        type: 'REGISTER_FAIL',
+      });
+    }
+  };
+
+export const updateUser =
+  ({
+    id,
+    email,
+    first_name,
+    last_name,
+    phone_number,
+    street_address,
+    postal_code,
+    city,
+    birth_date,
+  }) =>
+  async (dispatch) => {
+    const body = JSON.stringify({
+      email,
+      first_name,
+      last_name,
+      phone_number,
+      street_address,
+      postal_code,
+      city,
+      birth_date: format(new Date(birth_date), 'yyyy-MM-dd'),
+    });
+    try {
+      const user = await userService.update(id, body);
+      dispatch({
+        type: 'UPDATE_USER',
+        payload: user,
+      });
+    } catch (err) {
+      const errors = err.response.data.errors;
+      if (errors) {
+        errors.forEach((error) => console.log(error.msg, 'error'));
+      }
     }
   };
 

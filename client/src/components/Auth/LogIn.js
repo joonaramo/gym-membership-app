@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import * as yup from 'yup';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { login } from '../../actions/auth';
+import { setNotification } from '../../actions/notification';
+import { useHistory } from 'react-router';
+import Alert from './Alert';
 
 const initialValues = {
   email: '',
@@ -18,17 +21,17 @@ const validationSchema = yup.object({
   password: yup.string().required('Password is required'),
 });
 
-const LogIn = ({ login }) => {
+const LogIn = ({ auth: { isAuthenticated }, login, setNotification }) => {
+  const history = useHistory();
+
   const onSubmit = async (values) => {
     const { email, password } = values;
-    try {
-      setTimeout(() => {
-        login({ email, password });
-      }, 400);
-    } catch (e) {
-      console.log(e);
-    }
+    login({ email, password });
   };
+
+  if (isAuthenticated) {
+    history.push('/profile');
+  }
 
   return (
     <div className='min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8'>
@@ -51,6 +54,8 @@ const LogIn = ({ login }) => {
           </Link>
         </p>
       </div>
+
+      <Alert />
 
       <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
         <div className='bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10'>
@@ -142,4 +147,8 @@ const LogIn = ({ login }) => {
   );
 };
 
-export default connect(null, { login })(LogIn);
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, { login, setNotification })(LogIn);

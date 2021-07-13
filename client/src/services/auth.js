@@ -15,4 +15,18 @@ const login = async (credentials) => {
   return data;
 };
 
-export default { login };
+const signup = async (userData) => {
+  const axiosConfig = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  const { data } = await axios.post(
+    `${API_URL}/auth/signup`,
+    userData,
+    axiosConfig
+  );
+  return data;
+};
+
+export default { login, signup };

@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const { check, validationResult } = require('express-validator');
 const { checkAuth } = require('../../utils/middleware');
+const { format } = require('date-fns');
 const User = require('../../models/user');
 
 router.get('/', checkAuth, async (req, res, next) => {
@@ -20,7 +21,15 @@ router.get('/:id', checkAuth, async (req, res, next) => {
     } else {
       id = req.params.id;
     }
-    const user = await User.findById(id);
+    const user = await User.findById(id)
+      .populate('memberships')
+      .populate({
+        path: 'orders',
+        populate: {
+          path: 'products',
+          model: 'Product',
+        },
+      });
     res.json(user);
   } catch (err) {
     next(err);
@@ -34,15 +43,23 @@ router.patch(
     check('first_name', 'First name is required').exists(),
     check('last_name', 'Last name is required').exists(),
     check('phone_number', 'Phone number is required').exists(),
-    check('street_address', 'Street address is required').isNumeric(),
+    check('street_address', 'Street address is required').exists(),
     check('postal_code', 'Postal code is required').isNumeric(),
-    check('city', 'City is required').isNumeric(),
+    check('city', 'City is required').exists(),
     check('birth_date', 'Birth date is required').isDate(),
   ],
   checkAuth,
   async (req, res, next) => {
     try {
-      const user = await User.findById(req.params.id);
+      const user = await User.findById(req.params.id)
+        .populate('memberships')
+        .populate({
+          path: 'orders',
+          populate: {
+            path: 'products',
+            model: 'Product',
+          },
+        });
       const {
         email,
         first_name,
@@ -52,7 +69,6 @@ router.patch(
         postal_code,
         city,
         birth_date,
-        is_admin,
       } = req.body;
       user.email = email;
       user.first_name = first_name;
@@ -61,8 +77,7 @@ router.patch(
       user.street_address = street_address;
       user.postal_code = postal_code;
       user.city = city;
-      user.birth_date = birth_date;
-      user.is_admin = is_admin;
+      user.birth_date = format(new Date(birth_date), 'yyyy-MM-dd');
       const updatedUser = await user.save();
       res.json(updatedUser);
     } catch (err) {

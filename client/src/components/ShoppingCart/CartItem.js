@@ -3,12 +3,12 @@ import axios from 'axios';
 import { API_URL } from '../../utils/constants';
 
 const CartItem = ({
-  cartItems,
-  cartQuantities,
   productId,
   quantity,
   subTotal,
   setSubTotal,
+  setCartItems,
+  setCartQuantities,
 }) => {
   const [product, setProduct] = useState({});
 
@@ -21,11 +21,30 @@ const CartItem = ({
     getProduct();
   }, [productId]);
 
+  const removeItem = () => {
+    const cartItemsStorage = JSON.parse(localStorage.getItem('cart_products'));
+    const cartQuantitiesStorage = JSON.parse(
+      localStorage.getItem('cart_quantities')
+    );
+    const index = cartItemsStorage.indexOf(product._id);
+    if (index > -1) {
+      cartItemsStorage.splice(index, 1);
+      cartQuantitiesStorage.splice(index, 1);
+    }
+    localStorage.setItem('cart_products', JSON.stringify(cartItemsStorage));
+    localStorage.setItem(
+      'cart_quantities',
+      JSON.stringify(cartQuantitiesStorage)
+    );
+    setCartItems(cartItemsStorage);
+    setCartQuantities(cartQuantitiesStorage);
+  };
+
   return (
     <tr>
       <td>
         <p className='mb-2'>{product.name}</p>
-        <button type='submit' className='text-gray-700'>
+        <button onClick={() => removeItem()} className='text-gray-700'>
           <small>(Remove item)</small>
         </button>
       </td>

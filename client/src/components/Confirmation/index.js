@@ -13,8 +13,8 @@ const Confirmation = () => {
       try {
         const { html_snippet } = await klarnaService.confirm(checkoutId);
         setDangerousHtml(html_snippet);
-        localStorage.setItem('cart_products', []);
-        localStorage.setItem('cart_quantities', []);
+        localStorage.setItem('cart_products', '[]');
+        localStorage.setItem('cart_quantities', '[]');
       } catch (error) {
         console.log(error);
       }

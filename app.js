@@ -2,6 +2,7 @@ const config = require('./utils/config');
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const cors = require('cors');
 const authRouter = require('./routes/api/auth');
 const ordersRouter = require('./routes/api/orders');
 const klarnaRouter = require('./routes/api/klarna');
@@ -16,6 +17,7 @@ mongoose.connect(config.MONGODB_URI, {
   useCreateIndex: true,
 });
 
+app.use(cors());
 app.use(middleware.tokenExtractor);
 app.use(express.json());
 

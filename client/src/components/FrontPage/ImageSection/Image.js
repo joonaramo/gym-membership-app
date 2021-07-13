@@ -2,7 +2,6 @@ import React from 'react';
 import { classNames } from '../../../utils/helpers';
 
 const Image = ({ reversed, imageUrl }) => {
-  console.log(imageUrl);
   return (
     <div
       className={classNames(

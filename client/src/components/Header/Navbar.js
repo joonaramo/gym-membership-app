@@ -9,8 +9,15 @@ import {
   UserCircleIcon,
 } from '@heroicons/react/outline';
 import { classNames } from '../../utils/helpers';
+import { logout } from '../../actions/auth';
+import { useHistory } from 'react-router';
 
-const Navbar = ({ auth: { isAuthenticated } }) => {
+const Navbar = ({ auth: { isAuthenticated }, logout }) => {
+  const history = useHistory();
+  const logOut = async () => {
+    await logout();
+    history.push('/');
+  };
   const ProfileMenu = () => {
     return (
       <Menu as='div' className='ml-3 relative'>
@@ -54,12 +61,13 @@ const Navbar = ({ auth: { isAuthenticated } }) => {
                     <Menu.Item>
                       {({ active }) => (
                         <button
+                          onClick={() => logOut()}
                           className={classNames(
                             active ? 'bg-gray-100' : '',
                             'w-full text-left block px-4 py-2 text-sm text-gray-700'
                           )}
                         >
-                          Sign out
+                          Log out
                         </button>
                       )}
                     </Menu.Item>
@@ -128,12 +136,12 @@ const Navbar = ({ auth: { isAuthenticated } }) => {
                 <div className='hidden sm:block sm:ml-6'>
                   <div className='flex space-x-4'>
                     {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
-                    <a
-                      href='/'
-                      className='bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium'
+                    <Link
+                      to='/'
+                      className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
                     >
                       Home
-                    </a>
+                    </Link>
                     <a
                       href='/#about'
                       className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
@@ -263,4 +271,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps)(Navbar);
+export default connect(mapStateToProps, { logout })(Navbar);

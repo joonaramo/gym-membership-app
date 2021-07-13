@@ -3,6 +3,7 @@ const router = require('express').Router();
 const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { format } = require('date-fns');
 const User = require('../../models/user');
 
 router.post(
@@ -13,6 +14,13 @@ router.post(
       'password',
       'Please enter a password with 6 or more characters'
     ).isLength({ min: 6 }),
+    check('first_name', 'First name is required').exists(),
+    check('last_name', 'Last name is required').exists(),
+    check('phone_number', 'Phone number is required').exists(),
+    check('street_address', 'Street address is required').exists(),
+    check('postal_code', 'Postal code is required').isNumeric(),
+    check('city', 'City is required').exists(),
+    check('birth_date', 'Birth date is required').isDate(),
   ],
   async (req, res, next) => {
     const errors = validationResult(req);
@@ -53,7 +61,7 @@ router.post(
         street_address,
         postal_code,
         city,
-        birth_date,
+        birth_date: format(new Date(birth_date), 'yyyy-MM-dd'),
       });
 
       await user.save();
