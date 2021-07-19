@@ -6,6 +6,7 @@ const Membership = require('../../models/membership');
 const User = require('../../models/user');
 const { checkAuth } = require('../../utils/middleware');
 const Product = require('../../models/product');
+const Coupon = require('../../models/coupon');
 
 const axiosConfig = {
   headers: {
@@ -30,6 +31,13 @@ router.post('/', checkAuth, async (req, res, next) => {
     },
   };
 
+  let discountAmount = 0;
+
+  if (req.body.coupon) {
+    const coupon = await Coupon.findOne({ code: req.body.coupon });
+    discountAmount = coupon.value * 100;
+  }
+
   const calculateOrderLinesValues = (orderLines) => {
     let amount = 0,
       taxAmount = 0;
@@ -38,11 +46,12 @@ router.post('/', checkAuth, async (req, res, next) => {
     );
 
     currentOrderLines.forEach((orderLine) => {
-      orderLine['total_amount'] = orderLine.quantity * orderLine.unit_price;
+      orderLine['total_amount'] =
+        orderLine.quantity * orderLine.unit_price - discountAmount;
       orderLine['total_tax_amount'] =
         orderLine['total_amount'] -
         (orderLine['total_amount'] * 10000) / (10000 + orderLine.tax_rate);
-      orderLine['total_discount_amount'] = 0;
+      orderLine['total_discount_amount'] = discountAmount;
 
       amount += orderLine['total_amount'];
       taxAmount += orderLine['total_tax_amount'];
@@ -91,6 +100,7 @@ router.post('/', checkAuth, async (req, res, next) => {
 
     res.json(data);
   } catch (err) {
+    console.log(err);
     next(err);
   }
 });
