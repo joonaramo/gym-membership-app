@@ -4,7 +4,7 @@ import { MenuAlt1Icon, BellIcon } from '@heroicons/react/outline';
 import { ChevronDownIcon, SearchIcon } from '@heroicons/react/solid';
 import { classNames } from '../../../utils/helpers';
 
-const Header = ({ setSidebarOpen }) => {
+const Header = ({ setSidebarOpen, user }) => {
   return (
     <div className='relative z-10 flex-shrink-0 flex h-16 bg-white border-b border-gray-200 lg:border-none'>
       <button
@@ -17,7 +17,7 @@ const Header = ({ setSidebarOpen }) => {
       {/* Search bar */}
       <div className='flex-1 px-4 flex justify-between sm:px-6 lg:max-w-6xl lg:mx-auto lg:px-8'>
         <div className='flex-1 flex'>
-          <form className='w-full flex md:ml-0' action='#' method='GET'>
+          <form className='w-full flex md:ml-0'>
             <label htmlFor='search-field' className='sr-only'>
               Search
             </label>
@@ -57,7 +57,7 @@ const Header = ({ setSidebarOpen }) => {
                     />
                     <span className='hidden ml-3 text-gray-700 text-sm font-medium lg:block'>
                       <span className='sr-only'>Open user menu for </span>
-                      Emilia Birch
+                      {user?.first_name} {user?.last_name}
                     </span>
                     <ChevronDownIcon
                       className='hidden flex-shrink-0 ml-1 h-5 w-5 text-gray-400 lg:block'

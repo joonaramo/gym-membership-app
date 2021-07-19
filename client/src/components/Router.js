@@ -9,6 +9,8 @@ import FrontPage from './FrontPage';
 import Profile from './Profile';
 import ShoppingCart from './ShoppingCart';
 import AdminPanel from './AdminPanel';
+import Home from './AdminPanel/Home';
+import Users from './AdminPanel/Users';
 
 const Router = () => {
   return (
@@ -20,7 +22,8 @@ const Router = () => {
       <PrivateRoute exact path='/checkout' component={Checkout} />
       <PrivateRoute exact path='/confirmation' component={Confirmation} />
       <PrivateRoute exact path='/profile' component={Profile} />
-      <PrivateRoute exact path='/admin' component={AdminPanel} />
+      <AdminPanel exact path='/admin' component={Home} />
+      <AdminPanel exact path='/admin/users' component={Users} />
     </Switch>
   );
 };

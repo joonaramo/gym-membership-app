@@ -1,8 +1,8 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Dialog, Transition } from '@headlessui/react';
 import {
   HomeIcon,
-  ClockIcon,
   ScaleIcon,
   CreditCardIcon,
   UserGroupIcon,
@@ -14,14 +14,6 @@ import {
 } from '@heroicons/react/outline';
 import { classNames } from '../../../utils/helpers';
 
-const navigation = [
-  { name: 'Home', href: '#', icon: HomeIcon, current: true },
-  { name: 'History', href: '#', icon: ClockIcon, current: false },
-  { name: 'Balances', href: '#', icon: ScaleIcon, current: false },
-  { name: 'Cards', href: '#', icon: CreditCardIcon, current: false },
-  { name: 'Recipients', href: '#', icon: UserGroupIcon, current: false },
-  { name: 'Reports', href: '#', icon: DocumentReportIcon, current: false },
-];
 const secondaryNavigation = [
   { name: 'Settings', href: '#', icon: CogIcon },
   { name: 'Help', href: '#', icon: QuestionMarkCircleIcon },
@@ -29,6 +21,28 @@ const secondaryNavigation = [
 ];
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
+  const [navigation, setNavigation] = useState([
+    { name: 'Home', href: '/admin', icon: HomeIcon, current: true },
+    {
+      name: 'Users',
+      href: '/admin/users',
+      icon: UserGroupIcon,
+      current: false,
+    },
+    { name: 'Balances', href: '#', icon: ScaleIcon, current: false },
+    { name: 'Cards', href: '#', icon: CreditCardIcon, current: false },
+    { name: 'Reports', href: '#', icon: DocumentReportIcon, current: false },
+  ]);
+
+  const setCurrent = (name) => {
+    const updatedNavigation = navigation.map((item) => {
+      return {
+        ...item,
+        current: item.name === name ? true : false,
+      };
+    });
+    setNavigation(updatedNavigation);
+  };
   return (
     <>
       <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -92,9 +106,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               >
                 <div className='px-2 space-y-1'>
                   {navigation.map((item) => (
-                    <a
+                    <Link
                       key={item.name}
-                      href={item.href}
+                      to={item.href}
                       className={classNames(
                         item.current
                           ? 'bg-cyan-800 text-white'
@@ -108,7 +122,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                         aria-hidden='true'
                       />
                       {item.name}
-                    </a>
+                    </Link>
                   ))}
                 </div>
                 <div className='mt-6 pt-6'>
@@ -154,9 +168,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
             >
               <div className='px-2 space-y-1'>
                 {navigation.map((item) => (
-                  <a
+                  <Link
                     key={item.name}
-                    href={item.href}
+                    to={item.href}
+                    onClick={() => setCurrent(item.name)}
                     className={classNames(
                       item.current
                         ? 'bg-cyan-800 text-white'
@@ -170,7 +185,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                       aria-hidden='true'
                     />
                     {item.name}
-                  </a>
+                  </Link>
                 ))}
               </div>
               <div className='mt-6 pt-6'>

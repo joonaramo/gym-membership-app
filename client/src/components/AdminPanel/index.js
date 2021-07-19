@@ -1,36 +1,48 @@
-import { useState } from 'react';
-import { ScaleIcon } from '@heroicons/react/outline';
+import React, { useState } from 'react';
+import { Route, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import Sidebar from './Sidebar';
 import Header from './Header';
 import PageHeader from './PageHeader';
-import Overview from './Overview';
-import Activity from './Activity';
 
-const cards = [
-  { name: 'Account balance', href: '#', icon: ScaleIcon, amount: '$30,659.45' },
-  // More items...
-];
-
-const AdminPanel = () => {
+const AdminPanel = ({
+  component: Component,
+  auth: { isAuthenticated, user, loading },
+  ...rest
+}) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className='h-screen flex overflow-hidden bg-gray-100'>
-      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      <div className='flex-1 overflow-auto focus:outline-none'>
-        <Header setSidebarOpen={setSidebarOpen} />
-        <main className='flex-1 relative pb-8 z-0 overflow-y-auto'>
-          {/* Page header */}
-          <PageHeader />
-          <div className='mt-8'>
-            <Overview cards={cards} />
-            <Activity />
+    <Route
+      {...rest}
+      render={(props) =>
+        !isAuthenticated && !loading ? (
+          <Redirect to='/login' />
+        ) : (
+          <div className='h-screen flex overflow-hidden bg-gray-100'>
+            <Sidebar
+              sidebarOpen={sidebarOpen}
+              setSidebarOpen={setSidebarOpen}
+            />
+            <div className='flex-1 overflow-auto focus:outline-none'>
+              <Header user={user} setSidebarOpen={setSidebarOpen} />
+              <main className='flex-1 relative pb-8 z-0 overflow-y-auto'>
+                <PageHeader />
+                <div className='mt-8'>
+                  <Component {...props} />
+                </div>
+              </main>
+            </div>
           </div>
-        </main>
-      </div>
-    </div>
+        )
+      }
+    />
   );
 };
 
-export default AdminPanel;
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps)(AdminPanel);
