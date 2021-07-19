@@ -93,13 +93,15 @@ const PricingSection = ({ auth: { isAuthenticated } }) => {
                       </ul>
                       <div className='mt-8'>
                         <div className='rounded-lg shadow-md'>
-                          <a
-                            href='#'
+                          <button
+                            onClick={() =>
+                              addToCart('60df10cad8f8630e2c8cb1f7')
+                            }
                             className='block w-full text-center rounded-lg border border-transparent bg-white px-6 py-3 text-base font-medium text-indigo-600 hover:bg-gray-50'
                             aria-describedby='tier-hobby'
                           >
                             Join now
-                          </a>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -156,7 +158,7 @@ const PricingSection = ({ auth: { isAuthenticated } }) => {
                     <div className='mt-10'>
                       <div className='rounded-lg shadow-md'>
                         <button
-                          onClick={() => addToCart('60df10cad8f8630e2c8cb1f7')}
+                          onClick={() => addToCart('60f548925fd25335f84dc9e1')}
                           className='block w-full text-center rounded-lg border border-transparent bg-indigo-600 px-6 py-4 text-xl leading-6 font-medium text-white hover:bg-indigo-700'
                           aria-describedby='tier-growth'
                         >
@@ -206,13 +208,15 @@ const PricingSection = ({ auth: { isAuthenticated } }) => {
                       </ul>
                       <div className='mt-8'>
                         <div className='rounded-lg shadow-md'>
-                          <a
-                            href='#'
+                          <button
+                            onClick={() =>
+                              addToCart('60f54a433cd86e67c4dd5205')
+                            }
                             className='block w-full text-center rounded-lg border border-transparent bg-white px-6 py-3 text-base font-medium text-indigo-600 hover:bg-gray-50'
                             aria-describedby='tier-scale'
                           >
                             Join now
-                          </a>
+                          </button>
                         </div>
                       </div>
                     </div>

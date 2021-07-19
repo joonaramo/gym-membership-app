@@ -1,12 +1,12 @@
 import React from 'react';
 import Navbar from './Navbar';
-import Notification from './Notification';
+import Alert from '../Auth/Alert';
 
 const Header = () => {
   return (
     <>
       <Navbar />
-      {/* <Notification /> */}
+      <Alert />
     </>
   );
 };

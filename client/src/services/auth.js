@@ -29,4 +29,9 @@ const signup = async (userData) => {
   return data;
 };
 
-export default { login, signup };
+const loginService = {
+  login,
+  signup,
+};
+
+export default loginService;

@@ -35,7 +35,7 @@ router.post('/', checkAuth, async (req, res, next) => {
 
   if (req.body.coupon) {
     const coupon = await Coupon.findOne({ code: req.body.coupon });
-    discountAmount = coupon.value * 100;
+    discountAmount = coupon.value;
   }
 
   const calculateOrderLinesValues = (orderLines) => {
@@ -159,10 +159,13 @@ router.post('/confirm/:order_id', async (req, res, next) => {
       return res.status(400).json({ error: 'Order is already completed' });
     }
 
-    // Find purchased products and append their times purchased value
+    // Find purchased products and append their times purchased value and get membership length
+    let membershipLength;
+
     order_lines.map(async (line) => {
       const product = await Product.findById(line.merchant_data);
       product.times_purchased++;
+      membershipLength = product.membership_length;
       await product.save();
     });
     let products = [];
@@ -201,7 +204,7 @@ router.post('/confirm/:order_id', async (req, res, next) => {
     const membership = new Membership({
       user: merchant_reference2,
       order: newOrder._id,
-      end_date: date.setMonth(date.getMonth() + 1),
+      end_date: date.setMonth(date.getMonth() + membershipLength),
     });
     const newMembership = await membership.save();
     const user = await User.findById(merchant_reference2);

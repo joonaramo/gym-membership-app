@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import klarnaService from '../../services/klarna';
 import { useHistory } from 'react-router';
+import { useDispatch } from 'react-redux';
 import CartItem from './CartItem';
+import couponsService from '../../services/coupons';
+import { setNotification } from '../../actions/notification';
 
 const ShoppingCart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [cartQuantities, setCartQuantities] = useState([]);
   const [subTotal, setSubTotal] = useState(0);
-  const [coupon, setCoupon] = useState();
+  const [coupon, setCoupon] = useState('');
+  const [couponValue, setCouponValue] = useState(0);
   const history = useHistory();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (localStorage.getItem('cart_products')) {
@@ -23,9 +28,30 @@ const ShoppingCart = () => {
     const { order_id } = await klarnaService.create({
       products: cartItems,
       quantities: cartQuantities,
+      coupon,
     });
     localStorage.setItem('kco_id', order_id);
     history.push('/checkout');
+  };
+
+  const checkCoupon = async (e) => {
+    e.preventDefault();
+    try {
+      const { value, active } = await couponsService.get(coupon);
+      if (active) {
+        setCouponValue(value);
+      } else {
+        setCoupon('');
+      }
+    } catch (err) {
+      dispatch(setNotification('Invalid coupon', 3000));
+      setCoupon('');
+    }
+  };
+
+  const removeCoupon = () => {
+    setCouponValue(0);
+    setCoupon('');
   };
 
   return (
@@ -33,7 +59,7 @@ const ShoppingCart = () => {
       <div className='flex flex-col w-full p-8 text-gray-800 bg-white shadow-lg pin-r pin-y md:w-4/5 lg:w-4/5'>
         {cartItems.length > 0 ? (
           <div className='flex-1'>
-            <table className='w-full text-sm lg:text-base' cellspacing='0'>
+            <table className='w-full text-sm lg:text-base' cellSpacing='0'>
               <thead>
                 <tr className='h-12 uppercase'>
                   <th className='text-left'>Product</th>
@@ -80,10 +106,12 @@ const ShoppingCart = () => {
                           name='code'
                           id='coupon'
                           placeholder='Apply coupon'
-                          value='90off'
+                          value={coupon}
+                          onChange={(e) => setCoupon(e.target.value)}
                           className='w-full bg-gray-100 outline-none appearance-none focus:outline-none active:outline-none'
                         />
                         <button
+                          onClick={(e) => checkCoupon(e)}
                           type='submit'
                           className='text-sm flex items-center px-3 py-1 text-white bg-gray-800 rounded-full outline-none md:px-4 hover:bg-gray-700 focus:outline-none active:outline-none'
                         >
@@ -124,11 +152,15 @@ const ShoppingCart = () => {
                       {subTotal}€
                     </div>
                   </div>
-                  {coupon && (
+                  {couponValue > 0 && (
                     <>
                       <div className='flex justify-between pt-4 border-b'>
                         <div className='flex lg:px-4 lg:py-2 m-2 text-lg lg:text-xl font-bold text-gray-800'>
-                          <button type='submit' className='mr-2 mt-1 lg:mt-2'>
+                          <button
+                            onClick={() => removeCoupon()}
+                            type='button'
+                            className='mr-2'
+                          >
                             <svg
                               aria-hidden='true'
                               data-prefix='far'
@@ -143,10 +175,10 @@ const ShoppingCart = () => {
                               />
                             </svg>
                           </button>
-                          Coupon "90off"
+                          Coupon
                         </div>
                         <div className='lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-green-700'>
-                          -133,944.77€
+                          -{couponValue / 100}€
                         </div>
                       </div>
                       <div className='flex justify-between pt-4 border-b'>
@@ -154,7 +186,7 @@ const ShoppingCart = () => {
                           New Subtotal
                         </div>
                         <div className='lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-gray-900'>
-                          14,882.75€
+                          {subTotal - couponValue / 100}€
                         </div>
                       </div>
                     </>

@@ -15,6 +15,10 @@ const productSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  membership_length: {
+    type: Number,
+    required: true,
+  },
   quantity_unit: {
     type: String,
     default: 'pcs',

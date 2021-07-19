@@ -12,9 +12,9 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:code', async (req, res, next) => {
   try {
-    const coupon = await Coupon.findById(req.params.id);
+    const coupon = await Coupon.findOne({ code: req.params.code });
     res.json(coupon);
   } catch (err) {
     next(err);

@@ -27,6 +27,7 @@ router.post(
   [
     check('reference', 'Reference is required').exists(),
     check('name', 'Name is required').exists(),
+    check('membership_length', 'Membership length is required').isNumeric(),
     check('unit_price', 'Unit price is required').isNumeric(),
     check('tax_rate', 'Tax rate is required').isNumeric(),
   ],
@@ -51,7 +52,8 @@ router.put(
   [
     check('reference', 'Reference is required').exists(),
     check('type', 'Type is required').exists(),
-    check('quantity_unit', 'Quantity unit is required').exists(),
+    check('membership_length', 'Membership length is required').isNumeric(),
+    check('quantity_unit', 'Quantity unit is required').isNumeric(),
     check('name', 'Name is required').exists(),
     check('unit_price', 'Unit price is required').isNumeric(),
     check('tax_rate', 'Tax rate is required').isNumeric(),
