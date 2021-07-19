@@ -5,8 +5,9 @@ import * as yup from 'yup';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { signup } from '../../actions/auth';
 import { useHistory } from 'react-router';
-import DatePickerField from './DatePickerField';
 import { format } from 'date-fns';
+import DatePickerField from './DatePickerField';
+import Alert from './Alert';
 
 const initialValues = {
   email: '',
@@ -29,6 +30,17 @@ const validationSchema = yup.object({
     .string()
     .min(6, 'Password must be at least 6 characters')
     .required('Password is required'),
+  password2: yup
+    .string()
+    .oneOf([yup.ref('password'), null], 'Passwords do not match')
+    .required('Please repeat password'),
+  first_name: yup.string().required('First name is required'),
+  last_name: yup.string().required('Last name is required'),
+  birth_date: yup.date().required('Birth date is required'),
+  phone_number: yup.string().required('Phone number is required'),
+  street_address: yup.string().required('Street address is required'),
+  city: yup.string().required('City is required'),
+  postal_code: yup.string().required('Postal code is required'),
 });
 
 const SignUp = ({ auth: { isAuthenticated }, signup }) => {
@@ -176,7 +188,7 @@ const SignUp = ({ auth: { isAuthenticated }, signup }) => {
                   className='block text-sm font-medium text-gray-700'
                   htmlFor='street_address'
                 >
-                  Street Address
+                  Street address
                 </label>
                 <div className='mt-1'>
                   <Field
@@ -233,7 +245,7 @@ const SignUp = ({ auth: { isAuthenticated }, signup }) => {
                   className='block text-sm font-medium text-gray-700'
                   htmlFor='email'
                 >
-                  Email Address
+                  Email address
                 </label>
                 <div className='mt-1'>
                   <Field
@@ -296,6 +308,7 @@ const SignUp = ({ auth: { isAuthenticated }, signup }) => {
               </div>
             </Form>
           </Formik>
+          <Alert />
         </div>
       </div>
     </div>

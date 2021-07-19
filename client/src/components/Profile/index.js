@@ -7,6 +7,7 @@ import { classNames } from '../../utils/helpers';
 import { loadUser, updateUser } from '../../actions/auth';
 import DateListItem from './DateListItem';
 import Notification from './Notification';
+import Alert from '../Auth/Alert';
 
 const Profile = ({ auth: { user }, loadUser, updateUser }) => {
   const [updatedUser, setUpdatedUser] = useState({
@@ -42,9 +43,9 @@ const Profile = ({ auth: { user }, loadUser, updateUser }) => {
     }
   }, [user]);
 
-  const save = () => {
+  const save = async () => {
     try {
-      updateUser(updatedUser);
+      await updateUser(updatedUser);
       setHasUnsavedChanges(false);
     } catch (err) {
       console.log(err);
@@ -237,6 +238,7 @@ const Profile = ({ auth: { user }, loadUser, updateUser }) => {
             </dd>
           </div>
           {hasUnSavedChanges && <Notification save={save} />}
+          <Alert />
         </dl>
       </div>
     </div>

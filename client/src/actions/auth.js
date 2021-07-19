@@ -37,7 +37,7 @@ export const login =
     } catch (err) {
       const errors = err?.response?.data.errors;
       if (errors) {
-        errors.forEach((error) => dispatch(setNotification(error.msg, 5000)));
+        errors.forEach((error) => dispatch(setNotification(error.msg, 3000)));
       }
       dispatch({
         type: 'LOGIN_FAIL',
@@ -79,7 +79,7 @@ export const signup =
     } catch (err) {
       const errors = err.response.data.errors;
       if (errors) {
-        errors.forEach((error) => dispatch(setNotification(error.msg, 5000)));
+        errors.forEach((error) => dispatch(setNotification(error.msg, 3000)));
       }
       dispatch({
         type: 'REGISTER_FAIL',
@@ -117,10 +117,11 @@ export const updateUser =
         payload: user,
       });
     } catch (err) {
-      const errors = err.response.data.errors;
-      if (errors) {
-        errors.forEach((error) => console.log(error.msg, 'error'));
+      const error = err.response.data.error;
+      if (error) {
+        dispatch(setNotification(error, 3000));
       }
+      throw new Error(error);
     }
   };
 

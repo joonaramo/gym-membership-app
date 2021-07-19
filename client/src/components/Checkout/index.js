@@ -2,19 +2,21 @@ import React, { useState, useEffect } from 'react';
 import klarnaService from '../../services/klarna';
 
 const Checkout = () => {
-  const [checkoutId, setCheckoutId] = useState();
-
-  useEffect(() => {
-    setCheckoutId(localStorage.getItem('kco_id'));
-  }, []);
+  const [html, setHTML] = useState('');
 
   useEffect(() => {
     const getHtml = async () => {
-      const { html_snippet } = await klarnaService.get(checkoutId);
-      setDangerousHtml(html_snippet);
+      const { html_snippet } = await klarnaService.get(
+        localStorage.getItem('kco_id')
+      );
+      setHTML(html_snippet);
     };
-    if (checkoutId) getHtml();
-  }, [checkoutId]);
+    getHtml();
+  }, []);
+
+  useEffect(() => {
+    setDangerousHtml(html);
+  }, [html]);
 
   let checkoutRef = null;
   function setDangerousHtml(html) {
