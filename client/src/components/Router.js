@@ -8,6 +8,7 @@ import Confirmation from './Confirmation';
 import FrontPage from './FrontPage';
 import Profile from './Profile';
 import ShoppingCart from './ShoppingCart';
+import AdminPanel from './AdminPanel';
 
 const Router = () => {
   return (
@@ -19,6 +20,7 @@ const Router = () => {
       <PrivateRoute exact path='/checkout' component={Checkout} />
       <PrivateRoute exact path='/confirmation' component={Confirmation} />
       <PrivateRoute exact path='/profile' component={Profile} />
+      <PrivateRoute exact path='/admin' component={AdminPanel} />
     </Switch>
   );
 };
