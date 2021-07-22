@@ -6,6 +6,11 @@ const getAll = async () => {
   return data;
 };
 
+const get = async (userId) => {
+  const { data } = await axios.get(`${API_URL}/users/${userId}`);
+  return data;
+};
+
 const update = async (userId, userData) => {
   const axiosConfig = {
     headers: {
@@ -22,6 +27,7 @@ const update = async (userId, userData) => {
 
 const usersService = {
   update,
+  get,
   getAll,
 };
 

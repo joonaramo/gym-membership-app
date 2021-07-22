@@ -11,6 +11,7 @@ import ShoppingCart from './ShoppingCart';
 import AdminPanel from './AdminPanel';
 import Home from './AdminPanel/Home';
 import Users from './AdminPanel/Users';
+import SingleUser from './AdminPanel/Users/SingleUser';
 
 const Router = () => {
   return (
@@ -24,6 +25,7 @@ const Router = () => {
       <PrivateRoute exact path='/profile' component={Profile} />
       <AdminPanel exact path='/admin' component={Home} />
       <AdminPanel exact path='/admin/users' component={Users} />
+      <AdminPanel exact path='/admin/users/:id' component={SingleUser} />
     </Switch>
   );
 };

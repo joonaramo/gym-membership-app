@@ -1,18 +1,5 @@
 const initialState = {
-  user: {
-    birth_date: undefined,
-    city: undefined,
-    email: undefined,
-    first_name: undefined,
-    id: undefined,
-    is_admin: false,
-    last_name: undefined,
-    memberships: [],
-    orders: [],
-    phone_number: undefined,
-    postal_code: null,
-    street_address: undefined,
-  },
+  user: {},
   loading: true,
   users: [],
 };
@@ -30,6 +17,13 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         users: payload,
+        loading: false,
+      };
+    case 'UPDATE_SINGLE_USER':
+      return {
+        ...state,
+        user: payload,
+        loading: false,
       };
     default:
       return state;
