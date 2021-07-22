@@ -4,8 +4,12 @@ import Router from './Router';
 import { connect } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { loadUser } from '../actions/auth';
+import { setAuthToken } from '../utils/helpers';
 
 const App = ({ loadUser }) => {
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
+  }
   useEffect(() => {
     loadUser();
   }, []);

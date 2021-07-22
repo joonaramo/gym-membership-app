@@ -2,11 +2,6 @@ import { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Dialog, Transition } from '@headlessui/react';
 import {
-  HomeIcon,
-  ScaleIcon,
-  CreditCardIcon,
-  UserGroupIcon,
-  DocumentReportIcon,
   CogIcon,
   QuestionMarkCircleIcon,
   ShieldCheckIcon,
@@ -20,29 +15,7 @@ const secondaryNavigation = [
   { name: 'Privacy', href: '#', icon: ShieldCheckIcon },
 ];
 
-const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
-  const [navigation, setNavigation] = useState([
-    { name: 'Home', href: '/admin', icon: HomeIcon, current: true },
-    {
-      name: 'Users',
-      href: '/admin/users',
-      icon: UserGroupIcon,
-      current: false,
-    },
-    { name: 'Balances', href: '#', icon: ScaleIcon, current: false },
-    { name: 'Cards', href: '#', icon: CreditCardIcon, current: false },
-    { name: 'Reports', href: '#', icon: DocumentReportIcon, current: false },
-  ]);
-
-  const setCurrent = (name) => {
-    const updatedNavigation = navigation.map((item) => {
-      return {
-        ...item,
-        current: item.name === name ? true : false,
-      };
-    });
-    setNavigation(updatedNavigation);
-  };
+const Sidebar = ({ sidebarOpen, setSidebarOpen, navigation, setCurrent }) => {
   return (
     <>
       <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -171,7 +144,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   <Link
                     key={item.name}
                     to={item.href}
-                    onClick={() => setCurrent(item.name)}
                     className={classNames(
                       item.current
                         ? 'bg-cyan-800 text-white'

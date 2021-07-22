@@ -6,7 +6,15 @@ const User = require('../../models/user');
 
 router.get('/', checkAuth, async (req, res, next) => {
   try {
-    const users = await User.find();
+    const users = await User.find()
+      .populate('memberships')
+      .populate({
+        path: 'orders',
+        populate: {
+          path: 'products',
+          model: 'Product',
+        },
+      });
     res.json(users);
   } catch (err) {
     next(err);

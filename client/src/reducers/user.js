@@ -14,6 +14,7 @@ const initialState = {
     street_address: undefined,
   },
   loading: true,
+  users: [],
 };
 
 const userReducer = (state = initialState, action) => {
@@ -24,6 +25,11 @@ const userReducer = (state = initialState, action) => {
         ...state,
         user: payload,
         loading: false,
+      };
+    case 'GET_USERS':
+      return {
+        ...state,
+        users: payload,
       };
     default:
       return state;

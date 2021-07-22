@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ScaleIcon } from '@heroicons/react/outline';
 import Activity from './Activity';
 import Overview from './Overview';
@@ -8,7 +8,10 @@ const cards = [
   // More items...
 ];
 
-const Home = () => {
+const Home = ({ setCurrent }) => {
+  useEffect(() => {
+    setCurrent('Home');
+  }, []);
   return (
     <>
       <Overview cards={cards} />
