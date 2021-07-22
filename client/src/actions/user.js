@@ -32,40 +32,17 @@ export const getUsers = () => async (dispatch) => {
   }
 };
 
-export const updateUser =
-  ({
-    id,
-    email,
-    first_name,
-    last_name,
-    phone_number,
-    street_address,
-    postal_code,
-    city,
-    birth_date,
-  }) =>
-  async (dispatch) => {
-    const body = JSON.stringify({
-      email,
-      first_name,
-      last_name,
-      phone_number,
-      street_address,
-      postal_code,
-      city,
-      birth_date: format(new Date(birth_date), 'yyyy-MM-dd'),
+export const updateUser = (id, userData) => async (dispatch) => {
+  try {
+    const user = await usersService.update(id, userData);
+    dispatch({
+      type: 'UPDATE_SINGLE_USER',
+      payload: user,
     });
-    try {
-      const user = await usersService.update(id, body);
-      dispatch({
-        type: 'UPDATE_SINGLE_USER',
-        payload: user,
-      });
-    } catch (err) {
-      const error = err.response.data.error;
-      if (error) {
-        dispatch(setNotification(error, 3000));
-      }
-      throw new Error(error);
+  } catch (err) {
+    const error = err.response.data.error;
+    if (error) {
+      dispatch(setNotification(error, 3000));
     }
-  };
+  }
+};

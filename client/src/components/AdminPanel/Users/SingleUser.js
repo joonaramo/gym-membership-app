@@ -12,17 +12,7 @@ import { getUser } from '../../../actions/user';
 import { useParams } from 'react-router';
 
 const SingleUser = ({ setCurrent }) => {
-  const [updatedUser, setUpdatedUser] = useState({
-    id: undefined,
-    email: undefined,
-    first_name: undefined,
-    last_name: undefined,
-    phone_number: undefined,
-    street_address: undefined,
-    postal_code: undefined,
-    city: undefined,
-    birth_date: undefined,
-  });
+  const [updatedObject, setUpdatedObject] = useState();
   const [hasUnSavedChanges, setHasUnsavedChanges] = useState(false);
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -35,7 +25,7 @@ const SingleUser = ({ setCurrent }) => {
 
   useEffect(() => {
     if (user) {
-      setUpdatedUser({
+      setUpdatedObject({
         id: user.id,
         email: user.email,
         first_name: user.first_name,
@@ -49,17 +39,15 @@ const SingleUser = ({ setCurrent }) => {
     }
   }, [user]);
 
-  const save = async () => {
-    try {
-      dispatch(updateUser(updatedUser));
-      setHasUnsavedChanges(false);
-    } catch (err) {
-      console.log(err);
-    }
+  const save = () => {
+    dispatch(updateUser(id, updatedObject));
+    setHasUnsavedChanges(false);
   };
-  if (!user.id) {
+
+  if (!updatedObject) {
     return null;
   }
+
   return (
     <>
       <h2 className='max-w-6xl mx-auto mt-8 px-4 text-lg leading-6 font-medium text-gray-900 sm:px-6 lg:px-8'>
@@ -70,73 +58,64 @@ const SingleUser = ({ setCurrent }) => {
           <ListItem
             title='First name'
             name='first_name'
-            value={`${
-              updatedUser.first_name ? updatedUser.first_name : user.first_name
-            }`}
-            updatedUser={updatedUser}
-            setUpdatedUser={setUpdatedUser}
+            type='text'
+            value={updatedObject.first_name}
+            updatedObject={updatedObject}
+            setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}
           />
           <ListItem
             title='Last name'
             name='last_name'
-            value={`${
-              updatedUser.last_name ? updatedUser.last_name : user.last_name
-            }`}
-            updatedUser={updatedUser}
-            setUpdatedUser={setUpdatedUser}
+            type='text'
+            value={updatedObject.last_name}
+            updatedObject={updatedObject}
+            setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}
           />
           <ListItem
             title='Email address'
             name='email'
-            value={`${updatedUser.email ? updatedUser.email : user.email}`}
-            updatedUser={updatedUser}
-            setUpdatedUser={setUpdatedUser}
+            type='text'
+            value={updatedObject.email}
+            updatedObject={updatedObject}
+            setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}
           />
           <ListItem
             title='Phone number'
             name='phone_number'
-            value={`${
-              updatedUser.phone_number
-                ? updatedUser.phone_number
-                : user.phone_number
-            }`}
-            updatedUser={updatedUser}
-            setUpdatedUser={setUpdatedUser}
+            type='text'
+            value={updatedObject.phone_number}
+            updatedObject={updatedObject}
+            setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}
           />
           <ListItem
             title='Street address'
             name='street_address'
-            value={`${
-              updatedUser.street_address
-                ? updatedUser.street_address
-                : user.street_address
-            }`}
-            updatedUser={updatedUser}
-            setUpdatedUser={setUpdatedUser}
+            type='text'
+            value={updatedObject.street_address}
+            updatedObject={updatedObject}
+            setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}
           />
           <ListItem
             title='Postal code'
             name='postal_code'
-            value={`${
-              updatedUser.postal_code
-                ? updatedUser.postal_code
-                : user.postal_code
-            }`}
-            updatedUser={updatedUser}
-            setUpdatedUser={setUpdatedUser}
+            type='text'
+            value={updatedObject.postal_code}
+            updatedObject={updatedObject}
+            setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}
           />
           <ListItem
             title='City'
             name='city'
-            value={`${updatedUser.city ? updatedUser.city : user.city}`}
-            updatedUser={updatedUser}
-            setUpdatedUser={setUpdatedUser}
+            type='text'
+            value={updatedObject.city}
+            updatedObject={updatedObject}
+            setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}
           />
           <DateListItem
@@ -146,12 +125,12 @@ const SingleUser = ({ setCurrent }) => {
             previousMonthButtonLabel='<'
             dateFormat='dd/MM/yyyy'
             value={
-              updatedUser.birth_date
-                ? new Date(updatedUser.birth_date)
-                : new Date(user.birth_date)
+              updatedObject.birth_date
+                ? new Date(updatedObject.birth_date)
+                : null
             }
-            updatedUser={updatedUser}
-            setUpdatedUser={setUpdatedUser}
+            updatedObject={updatedObject}
+            setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}
           />
           <div className='py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 lg:px-8'>
@@ -182,14 +161,6 @@ const SingleUser = ({ setCurrent }) => {
                             left)
                           </span>
                         </div>
-                        {/* <div className='ml-4 flex-shrink-0'>
-                        <a
-                          href='#'
-                          className='font-medium text-indigo-600 hover:text-indigo-500'
-                        >
-                          Download
-                        </a>
-                      </div> */}
                       </li>
                     ))}
                 </ul>
@@ -222,14 +193,6 @@ const SingleUser = ({ setCurrent }) => {
                           Order ID: {order.id}
                         </span>
                       </div>
-                      {/* <div className='ml-4 flex-shrink-0'>
-                      <a
-                        href='#'
-                        className='font-medium text-indigo-600 hover:text-indigo-500'
-                      >
-                        Download
-                      </a>
-                    </div> */}
                     </li>
                   ))}
                 </ul>

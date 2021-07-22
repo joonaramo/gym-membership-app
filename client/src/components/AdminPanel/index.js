@@ -3,10 +3,10 @@ import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
   HomeIcon,
-  ScaleIcon,
   CreditCardIcon,
   UserGroupIcon,
   DocumentReportIcon,
+  ShoppingCartIcon,
 } from '@heroicons/react/outline';
 
 import Sidebar from './Sidebar';
@@ -27,7 +27,12 @@ const AdminPanel = ({
       icon: UserGroupIcon,
       current: false,
     },
-    { name: 'Balances', href: '#', icon: ScaleIcon, current: false },
+    {
+      name: 'Products',
+      href: '/admin/products',
+      icon: ShoppingCartIcon,
+      current: false,
+    },
     { name: 'Cards', href: '#', icon: CreditCardIcon, current: false },
     { name: 'Reports', href: '#', icon: DocumentReportIcon, current: false },
   ]);

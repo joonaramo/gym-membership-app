@@ -6,15 +6,16 @@ const ListItem = ({
   title,
   name,
   value,
-  updatedUser,
-  setUpdatedUser,
+  type,
+  updatedObject,
+  setUpdatedObject,
   setHasUnsavedChanges,
 }) => {
   const [editState, setEditState] = useState(false);
   const [updatedValue, setUpdatedValue] = useState(value);
   const updateField = () => {
     if (updatedValue !== value) {
-      setUpdatedUser({ ...updatedUser, [name]: updatedValue });
+      setUpdatedObject({ ...updatedObject, [name]: updatedValue });
       setHasUnsavedChanges(true);
     }
     setEditState(false);
@@ -31,7 +32,7 @@ const ListItem = ({
             <input
               id={name}
               name={name}
-              type='text'
+              type={type}
               value={updatedValue}
               onChange={(e) => setUpdatedValue(e.target.value)}
               required

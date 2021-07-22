@@ -1,45 +1,28 @@
 import React, { useEffect } from 'react';
 import { ChevronRightIcon, UserIcon, XIcon } from '@heroicons/react/solid';
 import { useSelector, useDispatch } from 'react-redux';
-import { getUsers } from '../../../actions/user';
+import { getProducts } from '../../../actions/product';
 import { Link } from 'react-router-dom';
 import { CheckIcon } from '@heroicons/react/outline';
 
-const Users = ({ setCurrent }) => {
-  const { users } = useSelector((state) => state.user);
+const Products = ({ setCurrent }) => {
+  const { products } = useSelector((state) => state.product);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setCurrent('Users');
-    dispatch(getUsers());
+    setCurrent('Products');
+    dispatch(getProducts());
   }, []);
-
-  const hasActiveMembership = (user) => {
-    return user.memberships.some(
-      (membership) => new Date(membership.end_date > Date.now())
-    );
-  };
-
-  const calcAge = (user) => {
-    const today = new Date();
-    const birthDate = new Date(user.birth_date);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-    return age;
-  };
 
   return (
     <>
       <h2 className='max-w-6xl mx-auto mt-8 px-4 text-lg leading-6 font-medium text-gray-900 sm:px-6 lg:px-8'>
-        Users
+        Products
       </h2>
       {/* Activity list (smallest breakpoint only) */}
       <div className='shadow sm:hidden'>
         <ul className='mt-2 divide-y divide-gray-200 overflow-hidden shadow sm:hidden'>
-          {users.map((user) => (
+          {products.map((user) => (
             <li key={user.id}>
               <Link
                 to={`/admin/users/${user.id}`}
@@ -58,18 +41,7 @@ const Users = ({ setCurrent }) => {
                       <span>
                         <span className='text-gray-900 font-medium'>
                           Membership
-                        </span>{' '}
-                        {hasActiveMembership(user) ? (
-                          <CheckIcon
-                            className='flex-shrink-0 inline-block h-5 w-5 text-green-400 group-hover:text-gray-500'
-                            aria-hidden='true'
-                          />
-                        ) : (
-                          <XIcon
-                            className='flex-shrink-0 inline-block h-5 w-5 text-red-400 group-hover:text-gray-500'
-                            aria-hidden='true'
-                          />
-                        )}
+                        </span>
                       </span>
                       <time dateTime={user.datetime}>{user.date}</time>
                     </span>
@@ -108,26 +80,26 @@ const Users = ({ setCurrent }) => {
                 <thead>
                   <tr>
                     <th className='px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                      Name & Email
+                      Name & Reference
                     </th>
                     <th className='px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                      Age
+                      Purchased
                     </th>
                     <th className='hidden px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider md:block'>
-                      City
+                      Price
                     </th>
                     <th className='px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                      Membership
+                      Income
                     </th>
                   </tr>
                 </thead>
                 <tbody className='bg-white divide-y divide-gray-200'>
-                  {users.map((user) => (
-                    <tr key={user.id} className='bg-white'>
+                  {products.map((product) => (
+                    <tr key={product.id} className='bg-white'>
                       <td className='max-w-0 w-full px-6 py-4 whitespace-nowrap text-sm text-gray-900'>
                         <div className='flex'>
                           <Link
-                            to={`/admin/users/${user.id}`}
+                            to={`/admin/products/${product.id}`}
                             className='group inline-flex space-x-2 truncate text-sm'
                           >
                             <UserIcon
@@ -135,29 +107,19 @@ const Users = ({ setCurrent }) => {
                               aria-hidden='true'
                             />
                             <p className='text-gray-500 truncate group-hover:text-gray-900'>
-                              {user.first_name} {user.last_name} ({user.email})
+                              {product.name} ({product.reference})
                             </p>
                           </Link>
                         </div>
                       </td>
                       <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
-                        {calcAge(user)}
+                        {product.times_purchased} times
                       </td>
                       <td className='hidden px-6 py-4 whitespace-nowrap text-sm text-gray-500 md:block'>
-                        {user.city}
+                        {product.unit_price / 100}€
                       </td>
                       <td className='px-6 py-4 text-right whitespace-nowrap text-sm text-gray-500'>
-                        {hasActiveMembership(user) ? (
-                          <CheckIcon
-                            className='flex-shrink-0 h-5 w-5 m-auto text-green-400 group-hover:text-gray-500'
-                            aria-hidden='true'
-                          />
-                        ) : (
-                          <XIcon
-                            className='flex-shrink-0 h-5 w-5 m-auto text-red-400 group-hover:text-gray-500'
-                            aria-hidden='true'
-                          />
-                        )}
+                        {product.times_purchased * (product.unit_price / 100)}€
                       </td>
                     </tr>
                   ))}
@@ -171,8 +133,9 @@ const Users = ({ setCurrent }) => {
                 <div className='hidden sm:block'>
                   <p className='text-sm text-gray-700'>
                     Showing <span className='font-medium'>1</span> to{' '}
-                    <span className='font-medium'>{users.length}</span> of{' '}
-                    <span className='font-medium'>{users.length}</span> results
+                    <span className='font-medium'>{products.length}</span> of{' '}
+                    <span className='font-medium'>{products.length}</span>{' '}
+                    results
                   </p>
                 </div>
                 <div className='flex-1 flex justify-between sm:justify-end'>
@@ -192,4 +155,4 @@ const Users = ({ setCurrent }) => {
   );
 };
 
-export default Users;
+export default Products;
