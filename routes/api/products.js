@@ -39,6 +39,8 @@ router.post(
     }
     try {
       const product = new Product(req.body);
+      product.unit_price = product.unit_price * 100;
+      product.tax_rate = product.tax_rate * 100;
       const newProduct = await product.save();
       res.status(201).json(newProduct);
     } catch (err) {
@@ -67,6 +69,8 @@ router.put(
     }
     try {
       const product = req.body;
+      product.unit_price = product.unit_price * 100;
+      product.tax_rate = product.tax_rate * 100;
       const updatedProduct = await Product.findByIdAndUpdate(
         req.params.id,
         product,

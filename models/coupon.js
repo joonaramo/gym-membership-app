@@ -13,10 +13,11 @@ const couponSchema = mongoose.Schema({
     type: Boolean,
     default: true,
   },
-  times_used: {
-    type: Number,
-    default: 0,
-  },
+  orders: [
+    {
+      type: 'String',
+    },
+  ],
 });
 
 const Coupon = mongoose.model('Coupon', couponSchema);

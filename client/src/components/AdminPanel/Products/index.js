@@ -129,10 +129,10 @@ const Products = ({ setCurrent }) => {
                         {product.times_purchased} times
                       </td>
                       <td className='hidden px-6 py-4 whitespace-nowrap text-sm text-gray-500 md:block'>
-                        {product.unit_price / 100}€
+                        {product.unit_price}€
                       </td>
                       <td className='px-6 py-4 text-right whitespace-nowrap text-sm text-gray-500'>
-                        {product.times_purchased * (product.unit_price / 100)}€
+                        {product.times_purchased * product.unit_price}€
                       </td>
                     </tr>
                   ))}

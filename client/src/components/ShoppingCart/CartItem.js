@@ -16,7 +16,7 @@ const CartItem = ({
     const getProduct = async () => {
       const { data } = await axios.get(`${API_URL}/products/${productId}`);
       setProduct(data);
-      setSubTotal(subTotal + (data.unit_price * quantity) / 100);
+      setSubTotal(subTotal + data.unit_price * quantity);
     };
     getProduct();
   }, [productId]);
@@ -53,12 +53,12 @@ const CartItem = ({
       </td>
       <td className='hidden text-right md:table-cell'>
         <span className='text-sm lg:text-base font-medium'>
-          {product.unit_price / 100}€
+          {product.unit_price}€
         </span>
       </td>
       <td className='text-right'>
         <span className='text-sm lg:text-base font-medium'>
-          {(product.unit_price * quantity) / 100}€
+          {product.unit_price * quantity}€
         </span>
       </td>
     </tr>

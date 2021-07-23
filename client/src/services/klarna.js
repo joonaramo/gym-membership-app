@@ -34,4 +34,10 @@ const confirm = async (checkoutId) => {
   return data;
 };
 
-export default { get, create, confirm };
+const klarnaService = {
+  get,
+  create,
+  confirm,
+};
+
+export default klarnaService;

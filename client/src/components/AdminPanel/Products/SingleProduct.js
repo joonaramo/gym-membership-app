@@ -91,7 +91,7 @@ const SingleProduct = ({ setCurrent }) => {
             title='Price (€)'
             name='unit_price'
             type='number'
-            value={updatedObject.unit_price / 100}
+            value={updatedObject.unit_price}
             updatedObject={updatedObject}
             setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}
@@ -100,7 +100,7 @@ const SingleProduct = ({ setCurrent }) => {
             title='Tax rate (%)'
             name='tax_rate'
             type='number'
-            value={updatedObject.tax_rate / 100}
+            value={updatedObject.tax_rate}
             updatedObject={updatedObject}
             setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}

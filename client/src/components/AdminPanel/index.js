@@ -33,7 +33,12 @@ const AdminPanel = ({
       icon: ShoppingCartIcon,
       current: false,
     },
-    { name: 'Cards', href: '#', icon: CreditCardIcon, current: false },
+    {
+      name: 'Orders',
+      href: '/admin/orders',
+      icon: CreditCardIcon,
+      current: false,
+    },
     { name: 'Reports', href: '#', icon: DocumentReportIcon, current: false },
   ]);
 

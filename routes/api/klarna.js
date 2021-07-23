@@ -97,7 +97,12 @@ router.post('/', checkAuth, async (req, res, next) => {
       postData,
       axiosConfig
     );
-
+    console.log(data);
+    if (req.body.coupon) {
+      let coupon = await Coupon.findOne({ code: req.body.coupon });
+      coupon.orders.unshift(data.order_id);
+      await coupon.save();
+    }
     res.json(data);
   } catch (err) {
     console.log(err);
@@ -156,7 +161,7 @@ router.post('/confirm/:order_id', async (req, res, next) => {
     let order;
     order = await Order.findOne({ order_id: req.params.order_id });
     if (order) {
-      return res.status(400).json({ error: 'Order is already completed' });
+      return res.json({ html_snippet });
     }
 
     // Find purchased products and append their times purchased value and get membership length

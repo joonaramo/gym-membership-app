@@ -49,7 +49,6 @@ router.put(
     check('code', 'Reference is required').exists(),
     check('value', 'Type is required').isNumeric(),
     check('active', 'Quantity unit is required').isBoolean(),
-    check('times_used', 'Name is required').isNumeric(),
   ],
   checkAuth,
   async (req, res, next) => {

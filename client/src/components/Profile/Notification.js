@@ -1,5 +1,5 @@
 import React from 'react';
-import { SpeakerphoneIcon, XIcon } from '@heroicons/react/outline';
+import { SpeakerphoneIcon } from '@heroicons/react/outline';
 
 const Notification = ({ save }) => {
   return (

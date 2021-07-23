@@ -1,6 +1,5 @@
 import usersService from '../services/users';
 import { setNotification } from './notification';
-import { format } from 'date-fns';
 
 export const getUser = (userId) => async (dispatch) => {
   try {

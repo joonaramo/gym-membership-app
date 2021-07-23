@@ -14,6 +14,7 @@ import Users from './AdminPanel/Users';
 import SingleUser from './AdminPanel/Users/SingleUser';
 import Products from './AdminPanel/Products';
 import SingleProduct from './AdminPanel/Products/SingleProduct';
+import Orders from './AdminPanel/Orders';
 
 const Router = () => {
   return (
@@ -30,6 +31,7 @@ const Router = () => {
       <AdminPanel exact path='/admin/users/:id' component={SingleUser} />
       <AdminPanel exact path='/admin/products' component={Products} />
       <AdminPanel exact path='/admin/products/:id' component={SingleProduct} />
+      <AdminPanel exact path='/admin/orders' component={Orders} />
     </Switch>
   );
 };

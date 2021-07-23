@@ -42,6 +42,8 @@ productSchema.plugin(uniqueValidator);
 productSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();
+    returnedObject.unit_price = returnedObject.unit_price / 100;
+    returnedObject.tax_rate = returnedObject.tax_rate / 100;
     delete returnedObject._id;
     delete returnedObject.__v;
   },
