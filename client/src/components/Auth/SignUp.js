@@ -16,7 +16,7 @@ const initialValues = {
   last_name: '',
   phone_number: '',
   street_address: '',
-  postal_code: null,
+  postal_code: '',
   city: '',
   birth_date: new Date(),
 };

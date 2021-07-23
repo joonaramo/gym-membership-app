@@ -8,7 +8,7 @@ const Alert = () => {
   const dispatch = useDispatch();
   if (notification) {
     return (
-      <div className='fixed bottom-0 inset-x-0 pb-2 sm:pb-5'>
+      <div className='z-50 fixed bottom-0 inset-x-0 pb-2 sm:pb-5'>
         <div className='rounded-md bg-red-400 text-red-100 p-4 sm:mx-auto sm:w-full sm:max-w-md mt-8'>
           <div className='flex'>
             <div className='flex-shrink-0'>

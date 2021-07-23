@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateProduct } from '../../../actions/product';
+import {
+  getProduct,
+  removeProduct,
+  updateProduct,
+} from '../../../actions/product';
 import ListItem from '../../Profile/ListItem';
 import Notification from '../../Profile/Notification';
 import Alert from '../../Auth/Alert';
-import { getProduct } from '../../../actions/product';
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 
 const SingleProduct = ({ setCurrent }) => {
   const [updatedObject, setUpdatedObject] = useState();
   const [hasUnSavedChanges, setHasUnsavedChanges] = useState(false);
   const { product } = useSelector((state) => state.product);
   const dispatch = useDispatch();
+  const history = useHistory();
   const { id } = useParams();
 
   useEffect(() => {
@@ -38,6 +42,11 @@ const SingleProduct = ({ setCurrent }) => {
   const save = () => {
     dispatch(updateProduct(id, updatedObject));
     setHasUnsavedChanges(false);
+  };
+
+  const remove = () => {
+    dispatch(removeProduct(id));
+    history.push('/admin/products');
   };
 
   if (!updatedObject) {
@@ -79,19 +88,19 @@ const SingleProduct = ({ setCurrent }) => {
             setHasUnsavedChanges={setHasUnsavedChanges}
           />
           <ListItem
-            title='Price'
+            title='Price (€)'
             name='unit_price'
             type='number'
-            value={updatedObject.unit_price}
+            value={updatedObject.unit_price / 100}
             updatedObject={updatedObject}
             setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}
           />
           <ListItem
-            title='Tax rate'
+            title='Tax rate (%)'
             name='tax_rate'
             type='number'
-            value={updatedObject.tax_rate}
+            value={updatedObject.tax_rate / 100}
             updatedObject={updatedObject}
             setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}
@@ -106,7 +115,7 @@ const SingleProduct = ({ setCurrent }) => {
             setHasUnsavedChanges={setHasUnsavedChanges}
           />
           <ListItem
-            title='Membership length'
+            title='Membership length (months)'
             name='membership_length'
             type='number'
             value={updatedObject.membership_length}
@@ -123,6 +132,14 @@ const SingleProduct = ({ setCurrent }) => {
             setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}
           />
+          <div className='py-4 sm:py-5 m:px-6 lg:px-8'>
+            <button
+              onClick={() => remove()}
+              className='inline-flex items-center text-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50'
+            >
+              Remove product
+            </button>
+          </div>
           {hasUnSavedChanges && <Notification save={save} />}
           <Alert />
         </dl>

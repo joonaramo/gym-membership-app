@@ -45,3 +45,33 @@ export const updateProduct = (productId, productData) => async (dispatch) => {
     }
   }
 };
+
+export const createProduct = (productData) => async (dispatch) => {
+  try {
+    const product = await productsService.create(productData);
+    dispatch({
+      type: 'CREATE_PRODUCT',
+      payload: product,
+    });
+  } catch (err) {
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach((error) => dispatch(setNotification(error.msg, 3000)));
+    }
+  }
+};
+
+export const removeProduct = (productId) => async (dispatch) => {
+  try {
+    await productsService.remove(productId);
+    dispatch({
+      type: 'REMOVE_PRODUCT',
+      payload: productId,
+    });
+  } catch (err) {
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach((error) => dispatch(setNotification(error.msg, 3000)));
+    }
+  }
+};

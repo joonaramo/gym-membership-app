@@ -81,4 +81,13 @@ router.put(
   }
 );
 
+router.delete('/:id', async (req, res, next) => {
+  try {
+    await Product.findByIdAndDelete(req.params.id);
+    res.status(204).end();
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;

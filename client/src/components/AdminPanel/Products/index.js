@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react';
-import { ChevronRightIcon, UserIcon, XIcon } from '@heroicons/react/solid';
+import React, { useState, useEffect } from 'react';
+import { ChevronRightIcon, UserIcon } from '@heroicons/react/solid';
 import { useSelector, useDispatch } from 'react-redux';
-import { getProducts } from '../../../actions/product';
 import { Link } from 'react-router-dom';
-import { CheckIcon } from '@heroicons/react/outline';
+import { getProducts } from '../../../actions/product';
+import CreateProduct from './CreateProduct';
 
 const Products = ({ setCurrent }) => {
+  const [creating, setCreating] = useState(false);
   const { products } = useSelector((state) => state.product);
   const dispatch = useDispatch();
 
@@ -14,18 +15,30 @@ const Products = ({ setCurrent }) => {
     dispatch(getProducts());
   }, []);
 
+  if (creating) {
+    return <CreateProduct setCreating={setCreating} />;
+  }
+
   return (
     <>
-      <h2 className='max-w-6xl mx-auto mt-8 px-4 text-lg leading-6 font-medium text-gray-900 sm:px-6 lg:px-8'>
-        Products
-      </h2>
+      <div className='flex-1 flex justify-between max-w-6xl mx-auto mt-8 px-4 sm:px-6 lg:px-8'>
+        <h2 className='text-lg leading-6 font-medium text-gray-900'>
+          Products
+        </h2>
+        <button
+          onClick={() => setCreating(true)}
+          className='inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50'
+        >
+          New product
+        </button>
+      </div>
       {/* Activity list (smallest breakpoint only) */}
       <div className='shadow sm:hidden'>
         <ul className='mt-2 divide-y divide-gray-200 overflow-hidden shadow sm:hidden'>
-          {products.map((user) => (
-            <li key={user.id}>
+          {products.map((product) => (
+            <li key={product.id}>
               <Link
-                to={`/admin/users/${user.id}`}
+                to={`/admin/products/${product.id}`}
                 className='block px-4 py-4 bg-white hover:bg-gray-50'
               >
                 <span className='flex items-center space-x-4'>
@@ -36,14 +49,14 @@ const Products = ({ setCurrent }) => {
                     />
                     <span className='flex flex-col text-gray-500 text-sm truncate'>
                       <span className='truncate'>
-                        {user.first_name} {user.last_name} ({user.email})
+                        {product.name} ({product.reference})
                       </span>
                       <span>
                         <span className='text-gray-900 font-medium'>
-                          Membership
-                        </span>
+                          Purchased
+                        </span>{' '}
+                        {product.times_purchased} times
                       </span>
-                      <time dateTime={user.datetime}>{user.date}</time>
                     </span>
                   </span>
                   <ChevronRightIcon

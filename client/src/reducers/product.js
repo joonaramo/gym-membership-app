@@ -25,6 +25,18 @@ const productReducer = (state = initialState, action) => {
         loading: false,
         product: payload,
       };
+    case 'CREATE_PRODUCT':
+      return {
+        ...state,
+        loading: false,
+        products: [payload, ...state.products],
+      };
+    case 'REMOVE_PRODUCT':
+      return {
+        ...state,
+        loading: false,
+        products: state.products.filter((p) => p.id !== payload),
+      };
     default:
       return state;
   }

@@ -71,7 +71,6 @@ const Users = ({ setCurrent }) => {
                           />
                         )}
                       </span>
-                      <time dateTime={user.datetime}>{user.date}</time>
                     </span>
                   </span>
                   <ChevronRightIcon

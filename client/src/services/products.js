@@ -19,10 +19,21 @@ const update = async (productId, productData) => {
   return data;
 };
 
+const create = async (productData) => {
+  const { data } = await axios.post(`${API_URL}/products`, productData);
+  return data;
+};
+
+const remove = async (productId) => {
+  await axios.delete(`${API_URL}/products/${productId}`);
+};
+
 const productsService = {
   get,
   getAll,
   update,
+  create,
+  remove,
 };
 
 export default productsService;
