@@ -13,7 +13,9 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
-    const order = await Order.findById(req.params.id);
+    const order = await Order.findById(req.params.id)
+      .populate('user')
+      .populate('products');
     res.json(order);
   } catch (err) {
     next(err);

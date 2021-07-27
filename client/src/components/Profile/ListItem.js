@@ -10,6 +10,7 @@ const ListItem = ({
   updatedObject,
   setUpdatedObject,
   setHasUnsavedChanges,
+  editable,
 }) => {
   const [editState, setEditState] = useState(false);
   const [updatedValue, setUpdatedValue] = useState(value);
@@ -52,15 +53,21 @@ const ListItem = ({
               ? format(new Date(value), 'dd.MM.yyyy')
               : value}
           </dd>
-          <dd className='flex mt-1 text-sm text-gray-900 sm:mt-0'>
-            <button onClick={() => setEditState(true)}>
-              <PencilAltIcon className='h-6 w-6' aria-hidden='true' />
-            </button>
-          </dd>
+          {editable && (
+            <dd className='flex mt-1 text-sm text-gray-900 sm:mt-0'>
+              <button onClick={() => setEditState(true)}>
+                <PencilAltIcon className='h-6 w-6' aria-hidden='true' />
+              </button>
+            </dd>
+          )}
         </>
       )}
     </div>
   );
+};
+
+ListItem.defaultProps = {
+  editable: true,
 };
 
 export default ListItem;

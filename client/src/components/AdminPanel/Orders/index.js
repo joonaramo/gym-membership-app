@@ -11,7 +11,6 @@ import { format } from 'date-fns';
 import { getOrders } from '../../../actions/order';
 
 const Orders = ({ setCurrent }) => {
-  const [creating, setCreating] = useState(false);
   const { orders } = useSelector((state) => state.order);
   const dispatch = useDispatch();
 
@@ -24,12 +23,6 @@ const Orders = ({ setCurrent }) => {
     <>
       <div className='flex-1 flex justify-between max-w-6xl mx-auto mt-8 px-4 sm:px-6 lg:px-8'>
         <h2 className='text-lg leading-6 font-medium text-gray-900'>Orders</h2>
-        <button
-          onClick={() => setCreating(true)}
-          className='inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50'
-        >
-          New order
-        </button>
       </div>
       {/* Activity list (smallest breakpoint only) */}
       <div className='shadow sm:hidden'>
