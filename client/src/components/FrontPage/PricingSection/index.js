@@ -25,8 +25,23 @@ const PricingSection = ({ auth: { isAuthenticated } }) => {
   const history = useHistory();
   const addToCart = (productId) => {
     if (isAuthenticated) {
-      localStorage.setItem('cart_products', `["${productId}"]`);
-      localStorage.setItem('cart_quantities', '[1]');
+      let cartItemsStorage = [];
+      let cartQuantitiesStorage = [];
+      if (localStorage.getItem('cart_products')) {
+        cartItemsStorage = JSON.parse(localStorage.getItem('cart_products'));
+      }
+      if (localStorage.getItem('cart_quantities')) {
+        cartQuantitiesStorage = JSON.parse(
+          localStorage.getItem('cart_quantities')
+        );
+      }
+      cartItemsStorage.push(productId);
+      cartQuantitiesStorage.push(1);
+      localStorage.setItem('cart_products', JSON.stringify(cartItemsStorage));
+      localStorage.setItem(
+        'cart_quantities',
+        JSON.stringify(cartQuantitiesStorage)
+      );
       history.push('/cart');
     } else {
       history.push('/login');

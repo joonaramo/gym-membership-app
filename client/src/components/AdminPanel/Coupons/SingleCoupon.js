@@ -12,7 +12,7 @@ import Toggle from './Toggle';
 const SingleCoupon = ({ setCurrent }) => {
   const [updatedObject, setUpdatedObject] = useState();
   const [hasUnSavedChanges, setHasUnsavedChanges] = useState(false);
-  const { coupon } = useSelector((state) => state.coupon);
+  const { coupon, loading } = useSelector((state) => state.coupon);
   const { orders } = useSelector((state) => state.order);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -36,7 +36,9 @@ const SingleCoupon = ({ setCurrent }) => {
   }, [coupon]);
 
   const getOrdersWithKlarnaId = (order_ids) => {
-    return orders.filter((order) => order_ids.includes(order.order_id));
+    return orders.filter(
+      (order) => order_ids && order_ids.includes(order.order_id)
+    );
   };
 
   const toggle = () => {
@@ -93,9 +95,9 @@ const SingleCoupon = ({ setCurrent }) => {
           <div className='py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 lg:px-8'>
             <dt className='text-sm font-medium text-gray-500'>Orders</dt>
             <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2'>
-              {getOrdersWithKlarnaId(coupon.orders).length > 0 ? (
+              {getOrdersWithKlarnaId(coupon?.orders).length > 0 ? (
                 <ul className='border border-gray-200 rounded-md divide-y divide-gray-200'>
-                  {getOrdersWithKlarnaId(coupon.orders).map((order) => (
+                  {getOrdersWithKlarnaId(coupon?.orders).map((order) => (
                     <li
                       key={order.id}
                       className='pl-3 pr-4 py-3 flex items-center justify-between text-sm'

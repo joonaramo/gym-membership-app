@@ -16,10 +16,10 @@ const CartItem = ({
     const getProduct = async () => {
       const { data } = await axios.get(`${API_URL}/products/${productId}`);
       setProduct(data);
-      setSubTotal(subTotal + data.unit_price * quantity);
+      setSubTotal((subTotal) => subTotal + data.unit_price * quantity);
     };
     getProduct();
-  }, [productId]);
+  }, [productId, quantity, setSubTotal]);
 
   const removeItem = () => {
     const cartItemsStorage = JSON.parse(localStorage.getItem('cart_products'));
@@ -38,6 +38,7 @@ const CartItem = ({
     );
     setCartItems(cartItemsStorage);
     setCartQuantities(cartQuantitiesStorage);
+    setSubTotal((subTotal) => subTotal - product.unit_price * quantity);
   };
 
   return (

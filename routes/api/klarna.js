@@ -97,7 +97,6 @@ router.post('/', checkAuth, async (req, res, next) => {
       postData,
       axiosConfig
     );
-    console.log(data);
     if (req.body.coupon) {
       let coupon = await Coupon.findOne({ code: req.body.coupon });
       coupon.orders.unshift(data.order_id);
@@ -164,15 +163,7 @@ router.post('/confirm/:order_id', async (req, res, next) => {
       return res.json({ html_snippet });
     }
 
-    // Find purchased products and append their times purchased value and get membership length
-    let membershipLength;
-
-    order_lines.map(async (line) => {
-      const product = await Product.findById(line.merchant_data);
-      product.times_purchased++;
-      membershipLength = product.membership_length;
-      await product.save();
-    });
+    // Change order lines to products for our DB
     let products = [];
     order_lines.forEach((line) => {
       products.push(line.merchant_data);
@@ -190,6 +181,9 @@ router.post('/confirm/:order_id', async (req, res, next) => {
       completed_at,
     });
     const newOrder = await order.save();
+    const user = await User.findById(merchant_reference2);
+    user.orders.push(newOrder._id);
+    await user.save();
 
     // Set Order ID as merchant reference to Klarna
     try {
@@ -204,18 +198,27 @@ router.post('/confirm/:order_id', async (req, res, next) => {
       console.log(err);
     }
 
-    // Save membership to DB, assign membership id and order id to the user
-    const date = new Date();
-    const membership = new Membership({
-      user: merchant_reference2,
-      order: newOrder._id,
-      end_date: date.setMonth(date.getMonth() + membershipLength),
+    // Find purchased products and append their times purchased value and get membership length
+
+    order_lines.forEach(async (line) => {
+      const date = new Date();
+
+      const product = await Product.findById(line.merchant_data);
+      product.times_purchased++;
+      await product.save();
+
+      // Save membership to DB, assign membership id to the user
+      const user = await User.findById(merchant_reference2);
+      const membership = new Membership({
+        user: merchant_reference2,
+        order: newOrder._id,
+        end_date: date.setMonth(date.getMonth() + product.membership_length),
+      });
+      const newMembership = await membership.save();
+      user.memberships.push(newMembership._id);
+      await user.save();
     });
-    const newMembership = await membership.save();
-    const user = await User.findById(merchant_reference2);
-    user.memberships = user.memberships.concat(newMembership._id);
-    user.orders = user.orders.concat(newOrder._id);
-    await user.save();
+
     res.json({ html_snippet });
   } catch (err) {
     next(err);
