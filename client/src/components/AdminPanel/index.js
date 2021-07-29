@@ -39,7 +39,12 @@ const AdminPanel = ({
       icon: CreditCardIcon,
       current: false,
     },
-    { name: 'Reports', href: '#', icon: DocumentReportIcon, current: false },
+    {
+      name: 'Memberships',
+      href: '/admin/memberships',
+      icon: DocumentReportIcon,
+      current: false,
+    },
   ]);
 
   const setCurrent = (name) => {

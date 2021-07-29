@@ -15,7 +15,7 @@ const secondaryNavigation = [
   { name: 'Privacy', href: '#', icon: ShieldCheckIcon },
 ];
 
-const Sidebar = ({ sidebarOpen, setSidebarOpen, navigation, setCurrent }) => {
+const Sidebar = ({ sidebarOpen, setSidebarOpen, navigation }) => {
   return (
     <>
       <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -82,6 +82,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, navigation, setCurrent }) => {
                     <Link
                       key={item.name}
                       to={item.href}
+                      onClick={() => setSidebarOpen(false)}
                       className={classNames(
                         item.current
                           ? 'bg-cyan-800 text-white'

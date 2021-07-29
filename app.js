@@ -3,13 +3,16 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
+
+const middleware = require('./utils/middleware');
+
 const authRouter = require('./routes/api/auth');
 const ordersRouter = require('./routes/api/orders');
 const klarnaRouter = require('./routes/api/klarna');
 const productsRouter = require('./routes/api/products');
 const usersRouter = require('./routes/api/users');
 const couponsRouter = require('./routes/api/coupons');
-const middleware = require('./utils/middleware');
+const membershipsRouter = require('./routes/api/memberships');
 
 mongoose.connect(config.MONGODB_URI, {
   useNewUrlParser: true,
@@ -28,6 +31,7 @@ app.use('/api/klarna', klarnaRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/coupons', couponsRouter);
+app.use('/api/memberships', membershipsRouter);
 
 const errorHandler = (error, request, response, next) => {
   console.error(error.message);

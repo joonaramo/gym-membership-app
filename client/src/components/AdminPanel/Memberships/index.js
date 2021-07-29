@@ -8,29 +8,31 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
-import { getOrders } from '../../../actions/order';
+import { getMemberships } from '../../../actions/membership';
 
-const Orders = ({ setCurrent }) => {
-  const { orders } = useSelector((state) => state.order);
+const Memberships = ({ setCurrent }) => {
+  const { memberships } = useSelector((state) => state.membership);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setCurrent('Orders');
-    dispatch(getOrders());
+    setCurrent('Memberships');
+    dispatch(getMemberships());
   }, []);
 
   return (
     <>
       <div className='flex-1 flex justify-between max-w-6xl mx-auto mt-8 px-4 sm:px-6 lg:px-8'>
-        <h2 className='text-lg leading-6 font-medium text-gray-900'>Orders</h2>
+        <h2 className='text-lg leading-6 font-medium text-gray-900'>
+          Memberships
+        </h2>
       </div>
       {/* Activity list (smallest breakpoint only) */}
       <div className='shadow sm:hidden'>
         <ul className='mt-2 divide-y divide-gray-200 overflow-hidden shadow sm:hidden'>
-          {orders.map((order) => (
-            <li key={order.id}>
+          {memberships.map((membership) => (
+            <li key={membership.id}>
               <Link
-                to={`/admin/orders/${order.id}`}
+                to={`/admin/memberships/${membership.id}`}
                 className='block px-4 py-4 bg-white hover:bg-gray-50'
               >
                 <span className='flex items-center space-x-4'>
@@ -42,16 +44,16 @@ const Orders = ({ setCurrent }) => {
                     <span className='flex flex-col text-gray-500 text-sm truncate'>
                       <span className='truncate'>
                         <span className='text-gray-900 font-medium'>
-                          Order ID
+                          Membership ID
                         </span>{' '}
-                        {order.id}
+                        {membership.id}
                       </span>
                       <span>
                         <span className='text-gray-900 font-medium'>
-                          Completed at
+                          Started at
                         </span>{' '}
                         {format(
-                          new Date(order.completed_at),
+                          new Date(membership.start_date),
                           'dd.MM.yyyy HH:mm'
                         )}
                       </span>
@@ -91,26 +93,26 @@ const Orders = ({ setCurrent }) => {
                 <thead>
                   <tr>
                     <th className='px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                      Order ID
+                      Membership ID
                     </th>
                     <th className='px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                      Date
-                    </th>
-                    <th className='px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
                       User
                     </th>
+                    <th className='px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                      Start Date
+                    </th>
                     <th className='px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                      Completed
+                      End Date
                     </th>
                   </tr>
                 </thead>
                 <tbody className='bg-white divide-y divide-gray-200'>
-                  {orders.map((order) => (
-                    <tr key={order.id} className='bg-white'>
+                  {memberships.map((membership) => (
+                    <tr key={membership.id} className='bg-white'>
                       <td className='max-w-0 w-full px-6 py-4 whitespace-nowrap text-sm text-gray-900'>
                         <div className='flex'>
                           <Link
-                            to={`/admin/orders/${order.id}`}
+                            to={`/admin/memberships/${membership.id}`}
                             className='group inline-flex space-x-2 truncate text-sm'
                           >
                             <UserIcon
@@ -118,31 +120,24 @@ const Orders = ({ setCurrent }) => {
                               aria-hidden='true'
                             />
                             <p className='text-gray-500 truncate group-hover:text-gray-900'>
-                              {order.id}
+                              {membership.id}
                             </p>
                           </Link>
                         </div>
                       </td>
+                      <td className='px-6 py-4 text-right whitespace-nowrap text-sm text-gray-500'>
+                        {membership.user.first_name} {membership.user.last_name}
+                      </td>
                       <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
                         {format(
-                          new Date(order.completed_at),
+                          new Date(membership.start_date),
                           'dd.MM.yyyy HH:mm'
                         )}
                       </td>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
-                        {order.user.first_name} {order.user.last_name}
-                      </td>
                       <td className='px-6 py-4 text-right whitespace-nowrap text-sm text-gray-500'>
-                        {order.status === 'checkout_complete' ? (
-                          <CheckIcon
-                            className='flex-shrink-0 h-5 w-5 m-auto text-green-400 group-hover:text-gray-500'
-                            aria-hidden='true'
-                          />
-                        ) : (
-                          <XIcon
-                            className='flex-shrink-0 h-5 w-5 m-auto text-red-400 group-hover:text-gray-500'
-                            aria-hidden='true'
-                          />
+                        {format(
+                          new Date(membership.end_date),
+                          'dd.MM.yyyy HH:mm'
                         )}
                       </td>
                     </tr>
@@ -157,8 +152,9 @@ const Orders = ({ setCurrent }) => {
                 <div className='hidden sm:block'>
                   <p className='text-sm text-gray-700'>
                     Showing <span className='font-medium'>1</span> to{' '}
-                    <span className='font-medium'>{orders.length}</span> of{' '}
-                    <span className='font-medium'>{orders.length}</span> results
+                    <span className='font-medium'>{memberships.length}</span> of{' '}
+                    <span className='font-medium'>{memberships.length}</span>{' '}
+                    results
                   </p>
                 </div>
                 <div className='flex-1 flex justify-between sm:justify-end'>
@@ -178,4 +174,4 @@ const Orders = ({ setCurrent }) => {
   );
 };
 
-export default Orders;
+export default Memberships;
