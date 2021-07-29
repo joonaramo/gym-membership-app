@@ -73,7 +73,7 @@ const SingleMembership = ({ setCurrent }) => {
             value={
               <Link
                 to={`/admin/orders/${membership.order}`}
-                className='text-cyan-500'
+                className='text-cyan-500 hover:text-cyan-600'
               >
                 {membership.order}
               </Link>

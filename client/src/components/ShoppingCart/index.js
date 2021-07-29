@@ -78,6 +78,7 @@ const ShoppingCart = () => {
               <tbody>
                 {cartItems.map((id, i) => (
                   <CartItem
+                    key={id}
                     productId={id}
                     quantity={cartQuantities[i]}
                     subTotal={subTotal}
@@ -178,7 +179,7 @@ const ShoppingCart = () => {
                           Coupon
                         </div>
                         <div className='lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-green-700'>
-                          -{couponValue / 100}€
+                          -{couponValue}€
                         </div>
                       </div>
                       <div className='flex justify-between pt-4 border-b'>
@@ -186,7 +187,7 @@ const ShoppingCart = () => {
                           New Subtotal
                         </div>
                         <div className='lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-gray-900'>
-                          {subTotal - couponValue / 100}€
+                          {subTotal - couponValue}€
                         </div>
                       </div>
                     </>

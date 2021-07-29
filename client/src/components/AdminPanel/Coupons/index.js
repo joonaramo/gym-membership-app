@@ -8,17 +8,24 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getCoupons } from '../../../actions/coupon';
+import { getOrders } from '../../../actions/order';
 import CreateCoupon from './CreateCoupon';
 
 const Coupons = ({ setCurrent }) => {
   const [creating, setCreating] = useState(false);
   const { coupons } = useSelector((state) => state.coupon);
+  const { orders } = useSelector((state) => state.order);
   const dispatch = useDispatch();
 
   useEffect(() => {
     setCurrent('Coupons');
     dispatch(getCoupons());
+    dispatch(getOrders());
   }, []);
+
+  const getOrdersWithKlarnaId = (order_ids) => {
+    return orders.filter((order) => order_ids.includes(order.order_id));
+  };
 
   if (creating) {
     return <CreateCoupon setCreating={setCreating} />;
@@ -132,7 +139,7 @@ const Coupons = ({ setCurrent }) => {
                         {coupon.value}€
                       </td>
                       <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
-                        {coupon.orders.length} times
+                        {getOrdersWithKlarnaId(coupon.orders).length} times
                       </td>
                       <td className='px-6 py-4 text-right whitespace-nowrap text-sm text-gray-500'>
                         {coupon.active ? (

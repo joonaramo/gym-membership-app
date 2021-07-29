@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import { getCoupon, removeCoupon, updateCoupon } from '../../../actions/coupon';
+import { getOrders } from '../../../actions/order';
 import ListItem from '../../Profile/ListItem';
 import Notification from '../../Profile/Notification';
 import Alert from '../../Auth/Alert';
@@ -10,15 +11,16 @@ import Toggle from './Toggle';
 
 const SingleCoupon = ({ setCurrent }) => {
   const [updatedObject, setUpdatedObject] = useState();
-  const [enabled, setEnabled] = useState(false);
   const [hasUnSavedChanges, setHasUnsavedChanges] = useState(false);
   const { coupon } = useSelector((state) => state.coupon);
+  const { orders } = useSelector((state) => state.order);
   const dispatch = useDispatch();
   const history = useHistory();
   const { id } = useParams();
 
   useEffect(() => {
     dispatch(getCoupon(id));
+    dispatch(getOrders());
     setCurrent('Coupons');
   }, [dispatch, id]);
 
@@ -32,6 +34,10 @@ const SingleCoupon = ({ setCurrent }) => {
       });
     }
   }, [coupon]);
+
+  const getOrdersWithKlarnaId = (order_ids) => {
+    return orders.filter((order) => order_ids.includes(order.order_id));
+  };
 
   const toggle = () => {
     setUpdatedObject({
@@ -84,6 +90,34 @@ const SingleCoupon = ({ setCurrent }) => {
             setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}
           />
+          <div className='py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 lg:px-8'>
+            <dt className='text-sm font-medium text-gray-500'>Orders</dt>
+            <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2'>
+              {getOrdersWithKlarnaId(coupon.orders).length > 0 ? (
+                <ul className='border border-gray-200 rounded-md divide-y divide-gray-200'>
+                  {getOrdersWithKlarnaId(coupon.orders).map((order) => (
+                    <li
+                      key={order.id}
+                      className='pl-3 pr-4 py-3 flex items-center justify-between text-sm'
+                    >
+                      <div className='w-0 flex-1 flex items-center'>
+                        <Link
+                          className='text-cyan-500 hover:text-cyan-600'
+                          to={`/admin/orders/${order.id}`}
+                        >
+                          <span className='ml-2 flex-1 w-0 truncate'>
+                            {order.id}
+                          </span>
+                        </Link>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No orders with this coupon</p>
+              )}
+            </dd>
+          </div>
           <div className='py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 lg:px-8'>
             <Toggle
               title='Active'

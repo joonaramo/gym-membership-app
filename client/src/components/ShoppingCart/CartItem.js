@@ -26,7 +26,7 @@ const CartItem = ({
     const cartQuantitiesStorage = JSON.parse(
       localStorage.getItem('cart_quantities')
     );
-    const index = cartItemsStorage.indexOf(product._id);
+    const index = cartItemsStorage.indexOf(product.id);
     if (index > -1) {
       cartItemsStorage.splice(index, 1);
       cartQuantitiesStorage.splice(index, 1);
