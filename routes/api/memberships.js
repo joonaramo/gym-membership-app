@@ -15,7 +15,9 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
-    const membership = await Membership.findById(req.params.id);
+    const membership = await Membership.findById(req.params.id).populate(
+      'user'
+    );
     res.json(membership);
   } catch (err) {
     next(err);
@@ -47,8 +49,8 @@ router.post(
 router.put(
   '/:id',
   [
-    check('start_date', 'Start date is required').isDate(),
-    check('end_date', 'End date is required').isDate(),
+    check('start_date', 'Start date is required').isISO8601(),
+    check('end_date', 'End date is required').isISO8601(),
   ],
   checkAuth,
   async (req, res, next) => {

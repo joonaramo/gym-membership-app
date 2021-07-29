@@ -12,9 +12,18 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.get('/:code', async (req, res, next) => {
+router.get('/code/:code', async (req, res, next) => {
   try {
     const coupon = await Coupon.findOne({ code: req.params.code });
+    res.json(coupon);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get('/:id', async (req, res, next) => {
+  try {
+    const coupon = await Coupon.findById(req.params.id);
     res.json(coupon);
   } catch (err) {
     next(err);
@@ -26,6 +35,7 @@ router.post(
   [
     check('code', 'Code is required').exists(),
     check('value', 'Value is required').isNumeric(),
+    check('active', 'State is required').isBoolean(),
   ],
   checkAuth,
   async (req, res, next) => {
@@ -35,6 +45,7 @@ router.post(
     }
     try {
       const coupon = new Coupon(req.body);
+      coupon.value = coupon.value * 100;
       const newCoupon = await coupon.save();
       res.status(201).json(newCoupon);
     } catch (err) {
@@ -46,9 +57,9 @@ router.post(
 router.put(
   '/:id',
   [
-    check('code', 'Reference is required').exists(),
-    check('value', 'Type is required').isNumeric(),
-    check('active', 'Quantity unit is required').isBoolean(),
+    check('code', 'Code is required').exists(),
+    check('value', 'Value is required').isNumeric(),
+    check('active', 'State is required').isBoolean(),
   ],
   checkAuth,
   async (req, res, next) => {
@@ -58,6 +69,7 @@ router.put(
     }
     try {
       const coupon = req.body;
+      coupon.value = coupon.value * 100;
       const updatedCoupon = await Coupon.findByIdAndUpdate(
         req.params.id,
         coupon,
@@ -71,5 +83,14 @@ router.put(
     }
   }
 );
+
+router.delete('/:id', async (req, res, next) => {
+  try {
+    await Coupon.findByIdAndDelete(req.params.id);
+    res.status(204).end();
+  } catch (err) {
+    next(err);
+  }
+});
 
 module.exports = router;

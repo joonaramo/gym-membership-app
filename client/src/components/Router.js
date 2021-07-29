@@ -17,6 +17,9 @@ import SingleProduct from './AdminPanel/Products/SingleProduct';
 import Orders from './AdminPanel/Orders';
 import SingleOrder from './AdminPanel/Orders/SingleOrder';
 import Memberships from './AdminPanel/Memberships';
+import SingleMembership from './AdminPanel/Memberships/SingleMembership';
+import Coupons from './AdminPanel/Coupons';
+import SingleCoupon from './AdminPanel/Coupons/SingleCoupon';
 
 const Router = () => {
   return (
@@ -36,6 +39,13 @@ const Router = () => {
       <AdminPanel exact path='/admin/orders' component={Orders} />
       <AdminPanel exact path='/admin/orders/:id' component={SingleOrder} />
       <AdminPanel exact path='/admin/memberships' component={Memberships} />
+      <AdminPanel
+        exact
+        path='/admin/memberships/:id'
+        component={SingleMembership}
+      />
+      <AdminPanel exact path='/admin/coupons' component={Coupons} />
+      <AdminPanel exact path='/admin/coupons/:id' component={SingleCoupon} />
     </Switch>
   );
 };

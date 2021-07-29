@@ -8,6 +8,7 @@ import notificationReducer from './reducers/notification';
 import productReducer from './reducers/product';
 import orderReducer from './reducers/order';
 import membershipReducer from './reducers/membership';
+import couponReducer from './reducers/coupon';
 
 const reducer = combineReducers({
   auth: authReducer,
@@ -16,6 +17,7 @@ const reducer = combineReducers({
   product: productReducer,
   order: orderReducer,
   membership: membershipReducer,
+  coupon: couponReducer,
 });
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));

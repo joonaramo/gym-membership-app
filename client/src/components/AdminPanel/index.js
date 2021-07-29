@@ -7,6 +7,7 @@ import {
   UserGroupIcon,
   DocumentReportIcon,
   ShoppingCartIcon,
+  TagIcon,
 } from '@heroicons/react/outline';
 
 import Sidebar from './Sidebar';
@@ -43,6 +44,12 @@ const AdminPanel = ({
       name: 'Memberships',
       href: '/admin/memberships',
       icon: DocumentReportIcon,
+      current: false,
+    },
+    {
+      name: 'Coupons',
+      href: '/admin/coupons',
+      icon: TagIcon,
       current: false,
     },
   ]);

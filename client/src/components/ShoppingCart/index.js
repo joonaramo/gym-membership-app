@@ -37,7 +37,7 @@ const ShoppingCart = () => {
   const checkCoupon = async (e) => {
     e.preventDefault();
     try {
-      const { value, active } = await couponsService.get(coupon);
+      const { value, active } = await couponsService.getByCode(coupon);
       if (active) {
         setCouponValue(value);
       } else {
