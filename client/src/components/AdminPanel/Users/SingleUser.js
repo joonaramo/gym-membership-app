@@ -54,7 +54,7 @@ const SingleUser = ({ setCurrent }) => {
         Edit user
       </h2>
       <div className='border-t border-gray-200 px-4 py-5 sm:p-0 mt-2'>
-        <dl className='sm:divide-y sm:divide-gray-200'>
+        <dl className='sm:divide-y sm:divide-gray-200 mb-10'>
           <ListItem
             title='First name'
             name='first_name'
@@ -169,7 +169,7 @@ const SingleUser = ({ setCurrent }) => {
               )}
             </dd>
           </div>
-          <div className='py-4 sm:pt-5 pb-20 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 lg:px-8'>
+          <div className='py-4 sm:pt-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 lg:px-8'>
             <dt className='text-sm font-medium text-gray-500'>Orders</dt>
             <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2'>
               {user.orders?.length > 0 ? (
@@ -201,9 +201,9 @@ const SingleUser = ({ setCurrent }) => {
               )}
             </dd>
           </div>
-          {hasUnSavedChanges && <Notification save={save} />}
-          <Alert />
         </dl>
+        {hasUnSavedChanges && <Notification save={save} />}
+        <Alert />
       </div>
     </>
   );

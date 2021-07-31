@@ -59,7 +59,7 @@ const SingleProduct = ({ setCurrent }) => {
         Edit a product
       </h2>
       <div className='border-t border-gray-200 px-4 py-5 sm:p-0 mt-2'>
-        <dl className='sm:divide-y sm:divide-gray-200'>
+        <dl className='sm:divide-y sm:divide-gray-200 mb-10'>
           <ListItem
             title='Name'
             name='name'
@@ -140,9 +140,9 @@ const SingleProduct = ({ setCurrent }) => {
               Remove product
             </button>
           </div>
-          {hasUnSavedChanges && <Notification save={save} />}
-          <Alert />
         </dl>
+        {hasUnSavedChanges && <Notification save={save} />}
+        <Alert />
       </div>
     </>
   );

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PencilAltIcon, CheckIcon } from '@heroicons/react/outline';
 import { format } from 'date-fns';
+import { classNames } from '../../utils/helpers';
 
 const ListItem = ({
   title,
@@ -48,7 +49,12 @@ const ListItem = ({
         </>
       ) : (
         <>
-          <dd className='mt-1 text-sm text-gray-900 sm:mt-0'>
+          <dd
+            className={classNames(
+              editable ? '' : 'col-span-2',
+              'mt-1 text-sm text-gray-900 sm:mt-0'
+            )}
+          >
             {name === 'birth_date'
               ? format(new Date(value), 'dd.MM.yyyy')
               : value}

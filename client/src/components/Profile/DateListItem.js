@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import { PencilAltIcon, CheckIcon } from '@heroicons/react/outline';
 import { format } from 'date-fns';
+import { classNames } from '../../utils/helpers';
 
 const DateListItem = ({
   title,
@@ -51,7 +52,12 @@ const DateListItem = ({
         </>
       ) : (
         <>
-          <dd className='mt-1 text-sm text-gray-900 sm:mt-0'>
+          <dd
+            className={classNames(
+              editable ? '' : 'col-span-2',
+              'mt-1 text-sm text-gray-900 sm:mt-0'
+            )}
+          >
             {format(new Date(value), props.dateFormat)}
           </dd>
           {editable && (

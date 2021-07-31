@@ -73,7 +73,7 @@ const SingleCoupon = ({ setCurrent }) => {
         Edit a coupon
       </h2>
       <div className='border-t border-gray-200 px-4 py-5 sm:p-0 mt-2'>
-        <dl className='sm:divide-y sm:divide-gray-200'>
+        <dl className='sm:divide-y sm:divide-gray-200 mb-10'>
           <ListItem
             title='Coupon code'
             name='code'
@@ -104,7 +104,7 @@ const SingleCoupon = ({ setCurrent }) => {
                     >
                       <div className='w-0 flex-1 flex items-center'>
                         <Link
-                          className='text-cyan-500 hover:text-cyan-600'
+                          className='text-cyan-600 hover:text-cyan-500'
                           to={`/admin/orders/${order.id}`}
                         >
                           <span className='ml-2 flex-1 w-0 truncate'>
@@ -135,9 +135,9 @@ const SingleCoupon = ({ setCurrent }) => {
               Remove coupon
             </button>
           </div>
-          {hasUnSavedChanges && <Notification save={save} />}
-          <Alert />
         </dl>
+        {hasUnSavedChanges && <Notification save={save} />}
+        <Alert />
       </div>
     </>
   );

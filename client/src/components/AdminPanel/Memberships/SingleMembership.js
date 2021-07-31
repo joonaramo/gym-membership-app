@@ -55,7 +55,7 @@ const SingleMembership = ({ setCurrent }) => {
         Edit a membership
       </h2>
       <div className='border-t border-gray-200 px-4 py-5 sm:p-0 mt-2'>
-        <dl className='sm:divide-y sm:divide-gray-200'>
+        <dl className='sm:divide-y sm:divide-gray-200 mb-10'>
           <ListItem
             title='User'
             name='user'
@@ -73,7 +73,7 @@ const SingleMembership = ({ setCurrent }) => {
             value={
               <Link
                 to={`/admin/orders/${membership.order}`}
-                className='text-cyan-500 hover:text-cyan-600'
+                className='text-cyan-600 hover:text-cyan-500'
               >
                 {membership.order}
               </Link>
@@ -119,9 +119,9 @@ const SingleMembership = ({ setCurrent }) => {
               Remove membership
             </button>
           </div>
-          {hasUnSavedChanges && <Notification save={save} />}
-          <Alert />
         </dl>
+        {hasUnSavedChanges && <Notification save={save} />}
+        <Alert />
       </div>
     </>
   );
