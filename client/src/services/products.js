@@ -6,8 +6,13 @@ const get = async (productId) => {
   return data;
 };
 
-const getAll = async () => {
-  const { data } = await axios.get(`${API_URL}/products`);
+const getAll = async (page, limit) => {
+  const { data } = await axios.get(`${API_URL}/products`, {
+    params: {
+      page,
+      limit,
+    },
+  });
   return data;
 };
 

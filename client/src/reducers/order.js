@@ -2,6 +2,11 @@ const initialState = {
   order: {},
   loading: true,
   orders: [],
+  totalDocs: 0,
+  limit: 0,
+  pagingCounter: 0,
+  hasPrevPage: false,
+  hasNextPage: false,
 };
 
 const orderReducer = (state = initialState, action) => {
@@ -17,7 +22,12 @@ const orderReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        orders: payload,
+        orders: payload.docs ? payload.docs : payload,
+        totalDocs: payload.totalDocs,
+        limit: payload.limit,
+        pagingCounter: payload.pagingCounter,
+        hasPrevPage: payload.hasPrevPage,
+        hasNextPage: payload.hasNextPage,
       };
     case 'UPDATE_ORDER':
       return {

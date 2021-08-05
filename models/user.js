@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const userSchema = mongoose.Schema({
   memberships: [
@@ -63,6 +64,8 @@ userSchema.set('toJSON', {
     delete returnedObject.passwordHash;
   },
 });
+
+userSchema.plugin(mongoosePaginate);
 
 const User = mongoose.model('User', userSchema);
 

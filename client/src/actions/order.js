@@ -1,9 +1,9 @@
 import ordersService from '../services/orders';
 import { setNotification } from './notification';
 
-export const getOrders = () => async (dispatch) => {
+export const getOrders = (page, limit) => async (dispatch) => {
   try {
-    const orders = await ordersService.getAll();
+    const orders = await ordersService.getAll(page, limit);
     dispatch({
       type: 'GET_ORDERS',
       payload: orders,

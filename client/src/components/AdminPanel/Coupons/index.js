@@ -10,16 +10,23 @@ import { Link } from 'react-router-dom';
 import { getCoupons } from '../../../actions/coupon';
 import { getOrders } from '../../../actions/order';
 import CreateCoupon from './CreateCoupon';
+import Pagination from '../UI/Pagination';
 
 const Coupons = ({ setCurrent }) => {
   const [creating, setCreating] = useState(false);
-  const { coupons } = useSelector((state) => state.coupon);
-  const { orders } = useSelector((state) => state.order);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentLimit, setCurrentLimit] = useState(10);
+  const { coupons, totalDocs, limit, pagingCounter, hasPrevPage, hasNextPage } =
+    useSelector((state) => state.coupon);
+  const { orders = [] } = useSelector((state) => state.order);
   const dispatch = useDispatch();
 
   useEffect(() => {
     setCurrent('Coupons');
-    dispatch(getCoupons());
+    dispatch(getCoupons(currentPage, currentLimit));
+  }, [currentPage, currentLimit]);
+
+  useEffect(() => {
     dispatch(getOrders());
   }, []);
 
@@ -158,28 +165,14 @@ const Coupons = ({ setCurrent }) => {
                   ))}
                 </tbody>
               </table>
-              {/* Pagination */}
-              <nav
-                className='bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6'
-                aria-label='Pagination'
-              >
-                <div className='hidden sm:block'>
-                  <p className='text-sm text-gray-700'>
-                    Showing <span className='font-medium'>1</span> to{' '}
-                    <span className='font-medium'>{coupons.length}</span> of{' '}
-                    <span className='font-medium'>{coupons.length}</span>{' '}
-                    results
-                  </p>
-                </div>
-                <div className='flex-1 flex justify-between sm:justify-end'>
-                  <button className='relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50'>
-                    Previous
-                  </button>
-                  <button className='ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50'>
-                    Next
-                  </button>
-                </div>
-              </nav>
+              <Pagination
+                pagingCounter={pagingCounter}
+                limit={limit}
+                totalDocs={totalDocs}
+                hasNextPage={hasNextPage}
+                hasPrevPage={hasPrevPage}
+                setCurrentPage={setCurrentPage}
+              />
             </div>
           </div>
         </div>

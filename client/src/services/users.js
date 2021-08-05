@@ -1,8 +1,13 @@
 import axios from 'axios';
 import { API_URL } from '../utils/constants';
 
-const getAll = async () => {
-  const { data } = await axios.get(`${API_URL}/users`);
+const getAll = async (page, limit) => {
+  const { data } = await axios.get(`${API_URL}/users`, {
+    params: {
+      page,
+      limit,
+    },
+  });
   return data;
 };
 

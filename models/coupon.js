@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const couponSchema = mongoose.Schema({
   code: {
@@ -32,6 +33,8 @@ couponSchema.set('toJSON', {
     delete returnedObject.__v;
   },
 });
+
+couponSchema.plugin(mongoosePaginate);
 
 const Coupon = mongoose.model('Coupon', couponSchema);
 

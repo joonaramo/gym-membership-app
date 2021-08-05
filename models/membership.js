@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const membershipSchema = mongoose.Schema({
   user: {
@@ -26,6 +27,8 @@ membershipSchema.set('toJSON', {
     delete returnedObject.__v;
   },
 });
+
+membershipSchema.plugin(mongoosePaginate);
 
 const Membership = mongoose.model('Membership', membershipSchema);
 

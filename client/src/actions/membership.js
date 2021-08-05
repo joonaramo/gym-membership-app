@@ -1,9 +1,9 @@
 import membershipsService from '../services/memberships';
 import { setNotification } from './notification';
 
-export const getMemberships = () => async (dispatch) => {
+export const getMemberships = (page, limit) => async (dispatch) => {
   try {
-    const memberships = await membershipsService.getAll();
+    const memberships = await membershipsService.getAll(page, limit);
     dispatch({
       type: 'GET_MEMBERSHIPS',
       payload: memberships,

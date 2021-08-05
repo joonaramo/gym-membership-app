@@ -6,7 +6,13 @@ const { checkAuth } = require('../../utils/middleware');
 
 router.get('/', async (req, res, next) => {
   try {
-    const memberships = await Membership.find().populate('user');
+    const { page, limit } = req.query;
+    const options = {
+      page,
+      limit,
+      populate: 'user',
+    };
+    const memberships = await Membership.paginate({}, options);
     res.json(memberships);
   } catch (err) {
     next(err);

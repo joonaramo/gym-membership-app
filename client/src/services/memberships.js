@@ -6,8 +6,13 @@ const get = async (membershipId) => {
   return data;
 };
 
-const getAll = async () => {
-  const { data } = await axios.get(`${API_URL}/memberships`);
+const getAll = async (page, limit) => {
+  const { data } = await axios.get(`${API_URL}/memberships`, {
+    params: {
+      page,
+      limit,
+    },
+  });
   return data;
 };
 

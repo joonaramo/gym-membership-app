@@ -11,8 +11,13 @@ const get = async (couponId) => {
   return data;
 };
 
-const getAll = async () => {
-  const { data } = await axios.get(`${API_URL}/coupons`);
+const getAll = async (page, limit) => {
+  const { data } = await axios.get(`${API_URL}/coupons`, {
+    params: {
+      page,
+      limit,
+    },
+  });
   return data;
 };
 

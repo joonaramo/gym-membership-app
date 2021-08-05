@@ -6,15 +6,23 @@ const User = require('../../models/user');
 
 router.get('/', checkAuth, async (req, res, next) => {
   try {
-    const users = await User.find()
-      .populate('memberships')
-      .populate({
-        path: 'orders',
-        populate: {
-          path: 'products',
-          model: 'Product',
-        },
-      });
+    // const users = await User.find()
+    //   .populate('memberships')
+    //   .populate({
+    //     path: 'orders',
+    //     populate: {
+    //       path: 'products',
+    //       model: 'Product',
+    //     },
+    //   });
+    // res.json(users);
+    const { page, limit } = req.query;
+    const options = {
+      page,
+      limit,
+      populate: 'memberships',
+    };
+    const users = await User.paginate({}, options);
     res.json(users);
   } catch (err) {
     next(err);

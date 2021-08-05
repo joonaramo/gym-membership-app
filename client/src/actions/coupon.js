@@ -1,9 +1,9 @@
 import couponsService from '../services/coupons';
 import { setNotification } from './notification';
 
-export const getCoupons = () => async (dispatch) => {
+export const getCoupons = (page, limit) => async (dispatch) => {
   try {
-    const coupons = await couponsService.getAll();
+    const coupons = await couponsService.getAll(page, limit);
     dispatch({
       type: 'GET_COUPONS',
       payload: coupons,

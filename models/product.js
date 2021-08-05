@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const productSchema = mongoose.Schema({
   type: {
@@ -48,6 +49,8 @@ productSchema.set('toJSON', {
     delete returnedObject.__v;
   },
 });
+
+productSchema.plugin(mongoosePaginate);
 
 const Product = mongoose.model('Product', productSchema);
 

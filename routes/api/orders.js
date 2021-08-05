@@ -4,7 +4,17 @@ const Order = require('../../models/order');
 
 router.get('/', async (req, res, next) => {
   try {
-    const orders = await Order.find().populate('user');
+    const { page, limit } = req.query;
+    if (page && limit) {
+      const options = {
+        page,
+        limit,
+        populate: 'user',
+      };
+      const orders = await Order.paginate({}, options);
+      return res.json(orders);
+    }
+    const orders = await Order.find();
     res.json(orders);
   } catch (err) {
     next(err);

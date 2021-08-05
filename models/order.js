@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const orderSchema = mongoose.Schema({
   user: {
@@ -32,6 +33,8 @@ orderSchema.set('toJSON', {
     delete returnedObject.__v;
   },
 });
+
+orderSchema.plugin(mongoosePaginate);
 
 const Order = mongoose.model('Order', orderSchema);
 

@@ -1,9 +1,9 @@
 import productsService from '../services/products';
 import { setNotification } from './notification';
 
-export const getProducts = () => async (dispatch) => {
+export const getProducts = (page, limit) => async (dispatch) => {
   try {
-    const products = await productsService.getAll();
+    const products = await productsService.getAll(page, limit);
     dispatch({
       type: 'GET_PRODUCTS',
       payload: products,

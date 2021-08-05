@@ -6,8 +6,13 @@ const get = async (orderId) => {
   return data;
 };
 
-const getAll = async () => {
-  const { data } = await axios.get(`${API_URL}/orders`);
+const getAll = async (page, limit) => {
+  const { data } = await axios.get(`${API_URL}/orders`, {
+    params: {
+      page,
+      limit,
+    },
+  });
   return data;
 };
 

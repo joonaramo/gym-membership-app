@@ -16,9 +16,9 @@ export const getUser = (userId) => async (dispatch) => {
   }
 };
 
-export const getUsers = () => async (dispatch) => {
+export const getUsers = (page, limit) => async (dispatch) => {
   try {
-    const users = await usersService.getAll();
+    const users = await usersService.getAll(page, limit);
     dispatch({
       type: 'GET_USERS',
       payload: users,
