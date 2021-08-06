@@ -22,7 +22,7 @@ const membershipReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        memberships: payload.docs,
+        memberships: payload.docs ? payload.docs : payload,
         totalDocs: payload.totalDocs,
         limit: payload.limit,
         pagingCounter: payload.pagingCounter,

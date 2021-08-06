@@ -93,3 +93,34 @@
 .react-datepicker__day--range-end {
   @apply bg-blue-500 text-white hover:text-gray-700 hover:bg-white;
 }
+
+@keyframes placeHolderShimmer {
+  0% {
+    background: #ececec;
+  }
+
+  30% {
+    background: #f7f7f7;
+  }
+
+  50% {
+    background: #ececec;
+  }
+
+  80% {
+    background: #f7f7f7;
+  }
+
+  100% {
+    background: #ececec;
+  }
+}
+
+.table-loading p {
+  width: 100%;
+  animation: placeHolderShimmer 3s infinite;
+}
+
+.loading-animation {
+  animation: placeHolderShimmer 3s infinite;
+}

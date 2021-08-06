@@ -123,7 +123,7 @@ const Memberships = ({ setCurrent }) => {
                         <div className='flex'>
                           <Link
                             to={`/admin/memberships/${membership.id}`}
-                            className='group inline-flex space-x-2 truncate text-sm'
+                            className='group inline-flex flex-1 space-x-2 truncate text-sm'
                           >
                             <UserIcon
                               className='flex-shrink-0 h-5 w-5 text-gray-400 group-hover:text-gray-500'
@@ -136,7 +136,10 @@ const Memberships = ({ setCurrent }) => {
                         </div>
                       </td>
                       <td className='px-6 py-4 text-right whitespace-nowrap text-sm text-gray-500'>
-                        {membership.user.first_name} {membership.user.last_name}
+                        <p className='truncate'>
+                          {membership.user.first_name}{' '}
+                          {membership.user.last_name}
+                        </p>
                       </td>
                       <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
                         {format(

@@ -7,12 +7,16 @@ const { checkAuth } = require('../../utils/middleware');
 router.get('/', async (req, res, next) => {
   try {
     const { page, limit } = req.query;
-    const options = {
-      page,
-      limit,
-      populate: 'user',
-    };
-    const memberships = await Membership.paginate({}, options);
+    if (page && limit) {
+      const options = {
+        page,
+        limit,
+        populate: 'user',
+      };
+      const memberships = await Membership.paginate({}, options);
+      return res.json(memberships);
+    }
+    const memberships = await Membership.find();
     res.json(memberships);
   } catch (err) {
     next(err);

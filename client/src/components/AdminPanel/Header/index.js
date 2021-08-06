@@ -1,10 +1,24 @@
 import { Fragment } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
 import { Menu, Transition } from '@headlessui/react';
-import { MenuAlt1Icon, BellIcon } from '@heroicons/react/outline';
+import {
+  MenuAlt1Icon,
+  BellIcon,
+  UserCircleIcon,
+} from '@heroicons/react/outline';
 import { ChevronDownIcon, SearchIcon } from '@heroicons/react/solid';
+import { logout } from '../../../actions/auth';
 import { classNames } from '../../../utils/helpers';
+import { Link } from 'react-router-dom';
 
 const Header = ({ setSidebarOpen, user }) => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const logOut = () => {
+    dispatch(logout());
+    history.push('/');
+  };
   return (
     <div className='relative z-10 flex-shrink-0 flex h-16 bg-white border-b border-gray-200 lg:border-none'>
       <button
@@ -50,11 +64,7 @@ const Header = ({ setSidebarOpen, user }) => {
               <>
                 <div>
                   <Menu.Button className='max-w-xs bg-white rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 lg:p-2 lg:rounded-md lg:hover:bg-gray-50'>
-                    <img
-                      className='h-8 w-8 rounded-full'
-                      src='https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
-                      alt=''
-                    />
+                    <UserCircleIcon className='h-6 w-6' aria-hidden='true' />
                     <span className='hidden ml-3 text-gray-700 text-sm font-medium lg:block'>
                       <span className='sr-only'>Open user menu for </span>
                       {user?.first_name} {user?.last_name}
@@ -81,41 +91,28 @@ const Header = ({ setSidebarOpen, user }) => {
                   >
                     <Menu.Item>
                       {({ active }) => (
-                        <a
-                          href='/admin'
+                        <Link
+                          to='/'
                           className={classNames(
                             active ? 'bg-gray-100' : '',
                             'block px-4 py-2 text-sm text-gray-700'
                           )}
                         >
-                          Your Profile
-                        </a>
+                          Back to Shop
+                        </Link>
                       )}
                     </Menu.Item>
                     <Menu.Item>
                       {({ active }) => (
-                        <a
-                          href='/admin'
+                        <button
+                          onClick={() => logOut()}
                           className={classNames(
                             active ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700'
-                          )}
-                        >
-                          Settings
-                        </a>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <a
-                          href='/admin'
-                          className={classNames(
-                            active ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700'
+                            'w-full text-left block px-4 py-2 text-sm text-gray-700'
                           )}
                         >
                           Logout
-                        </a>
+                        </button>
                       )}
                     </Menu.Item>
                   </Menu.Items>
