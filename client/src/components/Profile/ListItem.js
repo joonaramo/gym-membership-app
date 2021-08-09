@@ -11,7 +11,7 @@ const ListItem = ({
   updatedObject,
   setUpdatedObject,
   setHasUnsavedChanges,
-  editable,
+  editable = true,
 }) => {
   const [editState, setEditState] = useState(false);
   const [updatedValue, setUpdatedValue] = useState(value);
@@ -70,10 +70,6 @@ const ListItem = ({
       )}
     </div>
   );
-};
-
-ListItem.defaultProps = {
-  editable: true,
 };
 
 export default ListItem;

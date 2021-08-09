@@ -32,10 +32,21 @@ const Settings = ({ setCurrent }) => {
         business_name: settings.business_name,
         logo_url: settings.logo_url,
         alt_logo_url: settings.alt_logo_url,
-        welcome_email: settings.welcome_email.message,
-        order_email: settings.order_email.message,
-        maps: settings.maps,
-        social_urls: settings.social_urls,
+        welcome_email: {
+          message: settings.welcome_email.message,
+          enabled: true,
+        },
+        order_email: { message: settings.order_email.message, enabled: true },
+        maps: {
+          api_key: settings.maps.api_key,
+          lat: settings.maps.lat,
+          lng: settings.maps.lng,
+        },
+        social_urls: {
+          facebook: settings.social_urls.facebook,
+          instagram: settings.social_urls.instagram,
+          twitter: settings.social_urls.twitter,
+        },
       });
     }
   }, [settings]);
@@ -104,7 +115,7 @@ const Settings = ({ setCurrent }) => {
             title='Welcome email message'
             name='welcome_email'
             type='text'
-            value={updatedObject.welcome_email}
+            value={updatedObject.welcome_email.message}
             updatedObject={updatedObject}
             setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}
@@ -113,11 +124,66 @@ const Settings = ({ setCurrent }) => {
             title='Order email message'
             name='order_email'
             type='text'
-            value={updatedObject.order_email}
+            value={updatedObject.order_email.message}
             updatedObject={updatedObject}
             setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}
           />
+          <ListItem
+            title='Google Maps API Key'
+            name='maps_api_key'
+            type='text'
+            value={updatedObject.maps.api_key}
+            updatedObject={updatedObject}
+            setUpdatedObject={setUpdatedObject}
+            setHasUnsavedChanges={setHasUnsavedChanges}
+          />
+          <ListItem
+            title='Google Maps Latitude'
+            name='maps_lat'
+            type='number'
+            value={updatedObject.maps.lat}
+            updatedObject={updatedObject}
+            setUpdatedObject={setUpdatedObject}
+            setHasUnsavedChanges={setHasUnsavedChanges}
+          />
+          <ListItem
+            title='Google Maps Longitude'
+            name='maps_lng'
+            type='number'
+            value={updatedObject.maps.lng}
+            updatedObject={updatedObject}
+            setUpdatedObject={setUpdatedObject}
+            setHasUnsavedChanges={setHasUnsavedChanges}
+          />
+          <ListItem
+            title='Facebook URL'
+            name='facebook_url'
+            type='text'
+            value={updatedObject.social_urls.facebook}
+            updatedObject={updatedObject}
+            setUpdatedObject={setUpdatedObject}
+            setHasUnsavedChanges={setHasUnsavedChanges}
+          />
+          <ListItem
+            title='Instagram URL'
+            name='instagram_url'
+            type='text'
+            value={updatedObject.social_urls.instagram}
+            updatedObject={updatedObject}
+            setUpdatedObject={setUpdatedObject}
+            setHasUnsavedChanges={setHasUnsavedChanges}
+          />
+          <ListItem
+            title='Twitter URL'
+            name='twitter_url'
+            type='text'
+            value={updatedObject.social_urls.twitter}
+            updatedObject={updatedObject}
+            setUpdatedObject={setUpdatedObject}
+            setHasUnsavedChanges={setHasUnsavedChanges}
+          />
+
           {/* <div className='py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 lg:px-8'>
             <Toggle
               title='Active'
@@ -130,7 +196,7 @@ const Settings = ({ setCurrent }) => {
               onClick={() => remove()}
               className='inline-flex items-center text-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50'
             >
-              Remove coupon
+              Remove settings
             </button>
           </div>
         </dl>

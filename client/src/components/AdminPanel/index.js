@@ -63,8 +63,8 @@ const AdminPanel = ({
       icon: CogIcon,
       current: false,
     },
-    { name: 'Help', href: '#', icon: QuestionMarkCircleIcon },
-    { name: 'Privacy', href: '#', icon: ShieldCheckIcon },
+    { name: 'Help', href: '#', icon: QuestionMarkCircleIcon, current: false },
+    { name: 'Privacy', href: '#', icon: ShieldCheckIcon, current: false },
   ]);
 
   const setCurrent = (name) => {
@@ -75,6 +75,13 @@ const AdminPanel = ({
       };
     });
     setNavigation(updatedNavigation);
+    const updatedSecondaryNavigation = secondaryNavigation.map((item) => {
+      return {
+        ...item,
+        current: item.name === name ? true : false,
+      };
+    });
+    setSecondaryNavigation(updatedSecondaryNavigation);
   };
 
   return (

@@ -9,6 +9,10 @@ export const getSettings = () => async (dispatch) => {
       payload: settings,
     });
   } catch (err) {
+    dispatch({
+      type: 'GET_SETTINGS_FAILED',
+      payload: undefined,
+    });
     const errors = err.response.data.errors;
     if (errors) {
       errors.forEach((error) => dispatch(setNotification(error.msg, 3000)));

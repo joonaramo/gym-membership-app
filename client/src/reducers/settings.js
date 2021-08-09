@@ -7,6 +7,7 @@ const settingsReducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
     case 'GET_SETTINGS':
+    case 'GET_SETTINGS_FAILED':
       return {
         ...state,
         loading: false,
