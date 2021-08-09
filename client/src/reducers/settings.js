@@ -1,6 +1,6 @@
 const initialState = {
   loading: true,
-  settings: {},
+  settings: undefined,
 };
 
 const settingsReducer = (state = initialState, action) => {

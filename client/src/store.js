@@ -9,6 +9,7 @@ import productReducer from './reducers/product';
 import orderReducer from './reducers/order';
 import membershipReducer from './reducers/membership';
 import couponReducer from './reducers/coupon';
+import settingsReducer from './reducers/settings';
 
 const reducer = combineReducers({
   auth: authReducer,
@@ -18,6 +19,7 @@ const reducer = combineReducers({
   order: orderReducer,
   membership: membershipReducer,
   coupon: couponReducer,
+  settings: settingsReducer,
 });
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));

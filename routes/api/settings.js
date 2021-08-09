@@ -5,6 +5,9 @@ const { checkAuth } = require('../../utils/middleware');
 router.get('/', async (req, res, next) => {
   try {
     const settings = await Settings.findOne();
+    if (!settings) {
+      return res.status(404).json({ error: 'Settings not found' });
+    }
     res.json(settings);
   } catch (err) {
     next(err);
@@ -18,8 +21,9 @@ router.post('/', checkAuth, async (req, res, next) => {
       return res.status(400).json({ error: 'Settings already created' });
     }
     const newSettings = new Settings(req.body);
-    const settins = await newSettings.save();
-    res.status(201).json(newSettings);
+    newSettings.last_updated = Date.now();
+    const settings = await newSettings.save();
+    res.status(201).json(settings);
   } catch (err) {
     next(err);
   }
@@ -28,6 +32,7 @@ router.post('/', checkAuth, async (req, res, next) => {
 router.put('/', checkAuth, async (req, res, next) => {
   try {
     const settings = req.body;
+    settings.last_updated = Date.now();
     const updatedSettings = await Settings.findOneAndUpdate({}, settings, {
       new: true,
     });

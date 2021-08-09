@@ -8,6 +8,9 @@ import {
   DocumentReportIcon,
   ShoppingCartIcon,
   TagIcon,
+  CogIcon,
+  QuestionMarkCircleIcon,
+  ShieldCheckIcon,
 } from '@heroicons/react/outline';
 
 import Sidebar from './Sidebar';
@@ -53,6 +56,16 @@ const AdminPanel = ({
       current: false,
     },
   ]);
+  const [secondaryNavigation, setSecondaryNavigation] = useState([
+    {
+      name: 'Settings',
+      href: '/admin/settings',
+      icon: CogIcon,
+      current: false,
+    },
+    { name: 'Help', href: '#', icon: QuestionMarkCircleIcon },
+    { name: 'Privacy', href: '#', icon: ShieldCheckIcon },
+  ]);
 
   const setCurrent = (name) => {
     const updatedNavigation = navigation.map((item) => {
@@ -68,14 +81,17 @@ const AdminPanel = ({
     <Route
       {...rest}
       render={(props) =>
-        !isAuthenticated && !user?.is_admin && !loading ? (
+        loading ? (
+          <p>Loading...</p>
+        ) : !isAuthenticated && !loading ? (
           <Redirect to='/login' />
-        ) : (
+        ) : user?.is_admin && !loading ? (
           <div className='h-screen flex overflow-hidden bg-gray-100'>
             <Sidebar
               sidebarOpen={sidebarOpen}
               setSidebarOpen={setSidebarOpen}
               navigation={navigation}
+              secondaryNavigation={secondaryNavigation}
               setCurrent={setCurrent}
             />
             <div className='flex-1 overflow-auto focus:outline-none'>
@@ -88,6 +104,8 @@ const AdminPanel = ({
               </main>
             </div>
           </div>
+        ) : (
+          <Redirect to='/' />
         )
       }
     />

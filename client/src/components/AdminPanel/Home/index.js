@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUsers } from '../../../actions/user';
 import { getOrders } from '../../../actions/order';
 import { getMemberships } from '../../../actions/membership';
-import { UserGroupIcon } from '@heroicons/react/outline';
+import {
+  UserGroupIcon,
+  CreditCardIcon,
+  DocumentReportIcon,
+} from '@heroicons/react/outline';
 import Activity from './Activity';
 import Overview from './Overview';
 
@@ -35,13 +39,13 @@ const Home = ({ setCurrent }) => {
       {
         name: 'Orders',
         href: '/admin/orders',
-        icon: UserGroupIcon,
+        icon: CreditCardIcon,
         amount: order.totalDocs,
       },
       {
         name: 'Active memberships',
         href: '/admin/memberships',
-        icon: UserGroupIcon,
+        icon: DocumentReportIcon,
         amount: activeMemberships.length,
       },
     ];

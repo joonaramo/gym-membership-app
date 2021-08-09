@@ -3,8 +3,10 @@ import Hero from './Hero';
 import ImageSection from './ImageSection/';
 import PricingSection from './PricingSection';
 import Footer from './Footer/';
+import { useSelector } from 'react-redux';
 
 const FrontPage = () => {
+  const { settings } = useSelector((state) => state.settings);
   return (
     <>
       <Hero />
@@ -35,7 +37,7 @@ const FrontPage = () => {
         buttonUrl={'#pricing'}
       />
       <PricingSection />
-      <Footer />
+      <Footer settings={settings} />
     </>
   );
 };

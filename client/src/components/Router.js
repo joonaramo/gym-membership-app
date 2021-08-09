@@ -20,6 +20,7 @@ import Memberships from './AdminPanel/Memberships';
 import SingleMembership from './AdminPanel/Memberships/SingleMembership';
 import Coupons from './AdminPanel/Coupons';
 import SingleCoupon from './AdminPanel/Coupons/SingleCoupon';
+import Settings from './AdminPanel/Settings';
 
 const Router = () => {
   return (
@@ -46,6 +47,7 @@ const Router = () => {
       />
       <AdminPanel exact path='/admin/coupons' component={Coupons} />
       <AdminPanel exact path='/admin/coupons/:id' component={SingleCoupon} />
+      <AdminPanel exact path='/admin/settings' component={Settings} />
     </Switch>
   );
 };

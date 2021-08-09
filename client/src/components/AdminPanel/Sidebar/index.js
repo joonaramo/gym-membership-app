@@ -1,21 +1,15 @@
 import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Dialog, Transition } from '@headlessui/react';
-import {
-  CogIcon,
-  QuestionMarkCircleIcon,
-  ShieldCheckIcon,
-  XIcon,
-} from '@heroicons/react/outline';
+import { XIcon } from '@heroicons/react/outline';
 import { classNames } from '../../../utils/helpers';
 
-const secondaryNavigation = [
-  { name: 'Settings', href: '#', icon: CogIcon },
-  { name: 'Help', href: '#', icon: QuestionMarkCircleIcon },
-  { name: 'Privacy', href: '#', icon: ShieldCheckIcon },
-];
-
-const Sidebar = ({ sidebarOpen, setSidebarOpen, navigation }) => {
+const Sidebar = ({
+  sidebarOpen,
+  setSidebarOpen,
+  navigation,
+  secondaryNavigation,
+}) => {
   return (
     <>
       <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -102,9 +96,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, navigation }) => {
                 <div className='mt-6 pt-6'>
                   <div className='px-2 space-y-1'>
                     {secondaryNavigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
-                        href={item.href}
+                        to={item.href}
                         className='group flex items-center px-2 py-2 text-base font-medium rounded-md text-cyan-100 hover:text-white hover:bg-cyan-600'
                       >
                         <item.icon
@@ -112,7 +106,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, navigation }) => {
                           aria-hidden='true'
                         />
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -164,9 +158,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, navigation }) => {
               <div className='mt-6 pt-6'>
                 <div className='px-2 space-y-1'>
                   {secondaryNavigation.map((item) => (
-                    <a
+                    <Link
                       key={item.name}
-                      href={item.href}
+                      to={item.href}
                       className='group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md text-cyan-100 hover:text-white hover:bg-cyan-600'
                     >
                       <item.icon
@@ -174,7 +168,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, navigation }) => {
                         aria-hidden='true'
                       />
                       {item.name}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               </div>
