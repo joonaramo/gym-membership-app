@@ -12,102 +12,95 @@ import { classNames } from '../../utils/helpers';
 import { logout } from '../../actions/auth';
 import { useHistory } from 'react-router';
 
-const Navbar = ({ auth: { isAuthenticated }, logout }) => {
+const profileMenuLinks = [
+  { name: 'Log in', href: '/login', authLink: false },
+  {
+    name: 'Sign up',
+    href: '/signup',
+    authLink: false,
+  },
+  { name: 'Your profile', href: '/profile', authLink: true },
+];
+const profileMenuButtons = [
+  { name: 'Log out', onClick: 'logOut', authLink: true },
+];
+const ProfileMenu = ({ isAuthenticated, logOut }) => {
+  return (
+    <Menu as='div' className='ml-3 relative'>
+      {({ open }) => (
+        <>
+          <div>
+            <Menu.Button className='bg-gray-800 text-gray-400 hover:text-white flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white'>
+              <span className='sr-only'>Open user menu</span>
+              <UserCircleIcon className='h-6 w-6' aria-hidden='true' />
+            </Menu.Button>
+          </div>
+          <Transition
+            show={open}
+            as={Fragment}
+            enter='transition ease-out duration-100'
+            enterFrom='transform opacity-0 scale-95'
+            enterTo='transform opacity-100 scale-100'
+            leave='transition ease-in duration-75'
+            leaveFrom='transform opacity-100 scale-100'
+            leaveTo='transform opacity-0 scale-95'
+          >
+            <Menu.Items
+              static
+              className='z-10 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none'
+            >
+              {profileMenuLinks
+                .filter((item) =>
+                  isAuthenticated ? item.authLink : !item.authLink
+                )
+                .map((item) => (
+                  <Menu.Item>
+                    {({ active }) => (
+                      <Link
+                        to={item.href}
+                        className={classNames(
+                          active ? 'bg-gray-100' : '',
+                          'block px-4 py-2 text-sm text-gray-700'
+                        )}
+                      >
+                        {item.name}
+                      </Link>
+                    )}
+                  </Menu.Item>
+                ))}
+              {profileMenuButtons
+                .filter((item) =>
+                  isAuthenticated ? item.authLink : !item.authLink
+                )
+                .map((item) => (
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        onClick={item.onClick === 'logOut' && logOut}
+                        className={classNames(
+                          active ? 'bg-gray-100' : '',
+                          'block w-full text-left px-4 py-2 text-sm text-gray-700'
+                        )}
+                      >
+                        {item.name}
+                      </button>
+                    )}
+                  </Menu.Item>
+                ))}
+            </Menu.Items>
+          </Transition>
+        </>
+      )}
+    </Menu>
+  );
+};
+
+const Navbar = ({ auth: { isAuthenticated, user }, logout }) => {
   const history = useHistory();
+
   const logOut = async () => {
     await logout();
     history.push('/');
-  };
-  const ProfileMenu = () => {
-    return (
-      <Menu as='div' className='ml-3 relative'>
-        {({ open }) => (
-          <>
-            <div>
-              <Menu.Button className='bg-gray-800 text-gray-400 hover:text-white flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white'>
-                <span className='sr-only'>Open user menu</span>
-                <UserCircleIcon className='h-6 w-6' aria-hidden='true' />
-              </Menu.Button>
-            </div>
-            <Transition
-              show={open}
-              as={Fragment}
-              enter='transition ease-out duration-100'
-              enterFrom='transform opacity-0 scale-95'
-              enterTo='transform opacity-100 scale-100'
-              leave='transition ease-in duration-75'
-              leaveFrom='transform opacity-100 scale-100'
-              leaveTo='transform opacity-0 scale-95'
-            >
-              <Menu.Items
-                static
-                className='z-10 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none'
-              >
-                {isAuthenticated ? (
-                  <>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <Link
-                          to='/profile'
-                          className={classNames(
-                            active ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700'
-                          )}
-                        >
-                          Your Profile
-                        </Link>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <button
-                          onClick={() => logOut()}
-                          className={classNames(
-                            active ? 'bg-gray-100' : '',
-                            'w-full text-left block px-4 py-2 text-sm text-gray-700'
-                          )}
-                        >
-                          Log out
-                        </button>
-                      )}
-                    </Menu.Item>
-                  </>
-                ) : (
-                  <>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <Link
-                          to='/login'
-                          className={classNames(
-                            active ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700'
-                          )}
-                        >
-                          Log in
-                        </Link>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <Link
-                          to='/signup'
-                          className={classNames(
-                            active ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700'
-                          )}
-                        >
-                          Sign up
-                        </Link>
-                      )}
-                    </Menu.Item>
-                  </>
-                )}
-              </Menu.Items>
-            </Transition>
-          </>
-        )}
-      </Menu>
-    );
   };
 
   return (
@@ -165,6 +158,14 @@ const Navbar = ({ auth: { isAuthenticated }, logout }) => {
               </div>
               <div className='hidden sm:ml-6 sm:block'>
                 <div className='flex items-center'>
+                  {user?.is_admin && (
+                    <Link
+                      to='/admin'
+                      className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 mr-4 rounded-md text-sm font-medium'
+                    >
+                      Admin Panel
+                    </Link>
+                  )}
                   <Link
                     to='/cart'
                     className='bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white'
@@ -172,7 +173,10 @@ const Navbar = ({ auth: { isAuthenticated }, logout }) => {
                     <span className='sr-only'>Shopping Cart</span>
                     <ShoppingCartIcon className='h-6 w-6' aria-hidden='true' />
                   </Link>
-                  <ProfileMenu />
+                  <ProfileMenu
+                    isAuthenticated={isAuthenticated}
+                    logOut={logOut}
+                  />
                 </div>
               </div>
               <div className='-mr-2 flex sm:hidden'>
@@ -191,10 +195,9 @@ const Navbar = ({ auth: { isAuthenticated }, logout }) => {
 
           <Disclosure.Panel className='sm:hidden'>
             <div className='px-2 pt-2 pb-3 space-y-1'>
-              {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
               <a
                 href='/'
-                className='bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium'
+                className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
               >
                 Home
               </a>
@@ -220,44 +223,52 @@ const Navbar = ({ auth: { isAuthenticated }, logout }) => {
             <div className='pt-4 pb-3 border-t border-gray-700'>
               <div className='flex items-center px-5'>
                 <div className='flex-shrink-0'>
-                  <img
-                    className='h-10 w-10 rounded-full'
-                    src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
-                    alt=''
+                  <UserCircleIcon
+                    className='h-8 w-8 text-gray-200'
+                    aria-hidden='true'
                   />
                 </div>
                 <div className='ml-3'>
                   <div className='text-base font-medium text-white'>
-                    Tom Cook
+                    {user?.first_name} {user?.last_name}
                   </div>
                   <div className='text-sm font-medium text-gray-400'>
-                    tom@example.com
+                    {user?.email}
                   </div>
                 </div>
-                <button className='ml-auto flex-shrink-0 bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white'>
-                  <span className='sr-only'>View notifications</span>
+                <Link
+                  to='/cart'
+                  className='ml-auto flex-shrink-0 bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white'
+                >
+                  <span className='sr-only'>View shopping cart</span>
                   <ShoppingCartIcon className='h-6 w-6' aria-hidden='true' />
-                </button>
+                </Link>
               </div>
               <div className='mt-3 px-2 space-y-1'>
-                <a
-                  href='#'
-                  className='block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700'
-                >
-                  Your Profile
-                </a>
-                <a
-                  href='#'
-                  className='block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700'
-                >
-                  Settings
-                </a>
-                <a
-                  href='#'
-                  className='block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700'
-                >
-                  Sign out
-                </a>
+                {profileMenuLinks
+                  .filter((item) =>
+                    isAuthenticated ? item.authLink : !item.authLink
+                  )
+                  .map((item) => (
+                    <Link
+                      to={item.href}
+                      className='block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700'
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                {profileMenuButtons
+                  .filter((item) =>
+                    isAuthenticated ? item.authLink : !item.authLink
+                  )
+                  .map((item) => (
+                    <button
+                      onClick={item.onClick === 'logOut' && logOut}
+                      className='block w-full text-left  px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700'
+                    >
+                      {item.name}
+                    </button>
+                  ))}
               </div>
             </div>
           </Disclosure.Panel>
