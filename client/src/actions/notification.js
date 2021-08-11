@@ -1,4 +1,4 @@
-export const setNotification = (message, timeout) => {
+export const setNotification = (message, type, timeout) => {
   return async (dispatch) => {
     const timeoutId = setTimeout(() => {
       dispatch({
@@ -7,7 +7,7 @@ export const setNotification = (message, timeout) => {
     }, timeout);
     dispatch({
       type: 'CREATE_NOTIFICATION',
-      payload: { message, timeoutId },
+      payload: { message, type, timeoutId },
     });
   };
 };

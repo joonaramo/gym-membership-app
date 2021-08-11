@@ -7,7 +7,6 @@ import { updateUser } from '../../../actions/user';
 import ListItem from '../../Profile/ListItem';
 import DateListItem from '../../Profile/DateListItem';
 import Notification from '../../Profile/Notification';
-import Alert from '../../Auth/Alert';
 import { getUser } from '../../../actions/user';
 import { useParams } from 'react-router';
 
@@ -203,7 +202,6 @@ const SingleUser = ({ setCurrent }) => {
           </div>
         </dl>
         {hasUnSavedChanges && <Notification save={save} />}
-        <Alert />
       </div>
     </>
   );

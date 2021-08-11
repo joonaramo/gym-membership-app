@@ -8,15 +8,6 @@ const { checkAuth } = require('../../utils/middleware');
 const Product = require('../../models/product');
 const Coupon = require('../../models/coupon');
 
-const axiosConfig = {
-  headers: {
-    Authorization: `Basic ${Buffer.from(
-      `PK41418_c00c4f82c394:uE5dXrHltcAT5Gi7`
-    ).toString('base64')}`,
-    'Content-Type': 'application/json',
-  },
-};
-
 router.post('/', checkAuth, async (req, res, next) => {
   const defaultData = {
     purchase_country: 'FI',
@@ -95,7 +86,7 @@ router.post('/', checkAuth, async (req, res, next) => {
     const { data } = await axios.post(
       `${config.KLARNA_API_URL}/checkout/v3/orders`,
       postData,
-      axiosConfig
+      config.AXIOS_CONFIG
     );
     if (req.body.coupon) {
       let coupon = await Coupon.findOne({ code: req.body.coupon });
@@ -113,7 +104,7 @@ router.get('/:id', async (req, res, next) => {
   try {
     const { data } = await axios.get(
       `${config.KLARNA_API_URL}/checkout/v3/orders/${req.params.id}`,
-      axiosConfig
+      config.AXIOS_CONFIG
     );
     res.json(data);
   } catch (err) {
@@ -137,7 +128,7 @@ router.post('/confirm/:order_id', async (req, res, next) => {
       },
     } = await axios.get(
       `${config.KLARNA_API_URL}/checkout/v3/orders/${req.params.order_id}`,
-      axiosConfig
+      config.AXIOS_CONFIG
     );
 
     // Check if checkout is in completed-state
@@ -150,7 +141,7 @@ router.post('/confirm/:order_id', async (req, res, next) => {
       await axios.post(
         `${config.KLARNA_API_URL}/ordermanagement/v1/orders/${req.params.order_id}/acknowledge`,
         {},
-        axiosConfig
+        config.AXIOS_CONFIG
       );
     } catch (err) {
       console.log(err);
@@ -192,7 +183,7 @@ router.post('/confirm/:order_id', async (req, res, next) => {
         {
           merchant_reference1: newOrder._id,
         },
-        axiosConfig
+        config.AXIOS_CONFIG
       );
     } catch (err) {
       console.log(err);
@@ -220,6 +211,20 @@ router.post('/confirm/:order_id', async (req, res, next) => {
     });
 
     res.json({ html_snippet });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post('/capture/:id', async (req, res, next) => {
+  try {
+    const { order_amount, order_lines } = req.body;
+    await axios.post(
+      `${config.KLARNA_API_URL}/ordermanagement/v1/orders/${req.params.id}/captures`,
+      { captured_amount: order_amount, order_lines },
+      config.AXIOS_CONFIG
+    );
+    res.status(201).json({ message: 'Capture created' });
   } catch (err) {
     next(err);
   }

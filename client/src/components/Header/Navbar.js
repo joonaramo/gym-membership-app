@@ -54,7 +54,7 @@ const ProfileMenu = ({ isAuthenticated, logOut }) => {
                   isAuthenticated ? item.authLink : !item.authLink
                 )
                 .map((item) => (
-                  <Menu.Item>
+                  <Menu.Item key={item.name}>
                     {({ active }) => (
                       <Link
                         to={item.href}
@@ -73,7 +73,7 @@ const ProfileMenu = ({ isAuthenticated, logOut }) => {
                   isAuthenticated ? item.authLink : !item.authLink
                 )
                 .map((item) => (
-                  <Menu.Item>
+                  <Menu.Item key={item.name}>
                     {({ active }) => (
                       <button
                         onClick={item.onClick === 'logOut' && logOut}
@@ -251,6 +251,7 @@ const Navbar = ({ auth: { isAuthenticated, user }, logout }) => {
                   )
                   .map((item) => (
                     <Link
+                      key={item.name}
                       to={item.href}
                       className='block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700'
                     >
@@ -263,6 +264,7 @@ const Navbar = ({ auth: { isAuthenticated, user }, logout }) => {
                   )
                   .map((item) => (
                     <button
+                      key={item.name}
                       onClick={item.onClick === 'logOut' && logOut}
                       className='block w-full text-left  px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700'
                     >

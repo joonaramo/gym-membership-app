@@ -34,10 +34,25 @@ const confirm = async (checkoutId) => {
   return data;
 };
 
+const capture = async (checkoutId, captureData) => {
+  const axiosConfig = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  const { data } = await axios.post(
+    `${API_URL}/klarna/capture/${checkoutId}`,
+    captureData,
+    axiosConfig
+  );
+  return data;
+};
+
 const klarnaService = {
   get,
   create,
   confirm,
+  capture,
 };
 
 export default klarnaService;

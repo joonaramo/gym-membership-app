@@ -9,7 +9,6 @@ import {
 } from '../../../actions/membership';
 import ListItem from '../../Profile/ListItem';
 import Notification from '../../Profile/Notification';
-import Alert from '../../Auth/Alert';
 import DateListItem from '../../Profile/DateListItem';
 
 const SingleMembership = ({ setCurrent }) => {
@@ -121,7 +120,6 @@ const SingleMembership = ({ setCurrent }) => {
           </div>
         </dl>
         {hasUnSavedChanges && <Notification save={save} />}
-        <Alert />
       </div>
     </>
   );

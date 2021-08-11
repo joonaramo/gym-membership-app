@@ -1,4 +1,4 @@
-const initialState = { message: '', timeoutId: null };
+const initialState = { message: undefined, type: undefined, timeoutId: null };
 
 const notificationReducer = (state = initialState, action) => {
   const { type, payload } = action;
@@ -10,6 +10,7 @@ const notificationReducer = (state = initialState, action) => {
       }
       return {
         message: payload.message,
+        type: payload.type,
         timeoutId: payload.timeoutId,
       };
     case 'DELETE_NOTIFICATION':

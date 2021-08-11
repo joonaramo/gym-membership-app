@@ -7,7 +7,6 @@ import {
 } from '../../../actions/product';
 import ListItem from '../../Profile/ListItem';
 import Notification from '../../Profile/Notification';
-import Alert from '../../Auth/Alert';
 import { useHistory, useParams } from 'react-router';
 
 const SingleProduct = ({ setCurrent }) => {
@@ -142,7 +141,6 @@ const SingleProduct = ({ setCurrent }) => {
           </div>
         </dl>
         {hasUnSavedChanges && <Notification save={save} />}
-        <Alert />
       </div>
     </>
   );

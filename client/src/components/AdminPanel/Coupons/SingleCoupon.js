@@ -6,7 +6,6 @@ import { getCoupon, removeCoupon, updateCoupon } from '../../../actions/coupon';
 import { getOrders } from '../../../actions/order';
 import ListItem from '../../Profile/ListItem';
 import Notification from '../../Profile/Notification';
-import Alert from '../../Auth/Alert';
 import Toggle from './Toggle';
 
 const SingleCoupon = ({ setCurrent }) => {
@@ -137,7 +136,6 @@ const SingleCoupon = ({ setCurrent }) => {
           </div>
         </dl>
         {hasUnSavedChanges && <Notification save={save} />}
-        <Alert />
       </div>
     </>
   );

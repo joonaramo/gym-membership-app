@@ -283,7 +283,6 @@ const CreateSettings = () => {
             </div>
           </Form>
         </Formik>
-        {/* <Alert /> */}
       </div>
     </>
   );

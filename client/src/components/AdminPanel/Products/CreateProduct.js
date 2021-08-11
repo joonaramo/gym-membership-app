@@ -162,7 +162,6 @@ const CreateProduct = ({ setCreating }) => {
             </div>
           </Form>
         </Formik>
-        {/* <Alert /> */}
       </div>
     </>
   );
