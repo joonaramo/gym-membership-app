@@ -25,7 +25,7 @@ const SingleUser = ({ setCurrent }) => {
   }, [dispatch, id]);
 
   useEffect(() => {
-    if (user) {
+    if (user.id) {
       setUpdatedObject({
         id: user.id,
         email: user.email,
@@ -45,12 +45,12 @@ const SingleUser = ({ setCurrent }) => {
     setHasUnsavedChanges(false);
   };
 
-  if (user.loading) {
-    return <Loading color='auto' />;
-  }
-
   if (user.failed) {
     return <NotFound />;
+  }
+
+  if (user.loading || !updatedObject) {
+    return <Loading color='auto' />;
   }
 
   return (

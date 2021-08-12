@@ -50,12 +50,12 @@ const SingleProduct = ({ setCurrent }) => {
     history.push('/admin/products');
   };
 
-  if (product.loading) {
-    return <Loading color='auto' />;
-  }
-
   if (product.failed) {
     return <NotFound />;
+  }
+
+  if (product.loading || !updatedObject) {
+    return <Loading color='auto' />;
   }
 
   return (

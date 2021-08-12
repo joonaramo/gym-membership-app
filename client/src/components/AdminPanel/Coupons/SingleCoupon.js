@@ -64,12 +64,12 @@ const SingleCoupon = ({ setCurrent }) => {
     history.push('/admin/coupons');
   };
 
-  if (coupon.loading) {
-    return <Loading color='auto' />;
-  }
-
   if (coupon.failed) {
     return <NotFound />;
+  }
+
+  if (coupon.loading || !updatedObject) {
+    return <Loading color='auto' />;
   }
 
   return (

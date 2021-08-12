@@ -42,12 +42,12 @@ const SingleOrder = ({ setCurrent }) => {
     }
   };
 
-  if (order.loading) {
-    return <Loading color='auto' />;
-  }
-
   if (order.failed) {
     return <NotFound />;
+  }
+
+  if (order.loading) {
+    return <Loading color='auto' />;
   }
 
   return (

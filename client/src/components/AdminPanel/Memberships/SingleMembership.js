@@ -46,12 +46,12 @@ const SingleMembership = ({ setCurrent }) => {
     history.push('/admin/memberships');
   };
 
-  if (membership.loading) {
-    return <Loading color='auto' />;
-  }
-
   if (membership.failed) {
     return <NotFound />;
+  }
+
+  if (membership.loading || !updatedObject) {
+    return <Loading color='auto' />;
   }
 
   return (
