@@ -5,22 +5,26 @@ import {
   removeProduct,
   updateProduct,
 } from '../../../actions/product';
+import { getCoupons } from '../../../actions/coupon';
 import ListItem from '../../Profile/ListItem';
 import Notification from '../../Profile/Notification';
 import { useHistory, useParams } from 'react-router';
 import Loading from '../../UI/Loading';
 import NotFound from '../UI/NotFound';
+import ListListItem from '../../UI/ListListItem';
 
 const SingleProduct = ({ setCurrent }) => {
   const [updatedObject, setUpdatedObject] = useState();
   const [hasUnSavedChanges, setHasUnsavedChanges] = useState(false);
   const { product } = useSelector((state) => state.product);
+  const { coupons } = useSelector((state) => state.coupon);
   const dispatch = useDispatch();
   const history = useHistory();
   const { id } = useParams();
 
   useEffect(() => {
     dispatch(getProduct(id));
+    dispatch(getCoupons(1, 10));
     setCurrent('Products');
   }, [dispatch, id]);
 
@@ -36,6 +40,7 @@ const SingleProduct = ({ setCurrent }) => {
         unit_price: product.unit_price,
         tax_rate: product.tax_rate,
         membership_length: product.membership_length,
+        valid_coupons: product.valid_coupons,
       });
     }
   }, [product]);
@@ -115,6 +120,16 @@ const SingleProduct = ({ setCurrent }) => {
             name='quantity_unit'
             type='text'
             value={updatedObject.quantity_unit}
+            updatedObject={updatedObject}
+            setUpdatedObject={setUpdatedObject}
+            setHasUnsavedChanges={setHasUnsavedChanges}
+          />
+          <ListListItem
+            title='Valid coupons'
+            name='valid_coupons'
+            type='text'
+            listItems={coupons}
+            value={product.valid_coupons}
             updatedObject={updatedObject}
             setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}

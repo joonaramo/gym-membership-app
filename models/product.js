@@ -32,6 +32,12 @@ const productSchema = mongoose.Schema({
     type: Number,
     required: true,
   },
+  valid_coupons: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Coupon',
+    },
+  ],
   times_purchased: {
     type: Number,
     default: 0,

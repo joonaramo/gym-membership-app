@@ -18,6 +18,9 @@ export const getOrders = (page, limit, status) => async (dispatch) => {
 
 export const getOrder = (orderId) => async (dispatch) => {
   try {
+    dispatch({
+      type: 'SET_ORDER_LOADING',
+    });
     const order = await ordersService.get(orderId);
     dispatch({
       type: 'GET_ORDER',

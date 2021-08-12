@@ -12,6 +12,11 @@ const initialState = {
 const orderReducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
+    case 'SET_ORDER_LOADING':
+      return {
+        ...state,
+        order: { loading: true },
+      };
     case 'GET_ORDER':
       return {
         ...state,

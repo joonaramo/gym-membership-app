@@ -22,31 +22,43 @@ router.post('/', checkAuth, async (req, res, next) => {
     },
   };
 
-  let discountAmount = 0;
-
-  if (req.body.coupon) {
-    const coupon = await Coupon.findOne({ code: req.body.coupon });
-    discountAmount = coupon.value;
-  }
-
-  const calculateOrderLinesValues = (orderLines) => {
+  const calculateOrderLinesValues = async (orderLines) => {
     let amount = 0,
       taxAmount = 0;
     const currentOrderLines = orderLines.filter(
       (orderLine) => orderLine.quantity
     );
 
-    currentOrderLines.forEach((orderLine) => {
-      orderLine['total_amount'] =
-        orderLine.quantity * orderLine.unit_price - discountAmount;
-      orderLine['total_tax_amount'] =
-        orderLine['total_amount'] -
-        (orderLine['total_amount'] * 10000) / (10000 + orderLine.tax_rate);
-      orderLine['total_discount_amount'] = discountAmount;
+    let coupon;
 
-      amount += orderLine['total_amount'];
-      taxAmount += orderLine['total_tax_amount'];
-    });
+    if (req.body.coupon) {
+      coupon = await Coupon.findOne({ code: req.body.coupon });
+    }
+
+    await Promise.all(
+      currentOrderLines.map(async (orderLine) => {
+        let discountApplied = false;
+        let discountAmount = 0;
+        if (
+          coupon &&
+          orderLine.valid_coupons.includes(coupon._id) &&
+          !discountApplied
+        ) {
+          discountAmount = coupon.value;
+          discountApplied = true;
+        }
+        console.log(discountAmount, 'discount');
+        orderLine['total_amount'] =
+          orderLine.quantity * orderLine.unit_price - discountAmount;
+        orderLine['total_tax_amount'] =
+          orderLine['total_amount'] -
+          (orderLine['total_amount'] * 10000) / (10000 + orderLine.tax_rate);
+        orderLine['total_discount_amount'] = discountAmount;
+
+        amount += orderLine['total_amount'];
+        taxAmount += orderLine['total_tax_amount'];
+      })
+    );
 
     return {
       amount,
@@ -69,11 +81,13 @@ router.post('/', checkAuth, async (req, res, next) => {
       tax_rate: product.tax_rate,
       quantity: req.body.quantities[i],
       merchant_data: product._id,
+      valid_coupons: product.valid_coupons,
     };
   });
 
-  const { amount, taxAmount, orderLines } =
-    calculateOrderLinesValues(selectedProducts);
+  const { amount, taxAmount, orderLines } = await calculateOrderLinesValues(
+    selectedProducts
+  );
 
   const postData = {
     ...defaultData,
@@ -95,7 +109,7 @@ router.post('/', checkAuth, async (req, res, next) => {
     }
     res.json(data);
   } catch (err) {
-    console.log(err);
+    console.log(err.response.data);
     next(err);
   }
 });
