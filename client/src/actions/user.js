@@ -9,6 +9,9 @@ export const getUser = (userId) => async (dispatch) => {
       payload: user,
     });
   } catch (err) {
+    dispatch({
+      type: 'GET_USER_FAILED',
+    });
     const errors = err.response.data.errors;
     if (errors) {
       errors.forEach((error) => dispatch(setNotification(error.msg, 3000)));

@@ -1,5 +1,5 @@
 const initialState = {
-  membership: {},
+  membership: { loading: true },
   loading: true,
   memberships: [],
   totalDocs: 0,
@@ -17,6 +17,11 @@ const membershipReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         membership: payload,
+      };
+    case 'GET_MEMBERSHIP_FAILED':
+      return {
+        ...state,
+        membership: { loading: false, failed: true },
       };
     case 'GET_MEMBERSHIPS':
       return {

@@ -9,6 +9,8 @@ import DateListItem from '../../Profile/DateListItem';
 import Notification from '../../Profile/Notification';
 import { getUser } from '../../../actions/user';
 import { useParams } from 'react-router';
+import Loading from '../../UI/Loading';
+import NotFound from '../UI/NotFound';
 
 const SingleUser = ({ setCurrent }) => {
   const [updatedObject, setUpdatedObject] = useState();
@@ -43,13 +45,17 @@ const SingleUser = ({ setCurrent }) => {
     setHasUnsavedChanges(false);
   };
 
-  if (!updatedObject) {
-    return null;
+  if (user.loading) {
+    return <Loading color='auto' />;
+  }
+
+  if (user.failed) {
+    return <NotFound />;
   }
 
   return (
     <>
-      <h2 className='max-w-6xl mx-auto mt-8 px-4 text-lg leading-6 font-medium text-gray-900 sm:px-6 lg:px-8'>
+      <h2 className='max-w-6xl mx-auto px-4 text-lg leading-6 font-medium text-gray-900 sm:px-6 lg:px-8'>
         Edit user
       </h2>
       <div className='border-t border-gray-200 px-4 py-5 sm:p-0 mt-2'>

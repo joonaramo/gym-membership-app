@@ -28,7 +28,7 @@ const App = ({ loadUser, settings, getSettings, loading }) => {
   }, [loading]);
 
   if (loading || loadingState) {
-    return <Loading />;
+    return <Loading fullScreen={true} />;
   }
 
   if (!settings) {

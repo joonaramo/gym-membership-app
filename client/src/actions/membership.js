@@ -24,6 +24,9 @@ export const getMembership = (membershipId) => async (dispatch) => {
       payload: membership,
     });
   } catch (err) {
+    dispatch({
+      type: 'GET_MEMBERSHIP_FAILED',
+    });
     const errors = err.response.data.errors;
     if (errors) {
       errors.forEach((error) => dispatch(setNotification(error.msg, 3000)));

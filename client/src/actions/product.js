@@ -24,6 +24,9 @@ export const getProduct = (productId) => async (dispatch) => {
       payload: product,
     });
   } catch (err) {
+    dispatch({
+      type: 'GET_PRODUCT_FAILED',
+    });
     const errors = err.response.data.errors;
     if (errors) {
       errors.forEach((error) => dispatch(setNotification(error.msg, 3000)));

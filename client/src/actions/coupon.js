@@ -24,6 +24,9 @@ export const getCoupon = (couponId) => async (dispatch) => {
       payload: coupon,
     });
   } catch (err) {
+    dispatch({
+      type: 'GET_COUPON_FAILED',
+    });
     const errors = err.response.data.errors;
     if (errors) {
       errors.forEach((error) => dispatch(setNotification(error.msg, 3000)));

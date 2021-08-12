@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { getOrder, removeOrder } from '../../../actions/order';
+import { setNotification } from '../../../actions/notification';
 import klarnaService from '../../../services/klarna';
 import ListItem from '../../Profile/ListItem';
 import DateListItem from '../../Profile/DateListItem';
-import { setNotification } from '../../../actions/notification';
+import Loading from '../../UI/Loading';
+import NotFound from '../UI/NotFound';
 
 const SingleOrder = ({ setCurrent }) => {
   const { order } = useSelector((state) => state.order);
@@ -40,13 +42,17 @@ const SingleOrder = ({ setCurrent }) => {
     }
   };
 
-  if (!order) {
-    return null;
+  if (order.loading) {
+    return <Loading color='auto' />;
+  }
+
+  if (order.failed) {
+    return <NotFound />;
   }
 
   return (
     <>
-      <div className='flex mx-auto mt-8'>
+      <div className='flex mx-auto'>
         <h2 className='flex-1 px-4 sm:px-6 lg:px-8 text-lg leading-6 font-medium text-gray-900'>
           Order details
         </h2>

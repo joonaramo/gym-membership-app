@@ -1,5 +1,5 @@
 const initialState = {
-  coupon: {},
+  coupon: { loading: true },
   loading: true,
   coupons: [],
   totalDocs: 0,
@@ -17,6 +17,11 @@ const couponReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         coupon: payload,
+      };
+    case 'GET_COUPON_FAILED':
+      return {
+        ...state,
+        coupon: { loading: false, failed: true },
       };
     case 'GET_COUPONS':
       return {

@@ -1,5 +1,5 @@
 const initialState = {
-  order: {},
+  order: { loading: true },
   loading: true,
   orders: [],
   totalDocs: 0,
@@ -15,8 +15,12 @@ const orderReducer = (state = initialState, action) => {
     case 'GET_ORDER':
       return {
         ...state,
-        loading: false,
-        order: payload,
+        order: { ...payload, loading: false },
+      };
+    case 'GET_ORDER_FAILED':
+      return {
+        ...state,
+        order: { loading: false, failed: true },
       };
     case 'GET_ORDERS':
       return {

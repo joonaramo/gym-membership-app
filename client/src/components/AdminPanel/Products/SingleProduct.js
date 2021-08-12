@@ -8,6 +8,8 @@ import {
 import ListItem from '../../Profile/ListItem';
 import Notification from '../../Profile/Notification';
 import { useHistory, useParams } from 'react-router';
+import Loading from '../../UI/Loading';
+import NotFound from '../UI/NotFound';
 
 const SingleProduct = ({ setCurrent }) => {
   const [updatedObject, setUpdatedObject] = useState();
@@ -48,13 +50,17 @@ const SingleProduct = ({ setCurrent }) => {
     history.push('/admin/products');
   };
 
-  if (!updatedObject) {
-    return null;
+  if (product.loading) {
+    return <Loading color='auto' />;
+  }
+
+  if (product.failed) {
+    return <NotFound />;
   }
 
   return (
     <>
-      <h2 className='max-w-6xl mx-auto mt-8 px-4 text-lg leading-6 font-medium text-gray-900 sm:px-6 lg:px-8'>
+      <h2 className='max-w-6xl mx-auto px-4 text-lg leading-6 font-medium text-gray-900 sm:px-6 lg:px-8'>
         Edit a product
       </h2>
       <div className='border-t border-gray-200 px-4 py-5 sm:p-0 mt-2'>

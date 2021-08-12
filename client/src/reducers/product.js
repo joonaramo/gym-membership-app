@@ -1,5 +1,7 @@
 const initialState = {
-  product: {},
+  product: {
+    loading: true,
+  },
   loading: true,
   products: [],
   totalDocs: 0,
@@ -17,6 +19,11 @@ const productReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         product: payload,
+      };
+    case 'GET_PRODUCT_FAILED':
+      return {
+        ...state,
+        product: { loading: false, failed: true },
       };
     case 'GET_PRODUCTS':
       return {

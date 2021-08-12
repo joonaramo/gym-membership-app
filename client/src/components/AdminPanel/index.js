@@ -101,11 +101,11 @@ const AdminPanel = ({
               secondaryNavigation={secondaryNavigation}
               setCurrent={setCurrent}
             />
-            <div className='flex-1 overflow-auto focus:outline-none'>
+            <div className='flex flex-col flex-1 min-h-screen overflow-auto focus:outline-none'>
               <Header user={user} setSidebarOpen={setSidebarOpen} />
-              <main className='flex-1 relative pb-8 z-0 overflow-y-auto'>
+              <main className='flex flex-col flex-1 relative z-0 overflow-y-auto'>
                 <PageHeader />
-                <div className='mt-8'>
+                <div className='my-auto py-8'>
                   <Component setCurrent={setCurrent} {...props} />
                 </div>
               </main>

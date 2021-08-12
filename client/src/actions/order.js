@@ -24,6 +24,9 @@ export const getOrder = (orderId) => async (dispatch) => {
       payload: order,
     });
   } catch (err) {
+    dispatch({
+      type: 'GET_ORDER_FAILED',
+    });
     const errors = err.response.data.errors;
     if (errors) {
       errors.forEach((error) => dispatch(setNotification(error.msg, 3000)));

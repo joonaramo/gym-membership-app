@@ -7,11 +7,13 @@ import { getOrders } from '../../../actions/order';
 import ListItem from '../../Profile/ListItem';
 import Notification from '../../Profile/Notification';
 import Toggle from './Toggle';
+import Loading from '../../UI/Loading';
+import NotFound from '../UI/NotFound';
 
 const SingleCoupon = ({ setCurrent }) => {
   const [updatedObject, setUpdatedObject] = useState();
   const [hasUnSavedChanges, setHasUnsavedChanges] = useState(false);
-  const { coupon, loading } = useSelector((state) => state.coupon);
+  const { coupon } = useSelector((state) => state.coupon);
   const { orders } = useSelector((state) => state.order);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -62,13 +64,17 @@ const SingleCoupon = ({ setCurrent }) => {
     history.push('/admin/coupons');
   };
 
-  if (!updatedObject) {
-    return null;
+  if (coupon.loading) {
+    return <Loading color='auto' />;
+  }
+
+  if (coupon.failed) {
+    return <NotFound />;
   }
 
   return (
     <>
-      <h2 className='max-w-6xl mx-auto mt-8 px-4 text-lg leading-6 font-medium text-gray-900 sm:px-6 lg:px-8'>
+      <h2 className='max-w-6xl mx-auto px-4 text-lg leading-6 font-medium text-gray-900 sm:px-6 lg:px-8'>
         Edit a coupon
       </h2>
       <div className='border-t border-gray-200 px-4 py-5 sm:p-0 mt-2'>

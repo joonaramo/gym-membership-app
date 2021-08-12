@@ -1,5 +1,5 @@
 const initialState = {
-  user: {},
+  user: { loading: true },
   loading: true,
   users: [],
   totalDocs: 0,
@@ -17,6 +17,11 @@ const userReducer = (state = initialState, action) => {
         ...state,
         user: payload,
         loading: false,
+      };
+    case 'GET_USER_FAILED':
+      return {
+        ...state,
+        user: { loading: false, failed: true },
       };
     case 'GET_USERS':
       return {

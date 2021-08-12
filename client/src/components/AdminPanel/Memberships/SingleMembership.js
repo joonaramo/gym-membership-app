@@ -10,6 +10,8 @@ import {
 import ListItem from '../../Profile/ListItem';
 import Notification from '../../Profile/Notification';
 import DateListItem from '../../Profile/DateListItem';
+import Loading from '../../UI/Loading';
+import NotFound from '../UI/NotFound';
 
 const SingleMembership = ({ setCurrent }) => {
   const [updatedObject, setUpdatedObject] = useState();
@@ -44,13 +46,17 @@ const SingleMembership = ({ setCurrent }) => {
     history.push('/admin/memberships');
   };
 
-  if (!updatedObject) {
-    return null;
+  if (membership.loading) {
+    return <Loading color='auto' />;
+  }
+
+  if (membership.failed) {
+    return <NotFound />;
   }
 
   return (
     <>
-      <h2 className='max-w-6xl mx-auto mt-8 px-4 text-lg leading-6 font-medium text-gray-900 sm:px-6 lg:px-8'>
+      <h2 className='max-w-6xl mx-auto px-4 text-lg leading-6 font-medium text-gray-900 sm:px-6 lg:px-8'>
         Edit a membership
       </h2>
       <div className='border-t border-gray-200 px-4 py-5 sm:p-0 mt-2'>
