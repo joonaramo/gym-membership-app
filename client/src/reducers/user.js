@@ -2,6 +2,7 @@ const initialState = {
   user: { loading: true },
   loading: true,
   users: [],
+  allUsers: [],
   totalDocs: 0,
   limit: 0,
   pagingCounter: 0,
@@ -33,6 +34,11 @@ const userReducer = (state = initialState, action) => {
         pagingCounter: payload.pagingCounter,
         hasPrevPage: payload.hasPrevPage,
         hasNextPage: payload.hasNextPage,
+      };
+    case 'GET_ALL_USERS':
+      return {
+        ...state,
+        allUsers: payload,
       };
     case 'UPDATE_SINGLE_USER':
       return {

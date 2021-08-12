@@ -34,6 +34,21 @@ export const getUsers = (page, limit) => async (dispatch) => {
   }
 };
 
+export const getAllUsers = () => async (dispatch) => {
+  try {
+    const users = await usersService.getAll();
+    dispatch({
+      type: 'GET_ALL_USERS',
+      payload: users,
+    });
+  } catch (err) {
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach((error) => dispatch(setNotification(error.msg, 3000)));
+    }
+  }
+};
+
 export const updateUser = (id, userData) => async (dispatch) => {
   try {
     const user = await usersService.update(id, userData);
