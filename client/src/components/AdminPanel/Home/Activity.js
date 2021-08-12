@@ -1,58 +1,82 @@
-import React from 'react';
-import { CashIcon, ChevronRightIcon } from '@heroicons/react/solid';
-import { classNames } from '../../../utils/helpers';
-
-const transactions = [
-  {
-    id: 1,
-    name: 'Payment to Molly Sanders',
-    href: '#',
-    amount: '$20,000',
-    currency: 'USD',
-    status: 'success',
-    date: 'July 11, 2020',
-    datetime: '2020-07-11',
-  },
-  // More transactions...
-];
-const statusStyles = {
-  success: 'bg-green-100 text-green-800',
-  processing: 'bg-yellow-100 text-yellow-800',
-  failed: 'bg-gray-100 text-gray-800',
-};
+import React, { useEffect, useState } from 'react';
+import {
+  ChevronRightIcon,
+  UserIcon,
+  XIcon,
+  CheckIcon,
+} from '@heroicons/react/solid';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
+import klarnaService from '../../../services/klarna';
+import { getOrders } from '../../../actions/order';
+import { setNotification } from '../../../actions/notification';
+import Pagination from '../UI/Pagination';
 
 const Activity = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentLimit, setCurrentLimit] = useState(10);
+  const { orders, totalDocs, limit, pagingCounter, hasPrevPage, hasNextPage } =
+    useSelector((state) => state.order);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getOrders(currentPage, currentLimit, 'checkout_complete'));
+  }, [currentPage, currentLimit]);
+
+  const capture = async (order) => {
+    const captureData = {
+      order_amount: order.klarna.order_amount,
+      order_lines: order.klarna.order_lines,
+    };
+    try {
+      const { message } = await klarnaService.capture(
+        order.klarna.order_id,
+        captureData
+      );
+      dispatch(setNotification(message, 3000, 'SUCCESS'));
+      dispatch(getOrders(currentPage, currentLimit, 'checkout_complete'));
+    } catch (err) {
+      dispatch(setNotification('Order capture failed', 3000));
+    }
+  };
+
   return (
     <>
       <h2 className='max-w-6xl mx-auto mt-8 px-4 text-lg leading-6 font-medium text-gray-900 sm:px-6 lg:px-8'>
-        Recent activity
+        Uncaptured orders
       </h2>
       {/* Activity list (smallest breakpoint only) */}
       <div className='shadow sm:hidden'>
         <ul className='mt-2 divide-y divide-gray-200 overflow-hidden shadow sm:hidden'>
-          {transactions.map((transaction) => (
-            <li key={transaction.id}>
-              <a
-                href={transaction.href}
+          {orders.map((order) => (
+            <li key={order.id}>
+              <Link
+                to={`/admin/orders/${order.id}`}
                 className='block px-4 py-4 bg-white hover:bg-gray-50'
               >
                 <span className='flex items-center space-x-4'>
                   <span className='flex-1 flex space-x-2 truncate'>
-                    <CashIcon
+                    <UserIcon
                       className='flex-shrink-0 h-5 w-5 text-gray-400'
                       aria-hidden='true'
                     />
                     <span className='flex flex-col text-gray-500 text-sm truncate'>
-                      <span className='truncate'>{transaction.name}</span>
+                      <span className='truncate'>
+                        <span className='text-gray-900 font-medium'>
+                          Order ID
+                        </span>{' '}
+                        {order.id}
+                      </span>
                       <span>
                         <span className='text-gray-900 font-medium'>
-                          {transaction.amount}
+                          Completed at
                         </span>{' '}
-                        {transaction.currency}
+                        {format(
+                          new Date(order.completed_at),
+                          'dd.MM.yyyy HH:mm'
+                        )}
                       </span>
-                      <time dateTime={transaction.datetime}>
-                        {transaction.date}
-                      </time>
                     </span>
                   </span>
                   <ChevronRightIcon
@@ -60,7 +84,7 @@ const Activity = () => {
                     aria-hidden='true'
                   />
                 </span>
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
@@ -89,84 +113,67 @@ const Activity = () => {
                 <thead>
                   <tr>
                     <th className='px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                      Transaction
-                    </th>
-                    <th className='px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                      Amount
-                    </th>
-                    <th className='hidden px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider md:block'>
-                      Status
+                      Order ID
                     </th>
                     <th className='px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider'>
                       Date
                     </th>
+                    <th className='px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                      User
+                    </th>
+                    <th className='px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                      Completed
+                    </th>
                   </tr>
                 </thead>
                 <tbody className='bg-white divide-y divide-gray-200'>
-                  {transactions.map((transaction) => (
-                    <tr key={transaction.id} className='bg-white'>
+                  {orders.map((order) => (
+                    <tr key={order.id} className='bg-white'>
                       <td className='max-w-0 w-full px-6 py-4 whitespace-nowrap text-sm text-gray-900'>
                         <div className='flex'>
-                          <a
-                            href={transaction.href}
+                          <Link
+                            to={`/admin/orders/${order.id}`}
                             className='group inline-flex space-x-2 truncate text-sm'
                           >
-                            <CashIcon
+                            <UserIcon
                               className='flex-shrink-0 h-5 w-5 text-gray-400 group-hover:text-gray-500'
                               aria-hidden='true'
                             />
                             <p className='text-gray-500 truncate group-hover:text-gray-900'>
-                              {transaction.name}
+                              {order.id}
                             </p>
-                          </a>
+                          </Link>
                         </div>
                       </td>
-                      <td className='px-6 py-4 text-right whitespace-nowrap text-sm text-gray-500'>
-                        <span className='text-gray-900 font-medium'>
-                          {transaction.amount}{' '}
-                        </span>
-                        {transaction.currency}
+                      <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                        {format(
+                          new Date(order.completed_at),
+                          'dd.MM.yyyy HH:mm'
+                        )}
                       </td>
-                      <td className='hidden px-6 py-4 whitespace-nowrap text-sm text-gray-500 md:block'>
-                        <span
-                          className={classNames(
-                            statusStyles[transaction.status],
-                            'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize'
-                          )}
+                      <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                        {order.user.first_name} {order.user.last_name}
+                      </td>
+                      <td className='px-6 py-2 text-right whitespace-nowrap text-sm text-gray-500'>
+                        <button
+                          onClick={() => capture(order)}
+                          className='inline-flex items-center text-center px-4 py-1 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50'
                         >
-                          {transaction.status}
-                        </span>
-                      </td>
-                      <td className='px-6 py-4 text-right whitespace-nowrap text-sm text-gray-500'>
-                        <time dateTime={transaction.datetime}>
-                          {transaction.date}
-                        </time>
+                          Capture funds
+                        </button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-              {/* Pagination */}
-              <nav
-                className='bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6'
-                aria-label='Pagination'
-              >
-                <div className='hidden sm:block'>
-                  <p className='text-sm text-gray-700'>
-                    Showing <span className='font-medium'>1</span> to{' '}
-                    <span className='font-medium'>10</span> of{' '}
-                    <span className='font-medium'>20</span> results
-                  </p>
-                </div>
-                <div className='flex-1 flex justify-between sm:justify-end'>
-                  <button className='relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50'>
-                    Previous
-                  </button>
-                  <button className='ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50'>
-                    Next
-                  </button>
-                </div>
-              </nav>
+              <Pagination
+                pagingCounter={pagingCounter}
+                limit={limit}
+                totalDocs={totalDocs}
+                hasNextPage={hasNextPage}
+                hasPrevPage={hasPrevPage}
+                setCurrentPage={setCurrentPage}
+              />
             </div>
           </div>
         </div>

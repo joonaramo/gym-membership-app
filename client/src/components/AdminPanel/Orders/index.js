@@ -137,7 +137,8 @@ const Orders = ({ setCurrent }) => {
                         {order.user.first_name} {order.user.last_name}
                       </td>
                       <td className='px-6 py-4 text-right whitespace-nowrap text-sm text-gray-500'>
-                        {order.status === 'checkout_complete' ? (
+                        {order.status === 'checkout_complete' ||
+                        order.status === 'order_captured' ? (
                           <CheckIcon
                             className='flex-shrink-0 h-5 w-5 m-auto text-green-400 group-hover:text-gray-500'
                             aria-hidden='true'

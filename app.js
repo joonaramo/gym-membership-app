@@ -36,8 +36,6 @@ app.use('/api/memberships', membershipsRouter);
 app.use('/api/settings', settingsRouter);
 
 const errorHandler = (error, request, response, next) => {
-  console.error(error.message);
-
   if (error.name === 'CastError') {
     return response.status(400).json({ error: 'malformatted id' });
   } else if (error.name === 'ValidationError') {
@@ -53,8 +51,11 @@ const errorHandler = (error, request, response, next) => {
     });
   } else if (error.name === 'TypeError') {
     return response.status(400).json({ error: 'Invalid request' });
+  } else if (error.name === 'Error') {
+    return response
+      .status(400)
+      .json({ errors: [{ msg: error.response.data.error_code }] });
   }
-
   next(error);
 };
 

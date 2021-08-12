@@ -1,9 +1,9 @@
 import ordersService from '../services/orders';
 import { setNotification } from './notification';
 
-export const getOrders = (page, limit) => async (dispatch) => {
+export const getOrders = (page, limit, status) => async (dispatch) => {
   try {
-    const orders = await ordersService.getAll(page, limit);
+    const orders = await ordersService.getAll(page, limit, status);
     dispatch({
       type: 'GET_ORDERS',
       payload: orders,
@@ -61,13 +61,14 @@ export const createOrder = (orderData) => async (dispatch) => {
   }
 };
 
-export const removeOrder = (orderId) => async (dispatch) => {
+export const removeOrder = (orderId, history) => async (dispatch) => {
   try {
     await ordersService.remove(orderId);
     dispatch({
       type: 'REMOVE_ORDER',
       payload: orderId,
     });
+    history.push('/admin/orders');
   } catch (err) {
     const errors = err.response.data.errors;
     if (errors) {

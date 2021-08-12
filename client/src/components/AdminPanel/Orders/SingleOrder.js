@@ -20,8 +20,7 @@ const SingleOrder = ({ setCurrent }) => {
   }, [dispatch, id]);
 
   const remove = () => {
-    dispatch(removeOrder(id));
-    history.push('/admin/orders');
+    dispatch(removeOrder(id, history));
   };
 
   const capture = async () => {
@@ -34,7 +33,7 @@ const SingleOrder = ({ setCurrent }) => {
         order.klarna.order_id,
         captureData
       );
-      dispatch(setNotification(message, 'SUCCESS', 3000));
+      dispatch(setNotification(message, 3000, 'SUCCESS'));
       dispatch(getOrder(id));
     } catch (err) {
       dispatch(setNotification('Order capture failed', 3000));
@@ -123,7 +122,9 @@ const SingleOrder = ({ setCurrent }) => {
                 onClick={() => remove()}
                 className='inline-flex items-center text-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50'
               >
-                Remove order
+                {order.status === 'order_captured'
+                  ? 'Refund order'
+                  : 'Cancel order'}
               </button>
             </div>
           </dl>

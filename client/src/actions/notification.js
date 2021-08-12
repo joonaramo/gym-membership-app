@@ -1,4 +1,4 @@
-export const setNotification = (message, type, timeout) => {
+export const setNotification = (message, timeout, type) => {
   return async (dispatch) => {
     const timeoutId = setTimeout(() => {
       dispatch({

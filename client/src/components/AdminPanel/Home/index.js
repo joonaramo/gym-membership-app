@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUsers } from '../../../actions/user';
-import { getOrders } from '../../../actions/order';
 import { getMemberships } from '../../../actions/membership';
 import {
   UserGroupIcon,
@@ -21,7 +20,6 @@ const Home = ({ setCurrent }) => {
   useEffect(() => {
     setCurrent('Home');
     dispatch(getUsers(1, 1));
-    dispatch(getOrders(1, 1));
     dispatch(getMemberships());
   }, []);
 
@@ -37,7 +35,7 @@ const Home = ({ setCurrent }) => {
         amount: user.totalDocs,
       },
       {
-        name: 'Orders',
+        name: 'Uncaptured orders',
         href: '/admin/orders',
         icon: CreditCardIcon,
         amount: order.totalDocs,

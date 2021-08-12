@@ -6,11 +6,12 @@ const get = async (orderId) => {
   return data;
 };
 
-const getAll = async (page, limit) => {
+const getAll = async (page, limit, status) => {
   const { data } = await axios.get(`${API_URL}/orders`, {
     params: {
       page,
       limit,
+      status,
     },
   });
   return data;

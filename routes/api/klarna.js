@@ -224,6 +224,9 @@ router.post('/capture/:id', async (req, res, next) => {
       { captured_amount: order_amount, order_lines },
       config.AXIOS_CONFIG
     );
+    const order = await Order.findOne({ order_id: req.params.id });
+    order.status = 'order_captured';
+    await order.save();
     res.status(201).json({ message: 'Capture created' });
   } catch (err) {
     next(err);
