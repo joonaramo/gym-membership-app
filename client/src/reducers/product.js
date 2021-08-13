@@ -4,6 +4,7 @@ const initialState = {
   },
   loading: true,
   products: [],
+  allProducts: [],
   totalDocs: 0,
   limit: 0,
   pagingCounter: 0,
@@ -35,6 +36,11 @@ const productReducer = (state = initialState, action) => {
         pagingCounter: payload.pagingCounter,
         hasPrevPage: payload.hasPrevPage,
         hasNextPage: payload.hasNextPage,
+      };
+    case 'GET_ALL_PRODUCTS':
+      return {
+        ...state,
+        allProducts: payload,
       };
     case 'UPDATE_PRODUCT':
       return {

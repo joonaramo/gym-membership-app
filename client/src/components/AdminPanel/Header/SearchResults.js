@@ -1,9 +1,54 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
-const SearchResults = ({ searchResults }) => {
+const SearchResults = ({ searchResults, setSearchResults, name }) => {
+  const [title, setTitle] = useState('');
+  const [subtitle, setSubtitle] = useState('');
+  const path = name.toLowerCase();
   useEffect(() => {
-    console.log(searchResults, 'results');
-  }, [searchResults]);
+    switch (name) {
+      case 'Users':
+        setTitle('full_name');
+        setSubtitle('email');
+        setSearchResults([]);
+        break;
+      case 'Products':
+        setTitle('name');
+        setSubtitle('reference');
+        setSearchResults([]);
+        break;
+      case 'Orders':
+        setTitle('id');
+        setSubtitle('user');
+        setSearchResults([]);
+        break;
+      case 'Memberships':
+        setTitle('id');
+        setSubtitle('user');
+        setSearchResults([]);
+        break;
+      case 'Coupons':
+        setTitle('code');
+        setSubtitle('value');
+        setSearchResults([]);
+        break;
+      default:
+        break;
+    }
+  }, [name]);
+
+  const getTitle = (res) => {
+    return res[title];
+  };
+
+  const getSubtitle = (res) => {
+    if (subtitle === 'value') {
+      return `${res[subtitle]}€`;
+    } else if (subtitle === 'user') {
+      return res[subtitle].full_name;
+    }
+    return res[subtitle];
+  };
 
   if (!searchResults.length > 0) {
     return null;
@@ -21,31 +66,26 @@ const SearchResults = ({ searchResults }) => {
                 </div>
                 <div className='flex-1 min-w-0'>
                   <p className='text-sm font-medium text-gray-900 truncate'>
-                    {res.first_name} {res.last_name}
+                    {getTitle(res)}
                   </p>
-                  <p className='text-sm text-gray-500 truncate'>{res.email}</p>
+                  <p className='text-sm text-gray-500 truncate'>
+                    {getSubtitle(res)}
+                  </p>
                 </div>
                 <div>
-                  <a
-                    href='#'
+                  <Link
+                    to={`/admin/${path}/${res.id}`}
                     className='inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50'
                   >
                     View
-                  </a>
+                  </Link>
                 </div>
               </div>
             </li>
           ))}
         </ul>
       </div>
-      <div className='mt-6'>
-        <a
-          href='#'
-          className='w-full flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50'
-        >
-          View all
-        </a>
-      </div>
+      <div className='mt-6'></div>
     </div>
   );
 };

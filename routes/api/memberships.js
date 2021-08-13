@@ -16,7 +16,7 @@ router.get('/', async (req, res, next) => {
       const memberships = await Membership.paginate({}, options);
       return res.json(memberships);
     }
-    const memberships = await Membership.find();
+    const memberships = await Membership.find().populate('user');
     res.json(memberships);
   } catch (err) {
     next(err);
@@ -28,7 +28,10 @@ router.get('/:id', async (req, res, next) => {
     const membership = await Membership.findById(req.params.id).populate(
       'user'
     );
-    res.json(membership);
+    if (membership) {
+      return res.json(membership);
+    }
+    res.status(404).json({ error: 'Not found' });
   } catch (err) {
     next(err);
   }

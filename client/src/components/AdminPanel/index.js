@@ -103,7 +103,10 @@ const AdminPanel = ({
             />
             <div className='flex flex-col flex-1 min-h-screen overflow-auto focus:outline-none'>
               <Header
-                current={navigation.find((item) => item.current)}
+                current={
+                  navigation.find((item) => item.current) ||
+                  secondaryNavigation.find((item) => item.current)
+                }
                 user={user}
                 setSidebarOpen={setSidebarOpen}
               />

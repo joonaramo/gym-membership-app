@@ -16,6 +16,21 @@ export const getMemberships = (page, limit) => async (dispatch) => {
   }
 };
 
+export const getAllMemberships = () => async (dispatch) => {
+  try {
+    const memberships = await membershipsService.getAll();
+    dispatch({
+      type: 'GET_ALL_MEMBERSHIPS',
+      payload: memberships,
+    });
+  } catch (err) {
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach((error) => dispatch(setNotification(error.msg, 3000)));
+    }
+  }
+};
+
 export const getMembership = (membershipId) => async (dispatch) => {
   try {
     const membership = await membershipsService.get(membershipId);

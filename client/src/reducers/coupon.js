@@ -2,6 +2,7 @@ const initialState = {
   coupon: { loading: true },
   loading: true,
   coupons: [],
+  allCoupons: [],
   totalDocs: 0,
   limit: 0,
   pagingCounter: 0,
@@ -33,6 +34,11 @@ const couponReducer = (state = initialState, action) => {
         pagingCounter: payload.pagingCounter,
         hasPrevPage: payload.hasPrevPage,
         hasNextPage: payload.hasNextPage,
+      };
+    case 'GET_ALL_COUPONS':
+      return {
+        ...state,
+        allCoupons: payload,
       };
     case 'UPDATE_COUPON':
       return {

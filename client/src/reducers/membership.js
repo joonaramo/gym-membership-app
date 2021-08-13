@@ -2,6 +2,7 @@ const initialState = {
   membership: { loading: true },
   loading: true,
   memberships: [],
+  allMemberships: [],
   totalDocs: 0,
   limit: 0,
   pagingCounter: 0,
@@ -33,6 +34,11 @@ const membershipReducer = (state = initialState, action) => {
         pagingCounter: payload.pagingCounter,
         hasPrevPage: payload.hasPrevPage,
         hasNextPage: payload.hasNextPage,
+      };
+    case 'GET_ALL_MEMBERSHIPS':
+      return {
+        ...state,
+        allMemberships: payload,
       };
     case 'UPDATE_MEMBERSHIP':
       return {

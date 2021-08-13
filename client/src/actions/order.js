@@ -16,6 +16,21 @@ export const getOrders = (page, limit, status) => async (dispatch) => {
   }
 };
 
+export const getAllOrders = () => async (dispatch) => {
+  try {
+    const orders = await ordersService.getAll();
+    dispatch({
+      type: 'GET_ALL_ORDERS',
+      payload: orders,
+    });
+  } catch (err) {
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach((error) => dispatch(setNotification(error.msg, 3000)));
+    }
+  }
+};
+
 export const getOrder = (orderId) => async (dispatch) => {
   try {
     dispatch({

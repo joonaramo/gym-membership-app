@@ -7,11 +7,15 @@ const { checkAuth } = require('../../utils/middleware');
 router.get('/', async (req, res, next) => {
   try {
     const { page, limit } = req.query;
-    const options = {
-      page,
-      limit,
-    };
-    const products = await Product.paginate({}, options);
+    if (page && limit) {
+      const options = {
+        page,
+        limit,
+      };
+      const products = await Product.paginate({}, options);
+      return res.json(products);
+    }
+    const products = await Product.find();
     res.json(products);
   } catch (err) {
     next(err);

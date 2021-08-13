@@ -39,7 +39,7 @@ router.get('/', async (req, res, next) => {
       };
       return res.json(ordersWithKlarna);
     }
-    const orders = await Order.find();
+    const orders = await Order.find().populate('user');
     res.json(orders);
   } catch (err) {
     next(err);

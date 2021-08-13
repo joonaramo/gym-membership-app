@@ -2,6 +2,7 @@ const initialState = {
   order: { loading: true },
   loading: true,
   orders: [],
+  allOrders: [],
   totalDocs: 0,
   limit: 0,
   pagingCounter: 0,
@@ -37,6 +38,11 @@ const orderReducer = (state = initialState, action) => {
         pagingCounter: payload.pagingCounter,
         hasPrevPage: payload.hasPrevPage,
         hasNextPage: payload.hasNextPage,
+      };
+    case 'GET_ALL_ORDERS':
+      return {
+        ...state,
+        allOrders: payload,
       };
     case 'UPDATE_ORDER':
       return {

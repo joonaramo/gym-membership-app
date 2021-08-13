@@ -6,11 +6,15 @@ const { checkAuth } = require('../../utils/middleware');
 router.get('/', async (req, res, next) => {
   try {
     const { page, limit } = req.query;
-    const options = {
-      page,
-      limit,
-    };
-    const coupons = await Coupon.paginate({}, options);
+    if (page && limit) {
+      const options = {
+        page,
+        limit,
+      };
+      const coupons = await Coupon.paginate({}, options);
+      return res.json(coupons);
+    }
+    const coupons = await Coupon.find();
     res.json(coupons);
   } catch (err) {
     next(err);
@@ -29,7 +33,10 @@ router.get('/code/:code', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
   try {
     const coupon = await Coupon.findById(req.params.id);
-    res.json(coupon);
+    if (coupon) {
+      return res.json(coupon);
+    }
+    res.status(404).json({ error: 'Not found' });
   } catch (err) {
     next(err);
   }

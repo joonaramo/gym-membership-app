@@ -16,6 +16,21 @@ export const getProducts = (page, limit) => async (dispatch) => {
   }
 };
 
+export const getAllProducts = () => async (dispatch) => {
+  try {
+    const products = await productsService.getAll();
+    dispatch({
+      type: 'GET_ALL_PRODUCTS',
+      payload: products,
+    });
+  } catch (err) {
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach((error) => dispatch(setNotification(error.msg, 3000)));
+    }
+  }
+};
+
 export const getProduct = (productId) => async (dispatch) => {
   try {
     const product = await productsService.get(productId);

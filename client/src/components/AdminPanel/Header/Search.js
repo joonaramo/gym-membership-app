@@ -1,39 +1,67 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllUsers } from '../../../actions/user';
+import { getAllProducts } from '../../../actions/product';
+import { getAllOrders } from '../../../actions/order';
+import { getAllMemberships } from '../../../actions/membership';
+import { getAllCoupons } from '../../../actions/coupon';
 import { SearchIcon } from '@heroicons/react/solid';
 
 const Search = ({ name, setSearchResults }) => {
   const [searchValue, setSearchValue] = useState('');
   const { allUsers } = useSelector((state) => state.user);
+  const { allProducts } = useSelector((state) => state.product);
+  const { allOrders } = useSelector((state) => state.order);
+  const { allMemberships } = useSelector((state) => state.membership);
+  const { allCoupons } = useSelector((state) => state.coupon);
   const dispatch = useDispatch();
   useEffect(() => {
     switch (name) {
       case 'Users':
         search(allUsers, getAllUsers);
         break;
+      case 'Products':
+        search(allProducts, getAllProducts);
+        break;
+      case 'Orders':
+        search(allOrders, getAllOrders);
+        break;
+      case 'Memberships':
+        search(allMemberships, getAllMemberships);
+        break;
+      case 'Coupons':
+        search(allCoupons, getAllCoupons);
+        break;
       default:
         break;
     }
   }, [searchValue]);
 
+  useEffect(() => {
+    setSearchValue('');
+  }, [name]);
+
   const search = (arrToSearch, getArr) => {
     if (!arrToSearch.length > 0) {
       dispatch(getArr());
     }
-    let searchResults = arrToSearch.filter((obj) => {
-      const objMatchesText = (text, obj) => {
-        if (typeof obj === 'string')
-          return obj.toLowerCase().includes(text.toLowerCase());
-        return Object.values(obj).some((val) => objMatchesText(text, val));
-      };
-      if (objMatchesText(searchValue, obj)) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-    setSearchResults(searchResults);
+    if (!searchValue) {
+      setSearchResults([]);
+    } else {
+      let searchResults = arrToSearch.filter((obj) => {
+        const objMatchesText = (text, obj) => {
+          if (typeof obj === 'string')
+            return obj.toLowerCase().includes(text.toLowerCase());
+          return Object.values(obj).some((val) => objMatchesText(text, val));
+        };
+        if (objMatchesText(searchValue, obj)) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      setSearchResults(searchResults);
+    }
   };
 
   return (
@@ -53,6 +81,7 @@ const Search = ({ name, setSearchResults }) => {
             id='search-field'
             name='search-field'
             onChange={(e) => setSearchValue(e.target.value)}
+            value={searchValue}
             className='block w-full h-full pl-8 pr-3 py-2 border-transparent text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-transparent sm:text-sm'
             placeholder={`Search ${name}`}
             type='search'

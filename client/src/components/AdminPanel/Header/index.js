@@ -103,7 +103,11 @@ const Header = ({ setSidebarOpen, user, current }) => {
             )}
           </Menu>
         </div>
-        <SearchResults searchResults={searchResults} />
+        <SearchResults
+          name={current.name}
+          searchResults={searchResults}
+          setSearchResults={setSearchResults}
+        />
       </div>
     </div>
   );

@@ -44,7 +44,7 @@ const errorHandler = (error, request, response, next) => {
         .status(400)
         .json({ error: 'This email is already in use' });
     }
-    response.status(400).json({ errors: [{ msg: error.message }] });
+    return response.status(400).json({ errors: [{ msg: error.message }] });
   } else if (error.name === 'JsonWebTokenError') {
     return response.status(401).json({
       error: 'invalid token',
