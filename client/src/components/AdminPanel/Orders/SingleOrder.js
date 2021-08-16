@@ -22,7 +22,13 @@ const SingleOrder = ({ setCurrent }) => {
   }, [dispatch, id]);
 
   const remove = () => {
-    dispatch(removeOrder(id, history));
+    if (
+      window.confirm(
+        'Are you sure you want to cancel/refund and remove this order?'
+      )
+    ) {
+      dispatch(removeOrder(id, history));
+    }
   };
 
   const capture = async () => {

@@ -11,6 +11,7 @@ import {
   CogIcon,
   QuestionMarkCircleIcon,
   ShieldCheckIcon,
+  ViewListIcon,
 } from '@heroicons/react/outline';
 
 import Sidebar from './Sidebar';
@@ -35,6 +36,12 @@ const AdminPanel = ({
       name: 'Products',
       href: '/admin/products',
       icon: ShoppingCartIcon,
+      current: false,
+    },
+    {
+      name: 'Categories',
+      href: '/admin/categories',
+      icon: ViewListIcon,
       current: false,
     },
     {
@@ -63,8 +70,6 @@ const AdminPanel = ({
       icon: CogIcon,
       current: false,
     },
-    { name: 'Help', href: '#', icon: QuestionMarkCircleIcon, current: false },
-    { name: 'Privacy', href: '#', icon: ShieldCheckIcon, current: false },
   ]);
 
   const setCurrent = (name) => {

@@ -66,7 +66,7 @@ const Search = ({ name, setSearchResults }) => {
 
   return (
     <div className='flex-1 flex'>
-      <form className='w-full flex md:ml-0'>
+      <div className='w-full flex md:ml-0'>
         <label htmlFor='search-field' className='sr-only'>
           Search
         </label>
@@ -87,7 +87,7 @@ const Search = ({ name, setSearchResults }) => {
             type='search'
           />
         </div>
-      </form>
+      </div>
     </div>
   );
 };

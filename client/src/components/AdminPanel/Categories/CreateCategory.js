@@ -1,44 +1,29 @@
 import React from 'react';
 import * as yup from 'yup';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
-import { createProduct } from '../../../actions/product';
+import { createCategory } from '../../../actions/category';
 import { useDispatch } from 'react-redux';
 
 const initialValues = {
-  reference: '',
   name: '',
-  membership_length: '',
-  unit_price: '',
-  tax_rate: '',
+  description: '',
 };
 
 const validationSchema = yup.object({
-  reference: yup.string().required('Reference is required'),
   name: yup.string().required('Name is required'),
-  membership_length: yup
-    .number('Membership length must be a number')
-    .typeError('Membership length must be a number'),
-  unit_price: yup
-    .number('Price must be a number')
-    .typeError('Price must be a number')
-    .required('Price is required'),
-  tax_rate: yup
-    .number('Tax rate must be a number')
-    .typeError('Tax rate must be a number')
-    .required('Tax rate is required'),
+  description: yup.string().required('Description is required'),
 });
 
-const CreateProduct = ({ setCreating, allCategories }) => {
+const CreateCategory = ({ setCreating, allCategories }) => {
   const dispatch = useDispatch();
-  const onSubmit = (values) => {
-    dispatch(createProduct(values));
-    setCreating(false);
+  const onSubmit = async (values) => {
+    dispatch(createCategory(values, setCreating));
   };
   return (
     <>
       <div className='flex-1 flex justify-between max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
         <h2 className='text-lg leading-6 font-medium text-gray-900'>
-          Create a product
+          Create a category
         </h2>
         <button
           onClick={() => setCreating(false)}
@@ -78,34 +63,34 @@ const CreateProduct = ({ setCreating, allCategories }) => {
             <div>
               <label
                 className='block text-sm font-medium text-gray-700'
-                htmlFor='reference'
+                htmlFor='description'
               >
-                Reference
+                Description
               </label>
               <div className='mt-1'>
                 <Field
-                  id='reference'
-                  name='reference'
+                  id='description'
+                  name='description'
                   type='text'
-                  autoComplete='reference'
+                  autoComplete='description'
                   required
                   className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm'
                 />
               </div>
-              <ErrorMessage name='reference' />
+              <ErrorMessage name='description' />
             </div>
             <div>
               <label
                 className='block text-sm font-medium text-gray-700'
-                htmlFor='category'
+                htmlFor='parent_category'
               >
-                Category
+                Parent category
               </label>
               <div className='mt-1'>
                 <Field
                   as='select'
-                  id='category'
-                  name='category'
+                  id='parent_category'
+                  name='parent_category'
                   className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm'
                 >
                   <option value=''>Select (optional)</option>
@@ -116,63 +101,7 @@ const CreateProduct = ({ setCreating, allCategories }) => {
                   ))}
                 </Field>
               </div>
-              <ErrorMessage name='category' />
-            </div>
-            <div>
-              <label
-                className='block text-sm font-medium text-gray-700'
-                htmlFor='membership_length'
-              >
-                Membership length
-              </label>
-              <div className='mt-1'>
-                <Field
-                  id='membership_length'
-                  name='membership_length'
-                  type='number'
-                  autoComplete='membership_length'
-                  className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-                />
-              </div>
-              <ErrorMessage name='membership_length' />
-            </div>
-            <div>
-              <label
-                className='block text-sm font-medium text-gray-700'
-                htmlFor='unit_price'
-              >
-                Price
-              </label>
-              <div className='mt-1'>
-                <Field
-                  id='unit_price'
-                  name='unit_price'
-                  type='number'
-                  autoComplete='unit_price'
-                  required
-                  className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-                />
-              </div>
-              <ErrorMessage name='unit_price' />
-            </div>
-            <div>
-              <label
-                className='block text-sm font-medium text-gray-700'
-                htmlFor='tax_rate'
-              >
-                Tax rate
-              </label>
-              <div className='mt-1'>
-                <Field
-                  id='tax_rate'
-                  name='tax_rate'
-                  type='number'
-                  autoComplete='tax_rate'
-                  required
-                  className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm'
-                />
-              </div>
-              <ErrorMessage name='tax_rate' />
+              <ErrorMessage name='parent_category' />
             </div>
             <div>
               <button
@@ -189,4 +118,4 @@ const CreateProduct = ({ setCreating, allCategories }) => {
   );
 };
 
-export default CreateProduct;
+export default CreateCategory;

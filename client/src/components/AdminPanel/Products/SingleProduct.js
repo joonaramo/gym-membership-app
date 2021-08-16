@@ -12,12 +12,15 @@ import { useHistory, useParams } from 'react-router';
 import Loading from '../../UI/Loading';
 import NotFound from '../UI/NotFound';
 import ListListItem from '../../UI/ListListItem';
+import SelectListItem from '../../UI/SelectListItem';
+import { getAllCategories } from '../../../actions/category';
 
 const SingleProduct = ({ setCurrent }) => {
   const [updatedObject, setUpdatedObject] = useState();
   const [hasUnSavedChanges, setHasUnsavedChanges] = useState(false);
   const { product } = useSelector((state) => state.product);
   const { coupons } = useSelector((state) => state.coupon);
+  const { allCategories } = useSelector((state) => state.category);
   const dispatch = useDispatch();
   const history = useHistory();
   const { id } = useParams();
@@ -25,6 +28,7 @@ const SingleProduct = ({ setCurrent }) => {
   useEffect(() => {
     dispatch(getProduct(id));
     dispatch(getCoupons(1, 10));
+    dispatch(getAllCategories());
     setCurrent('Products');
   }, [dispatch, id]);
 
@@ -51,8 +55,10 @@ const SingleProduct = ({ setCurrent }) => {
   };
 
   const remove = () => {
-    dispatch(removeProduct(id));
-    history.push('/admin/products');
+    if (window.confirm('Are you sure you want to remove this product?')) {
+      dispatch(removeProduct(id));
+      history.push('/admin/products');
+    }
   };
 
   if (product.failed) {
@@ -84,6 +90,15 @@ const SingleProduct = ({ setCurrent }) => {
             name='reference'
             type='text'
             value={updatedObject.reference}
+            updatedObject={updatedObject}
+            setUpdatedObject={setUpdatedObject}
+            setHasUnsavedChanges={setHasUnsavedChanges}
+          />
+          <SelectListItem
+            title='Category'
+            name='category'
+            value={product.category || ''}
+            listItems={allCategories}
             updatedObject={updatedObject}
             setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}
@@ -129,7 +144,7 @@ const SingleProduct = ({ setCurrent }) => {
             name='valid_coupons'
             type='text'
             listItems={coupons}
-            value={product.valid_coupons}
+            value={product.valid_coupons || []}
             updatedObject={updatedObject}
             setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}

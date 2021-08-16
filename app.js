@@ -14,6 +14,7 @@ const usersRouter = require('./routes/api/users');
 const couponsRouter = require('./routes/api/coupons');
 const membershipsRouter = require('./routes/api/memberships');
 const settingsRouter = require('./routes/api/settings');
+const categoriesRouter = require('./routes/api/categories');
 
 mongoose.connect(config.MONGODB_URI, {
   useNewUrlParser: true,
@@ -34,6 +35,7 @@ app.use('/api/users', usersRouter);
 app.use('/api/coupons', couponsRouter);
 app.use('/api/memberships', membershipsRouter);
 app.use('/api/settings', settingsRouter);
+app.use('/api/categories', categoriesRouter);
 
 const errorHandler = (error, request, response, next) => {
   if (error.name === 'CastError') {

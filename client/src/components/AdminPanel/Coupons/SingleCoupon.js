@@ -60,8 +60,10 @@ const SingleCoupon = ({ setCurrent }) => {
   };
 
   const remove = () => {
-    dispatch(removeCoupon(id));
-    history.push('/admin/coupons');
+    if (window.confirm('Are you sure you want to remove this coupon?')) {
+      dispatch(removeCoupon(id));
+      history.push('/admin/coupons');
+    }
   };
 
   if (coupon.failed) {

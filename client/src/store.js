@@ -10,6 +10,7 @@ import orderReducer from './reducers/order';
 import membershipReducer from './reducers/membership';
 import couponReducer from './reducers/coupon';
 import settingsReducer from './reducers/settings';
+import categoryReducer from './reducers/category';
 
 const reducer = combineReducers({
   auth: authReducer,
@@ -19,6 +20,7 @@ const reducer = combineReducers({
   order: orderReducer,
   membership: membershipReducer,
   coupon: couponReducer,
+  category: categoryReducer,
   settings: settingsReducer,
 });
 

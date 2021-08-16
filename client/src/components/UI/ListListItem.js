@@ -7,11 +7,9 @@ const ListListItem = ({
   title,
   name,
   value,
-  type,
   updatedObject,
   setUpdatedObject,
   setHasUnsavedChanges,
-  editable = true,
   listItems,
 }) => {
   const [editState, setEditState] = useState(false);
@@ -46,7 +44,7 @@ const ListListItem = ({
     <div className='py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 lg:px-8'>
       <dt className='text-sm font-medium text-gray-500'>{title}</dt>
       <fieldset className='space-y-5'>
-        <legend className='sr-only'>Valid coupons</legend>
+        <legend className='sr-only'>{title}</legend>
         {listItems.map((item) => (
           <div key={item.id} className='relative flex items-start'>
             <div className='flex items-center h-5'>

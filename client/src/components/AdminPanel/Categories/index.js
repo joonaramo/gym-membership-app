@@ -1,43 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronRightIcon, UserIcon } from '@heroicons/react/solid';
+import {
+  ChevronRightIcon,
+  UserIcon,
+  XIcon,
+  CheckIcon,
+} from '@heroicons/react/solid';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getProducts } from '../../../actions/product';
-import CreateProduct from './CreateProduct';
+import { getAllCategories, getCategories } from '../../../actions/category';
+import CreateCategory from './CreateCategory';
 import Pagination from '../UI/Pagination';
-import { getAllCategories } from '../../../actions/category';
 
-const Products = ({ setCurrent }) => {
+const Categories = ({ setCurrent }) => {
   const [creating, setCreating] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentLimit, setCurrentLimit] = useState(10);
   const {
-    products,
+    categories,
+    allCategories,
     totalDocs,
     limit,
     pagingCounter,
     hasPrevPage,
     hasNextPage,
-  } = useSelector((state) => state.product);
-  const { allCategories } = useSelector((state) => state.category);
+  } = useSelector((state) => state.category);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setCurrent('Products');
-    dispatch(getProducts(currentPage, currentLimit));
+    setCurrent('Categories');
+    dispatch(getCategories(currentPage, currentLimit));
   }, [currentPage, currentLimit]);
 
   if (creating) {
     return (
-      <CreateProduct allCategories={allCategories} setCreating={setCreating} />
+      <CreateCategory allCategories={allCategories} setCreating={setCreating} />
     );
   }
-
   return (
     <>
       <div className='flex-1 flex justify-between max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
         <h2 className='text-lg leading-6 font-medium text-gray-900'>
-          Products
+          Categories
         </h2>
         <button
           onClick={() => {
@@ -46,16 +49,16 @@ const Products = ({ setCurrent }) => {
           }}
           className='inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50'
         >
-          New product
+          New category
         </button>
       </div>
       {/* Activity list (smallest breakpoint only) */}
       <div className='shadow sm:hidden'>
         <ul className='mt-2 divide-y divide-gray-200 overflow-hidden shadow sm:hidden'>
-          {products.map((product) => (
-            <li key={product.id}>
+          {categories.map((category) => (
+            <li key={category.id}>
               <Link
-                to={`/admin/products/${product.id}`}
+                to={`/admin/categories/${category.id}`}
                 className='block px-4 py-4 bg-white hover:bg-gray-50'
               >
                 <span className='flex items-center space-x-4'>
@@ -66,13 +69,16 @@ const Products = ({ setCurrent }) => {
                     />
                     <span className='flex flex-col text-gray-500 text-sm truncate'>
                       <span className='truncate'>
-                        {product.name} ({product.reference})
+                        <span className='text-gray-900 font-medium'>
+                          Category
+                        </span>{' '}
+                        {category.name}
                       </span>
                       <span>
                         <span className='text-gray-900 font-medium'>
-                          Purchased
+                          Description
                         </span>{' '}
-                        {product.times_purchased} times
+                        {category.description}
                       </span>
                     </span>
                   </span>
@@ -110,26 +116,23 @@ const Products = ({ setCurrent }) => {
                 <thead>
                   <tr>
                     <th className='px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                      Name & Reference
+                      Name
                     </th>
                     <th className='px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                      Purchased
+                      Description
                     </th>
-                    <th className='hidden px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider md:block'>
-                      Price
-                    </th>
-                    <th className='px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                      Income
+                    <th className='px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                      Parent Category
                     </th>
                   </tr>
                 </thead>
                 <tbody className='bg-white divide-y divide-gray-200'>
-                  {products.map((product) => (
-                    <tr key={product.id} className='bg-white'>
+                  {categories.map((category) => (
+                    <tr key={category.id} className='bg-white'>
                       <td className='max-w-0 w-full px-6 py-4 whitespace-nowrap text-sm text-gray-900'>
                         <div className='flex'>
                           <Link
-                            to={`/admin/products/${product.id}`}
+                            to={`/admin/categories/${category.id}`}
                             className='group inline-flex space-x-2 truncate text-sm'
                           >
                             <UserIcon
@@ -137,19 +140,16 @@ const Products = ({ setCurrent }) => {
                               aria-hidden='true'
                             />
                             <p className='text-gray-500 truncate group-hover:text-gray-900'>
-                              {product.name} ({product.reference})
+                              {category.name}
                             </p>
                           </Link>
                         </div>
                       </td>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
-                        {product.times_purchased} times
-                      </td>
-                      <td className='hidden px-6 py-4 whitespace-nowrap text-sm text-gray-500 md:block'>
-                        {product.unit_price}€
-                      </td>
                       <td className='px-6 py-4 text-right whitespace-nowrap text-sm text-gray-500'>
-                        {product.times_purchased * product.unit_price}€
+                        {category.description}
+                      </td>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                        {category.parent_category ? 'No' : 'Yes'}
                       </td>
                     </tr>
                   ))}
@@ -171,4 +171,4 @@ const Products = ({ setCurrent }) => {
   );
 };
 
-export default Products;
+export default Categories;

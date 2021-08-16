@@ -3,6 +3,7 @@ const router = require('express').Router();
 const Product = require('../../models/product');
 const { check, validationResult } = require('express-validator');
 const { checkAuth } = require('../../utils/middleware');
+const Category = require('../../models/category');
 
 router.get('/', async (req, res, next) => {
   try {
@@ -36,7 +37,7 @@ router.post(
   [
     check('reference', 'Reference is required').exists(),
     check('name', 'Name is required').exists(),
-    check('membership_length', 'Membership length is required').isNumeric(),
+    check('category', 'Category is required').exists(),
     check('unit_price', 'Unit price is required').isNumeric(),
     check('tax_rate', 'Tax rate is required').isNumeric(),
   ],
@@ -50,6 +51,9 @@ router.post(
       const product = new Product(req.body);
       product.unit_price = product.unit_price * 100;
       product.tax_rate = product.tax_rate * 100;
+      const category = await Category.findById(req.body.category);
+      category.products.unshift(product._id);
+      await category.save();
       const newProduct = await product.save();
       res.status(201).json(newProduct);
     } catch (err) {
@@ -63,7 +67,6 @@ router.put(
   [
     check('reference', 'Reference is required').exists(),
     check('type', 'Type is required').exists(),
-    check('membership_length', 'Membership length is required').isNumeric(),
     check('quantity_unit', 'Quantity unit is required').exists(),
     check('name', 'Name is required').exists(),
     check('unit_price', 'Unit price is required').isNumeric(),
@@ -80,6 +83,11 @@ router.put(
       const product = req.body;
       product.unit_price = product.unit_price * 100;
       product.tax_rate = product.tax_rate * 100;
+      if (product.category) {
+        const category = await Category.findById(product.category);
+        category.products.unshift(req.params.id);
+        await category.save();
+      }
       const updatedProduct = await Product.findByIdAndUpdate(
         req.params.id,
         product,
@@ -89,6 +97,7 @@ router.put(
       );
       res.json(updatedProduct);
     } catch (err) {
+      console.log(err);
       next(err);
     }
   }

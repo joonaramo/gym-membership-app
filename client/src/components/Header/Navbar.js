@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Disclosure, Menu, Transition } from '@headlessui/react';
+import { Disclosure, Popover, Transition } from '@headlessui/react';
 import {
   MenuIcon,
   XIcon,
@@ -10,7 +10,9 @@ import {
 } from '@heroicons/react/outline';
 import { classNames } from '../../utils/helpers';
 import { logout } from '../../actions/auth';
+import { getAllCategories } from '../../actions/category';
 import { useHistory } from 'react-router';
+import ProfileMenu from './ProfileMenu';
 
 const profileMenuLinks = [
   { name: 'Log in', href: '/login', authLink: false },
@@ -24,90 +26,56 @@ const profileMenuLinks = [
 const profileMenuButtons = [
   { name: 'Log out', onClick: 'logOut', authLink: true },
 ];
-const ProfileMenu = ({ isAuthenticated, logOut }) => {
+
+const SubCategoryItem = ({ subCategory, ml }) => {
   return (
-    <Menu as='div' className='ml-3 relative'>
-      {({ open }) => (
-        <>
-          <div>
-            <Menu.Button className='bg-gray-800 text-gray-400 hover:text-white flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white'>
-              <span className='sr-only'>Open user menu</span>
-              <UserCircleIcon className='h-6 w-6' aria-hidden='true' />
-            </Menu.Button>
-          </div>
-          <Transition
-            show={open}
-            as={Fragment}
-            enter='transition ease-out duration-100'
-            enterFrom='transform opacity-0 scale-95'
-            enterTo='transform opacity-100 scale-100'
-            leave='transition ease-in duration-75'
-            leaveFrom='transform opacity-100 scale-100'
-            leaveTo='transform opacity-0 scale-95'
-          >
-            <Menu.Items
-              static
-              className='z-10 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none'
-            >
-              {profileMenuLinks
-                .filter((item) =>
-                  isAuthenticated ? item.authLink : !item.authLink
-                )
-                .map((item) => (
-                  <Menu.Item key={item.name}>
-                    {({ active }) => (
-                      <Link
-                        to={item.href}
-                        className={classNames(
-                          active ? 'bg-gray-100' : '',
-                          'block px-4 py-2 text-sm text-gray-700'
-                        )}
-                      >
-                        {item.name}
-                      </Link>
-                    )}
-                  </Menu.Item>
-                ))}
-              {profileMenuButtons
-                .filter((item) =>
-                  isAuthenticated ? item.authLink : !item.authLink
-                )
-                .map((item) => (
-                  <Menu.Item key={item.name}>
-                    {({ active }) => (
-                      <button
-                        onClick={item.onClick === 'logOut' && logOut}
-                        className={classNames(
-                          active ? 'bg-gray-100' : '',
-                          'block w-full text-left px-4 py-2 text-sm text-gray-700'
-                        )}
-                      >
-                        {item.name}
-                      </button>
-                    )}
-                  </Menu.Item>
-                ))}
-            </Menu.Items>
-          </Transition>
-        </>
-      )}
-    </Menu>
+    <>
+      <li key={subCategory.name} className={`flex ml-${ml}`}>
+        <Link
+          to={`/shop?category=${subCategory.id}`}
+          className='hover:text-gray-800'
+        >
+          {subCategory.name}
+        </Link>
+      </li>
+      {subCategory.sub_categories?.map((subCategory) => (
+        <SubCategoryItem ml={ml + 1} subCategory={subCategory} />
+      ))}
+    </>
   );
 };
 
-const Navbar = ({ auth: { isAuthenticated, user }, logout }) => {
+const Navbar = ({
+  auth: { isAuthenticated, user },
+  categories,
+  getAllCategories,
+  logout,
+}) => {
   const history = useHistory();
+
+  useEffect(() => {
+    getAllCategories();
+  }, []);
 
   const logOut = async () => {
     await logout();
     history.push('/');
   };
 
+  const navigation = {
+    pages: [
+      { name: 'Home', to: '/' },
+      { name: 'About', href: '/#about' },
+      { name: 'Pricing', href: '/#pricing' },
+      { name: 'Find us', href: '/#find-us' },
+    ],
+  };
+
   return (
     <Disclosure as='nav' className='bg-gray-800'>
       {({ open }) => (
         <>
-          <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+          <div className='relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
             <div className='flex items-center justify-between h-16'>
               <div className='flex items-center'>
                 <div className='flex-shrink-0'>
@@ -126,35 +94,116 @@ const Navbar = ({ auth: { isAuthenticated, user }, logout }) => {
                     />
                   </Link>
                 </div>
-                <div className='hidden sm:block sm:ml-6'>
-                  <div className='flex space-x-4'>
-                    {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
-                    <Link
-                      to='/'
-                      className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
-                    >
-                      Home
-                    </Link>
-                    <a
-                      href='/#about'
-                      className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
-                    >
-                      About
-                    </a>
-                    <a
-                      href='/#pricing'
-                      className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
-                    >
-                      Pricing
-                    </a>
-                    <a
-                      href='/#find-us'
-                      className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
-                    >
-                      Find us
-                    </a>
+                <Popover.Group className='hidden sm:block sm:ml-6'>
+                  <div className='flex'>
+                    {navigation.pages.map((page) =>
+                      page.href ? (
+                        <a
+                          key={page.name}
+                          href={page.href}
+                          className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 mr-4 rounded-md text-sm font-medium'
+                        >
+                          {page.name}
+                        </a>
+                      ) : (
+                        <Link
+                          key={page.name}
+                          to={page.to}
+                          className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 mr-4 rounded-md text-sm font-medium'
+                        >
+                          {page.name}
+                        </Link>
+                      )
+                    )}
+                    {categories
+                      ?.filter((category) => !category.parent_category)
+                      .map((category) => (
+                        <Popover key={category.id} className='flex'>
+                          {({ open }) => (
+                            <>
+                              <div className='relative flex'>
+                                {category.sub_categories.length > 0 ? (
+                                  <Popover.Button
+                                    className={classNames(
+                                      open
+                                        ? 'bg-gray-900 text-white'
+                                        : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                      'mr-4 px-3 py-2 rounded-md text-sm font-medium'
+                                    )}
+                                  >
+                                    {category.name}
+                                  </Popover.Button>
+                                ) : (
+                                  <Link
+                                    key={category.id}
+                                    to={`/shop?category=${category.id}`}
+                                    className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 mr-4 rounded-md text-sm font-medium'
+                                  >
+                                    {category.name}
+                                  </Link>
+                                )}
+                              </div>
+
+                              <Transition
+                                as={Fragment}
+                                enter='transition ease-out duration-200'
+                                enterFrom='opacity-0'
+                                enterTo='opacity-100'
+                                leave='transition ease-in duration-150'
+                                leaveFrom='opacity-100'
+                                leaveTo='opacity-0'
+                              >
+                                <Popover.Panel className='absolute top-full inset-x-0 z-10 text-gray-500 sm:text-sm'>
+                                  {/* Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow */}
+                                  <div
+                                    className='absolute inset-0 top-1/2 bg-white shadow'
+                                    aria-hidden='true'
+                                  />
+
+                                  <div className='relative bg-white'>
+                                    <div className='max-w-7xl mx-auto px-8'>
+                                      <div className='grid grid-cols-1 items-start gap-y-10 gap-x-8 pt-10 pb-12'>
+                                        <div className='grid grid-cols-4 gap-y-10 gap-x-8'>
+                                          {category.sub_categories.map(
+                                            (subCategory) => (
+                                              <div>
+                                                <Link
+                                                  to={`/shop?category=${subCategory.id}`}
+                                                  id={`desktop-featured-heading-${subCategory.id}`}
+                                                  className='font-medium text-gray-900'
+                                                >
+                                                  {subCategory.name}
+                                                </Link>
+                                                <ul
+                                                  aria-labelledby={`desktop-featured-heading-${subCategory.id}`}
+                                                  className='mt-6 space-y-6 sm:mt-4 sm:space-y-4'
+                                                >
+                                                  {subCategory.sub_categories?.map(
+                                                    (subCategory) => (
+                                                      <SubCategoryItem
+                                                        subCategory={
+                                                          subCategory
+                                                        }
+                                                        ml={1}
+                                                      />
+                                                    )
+                                                  )}
+                                                </ul>
+                                              </div>
+                                            )
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </Popover.Panel>
+                              </Transition>
+                            </>
+                          )}
+                        </Popover>
+                      ))}
                   </div>
-                </div>
+                </Popover.Group>
               </div>
               <div className='hidden sm:ml-6 sm:block'>
                 <div className='flex items-center'>
@@ -174,6 +223,8 @@ const Navbar = ({ auth: { isAuthenticated, user }, logout }) => {
                     <ShoppingCartIcon className='h-6 w-6' aria-hidden='true' />
                   </Link>
                   <ProfileMenu
+                    links={profileMenuLinks}
+                    buttons={profileMenuButtons}
                     isAuthenticated={isAuthenticated}
                     logOut={logOut}
                   />
@@ -282,6 +333,7 @@ const Navbar = ({ auth: { isAuthenticated, user }, logout }) => {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
+  categories: state.category.allCategories,
 });
 
-export default connect(mapStateToProps, { logout })(Navbar);
+export default connect(mapStateToProps, { logout, getAllCategories })(Navbar);

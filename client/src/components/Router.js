@@ -21,6 +21,8 @@ import SingleMembership from './AdminPanel/Memberships/SingleMembership';
 import Coupons from './AdminPanel/Coupons';
 import SingleCoupon from './AdminPanel/Coupons/SingleCoupon';
 import Settings from './AdminPanel/Settings';
+import Categories from './AdminPanel/Categories';
+import SingleCategory from './AdminPanel/Categories/SingleCategory';
 
 const Router = () => {
   return (
@@ -48,6 +50,12 @@ const Router = () => {
       <AdminPanel exact path='/admin/coupons' component={Coupons} />
       <AdminPanel exact path='/admin/coupons/:id' component={SingleCoupon} />
       <AdminPanel exact path='/admin/settings' component={Settings} />
+      <AdminPanel exact path='/admin/categories' component={Categories} />
+      <AdminPanel
+        exact
+        path='/admin/categories/:id'
+        component={SingleCategory}
+      />
     </Switch>
   );
 };
