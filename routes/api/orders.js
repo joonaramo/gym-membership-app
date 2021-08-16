@@ -2,6 +2,7 @@ const config = require('../../utils/config');
 const router = require('express').Router();
 const Order = require('../../models/order');
 const axios = require('axios');
+const { checkAdmin } = require('../../utils/middleware');
 
 const getKlarnaOrder = async (order_id) => {
   try {
@@ -15,7 +16,7 @@ const getKlarnaOrder = async (order_id) => {
   }
 };
 
-router.get('/', async (req, res, next) => {
+router.get('/', checkAdmin, async (req, res, next) => {
   try {
     const { page, limit, status } = req.query;
     if (page && limit) {
@@ -47,7 +48,7 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', checkAdmin, async (req, res, next) => {
   try {
     const order = await Order.findById(req.params.id)
       .populate('user')
@@ -59,7 +60,7 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', checkAdmin, async (req, res, next) => {
   try {
     const order = await Order.findById(req.params.id);
     if (order.status !== 'order_captured') {

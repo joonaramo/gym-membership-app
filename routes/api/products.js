@@ -2,7 +2,7 @@ const config = require('../../utils/config');
 const router = require('express').Router();
 const Product = require('../../models/product');
 const { check, validationResult } = require('express-validator');
-const { checkAuth } = require('../../utils/middleware');
+const { checkAdmin } = require('../../utils/middleware');
 const Category = require('../../models/category');
 
 router.get('/', async (req, res, next) => {
@@ -41,7 +41,7 @@ router.post(
     check('unit_price', 'Unit price is required').isNumeric(),
     check('tax_rate', 'Tax rate is required').isNumeric(),
   ],
-  checkAuth,
+  checkAdmin,
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -73,7 +73,7 @@ router.put(
     check('tax_rate', 'Tax rate is required').isNumeric(),
     check('times_purchased', 'Times purchased is required').isNumeric(),
   ],
-  checkAuth,
+  checkAdmin,
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -103,7 +103,7 @@ router.put(
   }
 );
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', checkAdmin, async (req, res, next) => {
   try {
     await Product.findByIdAndDelete(req.params.id);
     res.status(204).end();

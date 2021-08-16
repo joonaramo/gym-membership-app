@@ -1,10 +1,10 @@
 const router = require('express').Router();
 const { check, validationResult } = require('express-validator');
-const { checkAuth } = require('../../utils/middleware');
+const { checkAuth, checkAdmin } = require('../../utils/middleware');
 const { format } = require('date-fns');
 const User = require('../../models/user');
 
-router.get('/', checkAuth, async (req, res, next) => {
+router.get('/', checkAdmin, async (req, res, next) => {
   try {
     const { page, limit } = req.query;
     if (page && limit) {
@@ -37,6 +37,9 @@ router.get('/:id', checkAuth, async (req, res, next) => {
     if (req.params.id === 'me') {
       id = req.user.id;
     } else {
+      if (!req.user.is_admin) {
+        return res.status(403).json({ error: 'Forbidden' });
+      }
       id = req.params.id;
     }
     const user = await User.findById(id)
@@ -66,7 +69,7 @@ router.patch(
     check('city', 'City is required').exists(),
     check('birth_date', 'Birth date is required').isDate(),
   ],
-  checkAuth,
+  checkAdmin,
   async (req, res, next) => {
     try {
       const user = await User.findById(req.params.id)

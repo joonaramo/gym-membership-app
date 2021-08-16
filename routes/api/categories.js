@@ -1,90 +1,7 @@
 const router = require('express').Router();
 const Category = require('../../models/category');
 const { check, validationResult } = require('express-validator');
-const { checkAuth } = require('../../utils/middleware');
-
-const categories = [
-  {
-    name: 'Category 1',
-    description: 'Description',
-    products: [
-      {
-        id: 1,
-        name: 'Product 1',
-      },
-      {
-        id: 2,
-        name: 'Product 2',
-      },
-      {
-        id: 3,
-        name: 'Product 3',
-      },
-    ],
-    parent_category: true,
-    sub_categories: [2, 3],
-  },
-  {
-    name: 'Category 2',
-    description: 'Description',
-    products: [
-      {
-        id: 4,
-        name: 'Product 4',
-      },
-      {
-        id: 5,
-        name: 'Product 5',
-      },
-      {
-        id: 6,
-        name: 'Product 6',
-      },
-    ],
-    parent_category: false,
-    sub_categories: [],
-  },
-  {
-    name: 'Category 3',
-    description: 'Description',
-    products: [
-      {
-        id: 7,
-        name: 'Product 7',
-      },
-      {
-        id: 8,
-        name: 'Product 8',
-      },
-      {
-        id: 9,
-        name: 'Product 9',
-      },
-    ],
-    parent_category: false,
-    sub_categories: [],
-  },
-  {
-    name: 'Category 4',
-    description: 'Description',
-    products: [
-      {
-        id: 10,
-        name: 'Product 10',
-      },
-      {
-        id: 11,
-        name: 'Product 11',
-      },
-      {
-        id: 12,
-        name: 'Product 12',
-      },
-    ],
-    parent_category: true,
-    sub_categories: [],
-  },
-];
+const { checkAdmin } = require('../../utils/middleware');
 
 router.get('/', async (req, res, next) => {
   try {
@@ -122,7 +39,7 @@ router.post(
     check('name', 'Name is required').exists(),
     check('description', 'Description is required').exists(),
   ],
-  checkAuth,
+  checkAdmin,
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -151,7 +68,7 @@ router.put(
     check('name', 'Name is required').exists(),
     check('description', 'Description is required').exists(),
   ],
-  checkAuth,
+  checkAdmin,
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -186,7 +103,7 @@ router.put(
   }
 );
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', checkAdmin, async (req, res, next) => {
   try {
     await Category.findByIdAndDelete(req.params.id);
     res.status(204).end();

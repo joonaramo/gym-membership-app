@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const Settings = require('../../models/settings');
-const { checkAuth } = require('../../utils/middleware');
+const { checkAdmin } = require('../../utils/middleware');
 
 router.get('/', async (req, res, next) => {
   try {
@@ -14,7 +14,7 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.post('/', checkAuth, async (req, res, next) => {
+router.post('/', async (req, res, next) => {
   try {
     const existingSettings = await Settings.findOne();
     if (existingSettings) {
@@ -29,7 +29,7 @@ router.post('/', checkAuth, async (req, res, next) => {
   }
 });
 
-router.put('/', checkAuth, async (req, res, next) => {
+router.put('/', checkAdmin, async (req, res, next) => {
   try {
     const settings = req.body;
     settings.last_updated = Date.now();
@@ -42,7 +42,7 @@ router.put('/', checkAuth, async (req, res, next) => {
   }
 });
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', checkAdmin, async (req, res, next) => {
   try {
     await Settings.findOneAndDelete({});
     res.status(204).end();

@@ -39,7 +39,11 @@ const SubCategoryItem = ({ subCategory, ml }) => {
         </Link>
       </li>
       {subCategory.sub_categories?.map((subCategory) => (
-        <SubCategoryItem ml={ml + 1} subCategory={subCategory} />
+        <SubCategoryItem
+          key={subCategory.id}
+          ml={ml + 1}
+          subCategory={subCategory}
+        />
       ))}
     </>
   );
@@ -166,7 +170,7 @@ const Navbar = ({
                                         <div className='grid grid-cols-4 gap-y-10 gap-x-8'>
                                           {category.sub_categories.map(
                                             (subCategory) => (
-                                              <div>
+                                              <div key={subCategory.id}>
                                                 <Link
                                                   to={`/shop?category=${subCategory.id}`}
                                                   id={`desktop-featured-heading-${subCategory.id}`}
@@ -184,6 +188,7 @@ const Navbar = ({
                                                         subCategory={
                                                           subCategory
                                                         }
+                                                        key={subCategory.id}
                                                         ml={1}
                                                       />
                                                     )

@@ -70,6 +70,7 @@ router.post(
         user: {
           email: user.email,
           id: user.id,
+          is_admin: user.is_admin,
         },
       };
 
@@ -125,6 +126,7 @@ router.post(
         user: {
           email: user.email,
           id: user.id,
+          is_admin: user.is_admin,
         },
       };
 

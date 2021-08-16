@@ -22,7 +22,17 @@ const checkAuth = (req, res, next) => {
   next();
 };
 
+const checkAdmin = (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  } else if (!req.user.is_admin) {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+  next();
+};
+
 module.exports = {
   tokenExtractor,
   checkAuth,
+  checkAdmin,
 };

@@ -2,9 +2,9 @@ const config = require('../../utils/config');
 const router = require('express').Router();
 const Membership = require('../../models/membership');
 const { check, validationResult } = require('express-validator');
-const { checkAuth } = require('../../utils/middleware');
+const { checkAdmin } = require('../../utils/middleware');
 
-router.get('/', async (req, res, next) => {
+router.get('/', checkAdmin, async (req, res, next) => {
   try {
     const { page, limit } = req.query;
     if (page && limit) {
@@ -23,7 +23,7 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', checkAdmin, async (req, res, next) => {
   try {
     const membership = await Membership.findById(req.params.id).populate(
       'user'
@@ -43,7 +43,7 @@ router.post(
     check('user', 'User is required').exists(),
     check('end_date', 'End date is required').isDate(),
   ],
-  checkAuth,
+  checkAdmin,
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -65,7 +65,7 @@ router.put(
     check('start_date', 'Start date is required').isISO8601(),
     check('end_date', 'End date is required').isISO8601(),
   ],
-  checkAuth,
+  checkAdmin,
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -87,7 +87,7 @@ router.put(
   }
 );
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', checkAdmin, async (req, res, next) => {
   try {
     await Membership.findByIdAndDelete(req.params.id);
     res.status(204).end();

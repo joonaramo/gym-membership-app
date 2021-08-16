@@ -32,6 +32,11 @@ const SearchResults = ({ searchResults, setSearchResults, name }) => {
         setSubtitle('value');
         setSearchResults([]);
         break;
+      case 'Categories':
+        setTitle('name');
+        setSubtitle('description');
+        setSearchResults([]);
+        break;
       default:
         break;
     }

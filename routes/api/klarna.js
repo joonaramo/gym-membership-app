@@ -4,7 +4,7 @@ const axios = require('axios');
 const Order = require('../../models/order');
 const Membership = require('../../models/membership');
 const User = require('../../models/user');
-const { checkAuth } = require('../../utils/middleware');
+const { checkAuth, checkAdmin } = require('../../utils/middleware');
 const Product = require('../../models/product');
 const Coupon = require('../../models/coupon');
 
@@ -114,7 +114,7 @@ router.post('/', checkAuth, async (req, res, next) => {
   }
 });
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', checkAdmin, async (req, res, next) => {
   try {
     const { data } = await axios.get(
       `${config.KLARNA_API_URL}/checkout/v3/orders/${req.params.id}`,
@@ -230,7 +230,7 @@ router.post('/confirm/:order_id', async (req, res, next) => {
   }
 });
 
-router.post('/capture/:id', async (req, res, next) => {
+router.post('/capture/:id', checkAdmin, async (req, res, next) => {
   try {
     const { order_amount, order_lines } = req.body;
     await axios.post(

@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const Coupon = require('../../models/coupon');
 const { check, validationResult } = require('express-validator');
-const { checkAuth } = require('../../utils/middleware');
+const { checkAdmin } = require('../../utils/middleware');
 
-router.get('/', async (req, res, next) => {
+router.get('/', checkAdmin, async (req, res, next) => {
   try {
     const { page, limit } = req.query;
     if (page && limit) {
@@ -30,7 +30,7 @@ router.get('/code/:code', async (req, res, next) => {
   }
 });
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', checkAdmin, async (req, res, next) => {
   try {
     const coupon = await Coupon.findById(req.params.id);
     if (coupon) {
@@ -49,7 +49,7 @@ router.post(
     check('value', 'Value is required').isNumeric(),
     check('active', 'State is required').isBoolean(),
   ],
-  checkAuth,
+  checkAdmin,
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -73,7 +73,7 @@ router.put(
     check('value', 'Value is required').isNumeric(),
     check('active', 'State is required').isBoolean(),
   ],
-  checkAuth,
+  checkAdmin,
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -96,7 +96,7 @@ router.put(
   }
 );
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', checkAdmin, async (req, res, next) => {
   try {
     await Coupon.findByIdAndDelete(req.params.id);
     res.status(204).end();
