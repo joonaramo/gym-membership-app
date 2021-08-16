@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   ChevronRightIcon,
-  UserIcon,
+  CreditCardIcon,
   XIcon,
   CheckIcon,
 } from '@heroicons/react/solid';
@@ -39,7 +39,7 @@ const Orders = ({ setCurrent }) => {
               >
                 <span className='flex items-center space-x-4'>
                   <span className='flex-1 flex space-x-2 truncate'>
-                    <UserIcon
+                    <CreditCardIcon
                       className='flex-shrink-0 h-5 w-5 text-gray-400'
                       aria-hidden='true'
                     />
@@ -117,7 +117,7 @@ const Orders = ({ setCurrent }) => {
                             to={`/admin/orders/${order.id}`}
                             className='group inline-flex space-x-2 truncate text-sm'
                           >
-                            <UserIcon
+                            <CreditCardIcon
                               className='flex-shrink-0 h-5 w-5 text-gray-400 group-hover:text-gray-500'
                               aria-hidden='true'
                             />

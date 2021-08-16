@@ -23,6 +23,7 @@ router.get('/', async (req, res, next) => {
         page,
         limit,
         populate: 'user',
+        sort: { completed_at: 'desc' },
       };
       const orders = await Order.paginate(status && { status }, options);
       const ordersWithKlarna = {

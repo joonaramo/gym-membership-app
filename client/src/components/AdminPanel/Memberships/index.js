@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  ChevronRightIcon,
-  UserIcon,
-  XIcon,
-  CheckIcon,
-} from '@heroicons/react/solid';
+import { ChevronRightIcon, UserAddIcon } from '@heroicons/react/solid';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
@@ -47,7 +42,7 @@ const Memberships = ({ setCurrent }) => {
               >
                 <span className='flex items-center space-x-4'>
                   <span className='flex-1 flex space-x-2 truncate'>
-                    <UserIcon
+                    <UserAddIcon
                       className='flex-shrink-0 h-5 w-5 text-gray-400'
                       aria-hidden='true'
                     />
@@ -125,7 +120,7 @@ const Memberships = ({ setCurrent }) => {
                             to={`/admin/memberships/${membership.id}`}
                             className='group inline-flex flex-1 space-x-2 truncate text-sm'
                           >
-                            <UserIcon
+                            <UserAddIcon
                               className='flex-shrink-0 h-5 w-5 text-gray-400 group-hover:text-gray-500'
                               aria-hidden='true'
                             />

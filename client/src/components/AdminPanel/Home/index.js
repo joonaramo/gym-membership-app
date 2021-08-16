@@ -5,9 +5,9 @@ import { getMemberships } from '../../../actions/membership';
 import {
   UserGroupIcon,
   CreditCardIcon,
-  DocumentReportIcon,
+  UserAddIcon,
 } from '@heroicons/react/outline';
-import Activity from './Activity';
+import Uncaptured from './Uncaptured';
 import Overview from './Overview';
 
 const Home = ({ setCurrent }) => {
@@ -43,7 +43,7 @@ const Home = ({ setCurrent }) => {
       {
         name: 'Active memberships',
         href: '/admin/memberships',
-        icon: DocumentReportIcon,
+        icon: UserAddIcon,
         amount: activeMemberships.length,
       },
     ];
@@ -53,7 +53,7 @@ const Home = ({ setCurrent }) => {
   return (
     <>
       <Overview cards={cards} />
-      <Activity />
+      <Uncaptured />
     </>
   );
 };

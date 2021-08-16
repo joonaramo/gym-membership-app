@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  ChevronRightIcon,
-  UserIcon,
-  XIcon,
-  CheckIcon,
-} from '@heroicons/react/solid';
+import { ChevronRightIcon, CreditCardIcon } from '@heroicons/react/solid';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
@@ -13,7 +8,7 @@ import { getOrders } from '../../../actions/order';
 import { setNotification } from '../../../actions/notification';
 import Pagination from '../UI/Pagination';
 
-const Activity = () => {
+const Uncaptured = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [currentLimit, setCurrentLimit] = useState(10);
   const { orders, totalDocs, limit, pagingCounter, hasPrevPage, hasNextPage } =
@@ -46,7 +41,7 @@ const Activity = () => {
       <h2 className='max-w-6xl mx-auto mt-8 px-4 text-lg leading-6 font-medium text-gray-900 sm:px-6 lg:px-8'>
         Uncaptured orders
       </h2>
-      {/* Activity list (smallest breakpoint only) */}
+      {/* Uncaptured list (smallest breakpoint only) */}
       <div className='shadow sm:hidden'>
         <ul className='mt-2 divide-y divide-gray-200 overflow-hidden shadow sm:hidden'>
           {orders.map((order) => (
@@ -57,7 +52,7 @@ const Activity = () => {
               >
                 <span className='flex items-center space-x-4'>
                   <span className='flex-1 flex space-x-2 truncate'>
-                    <UserIcon
+                    <CreditCardIcon
                       className='flex-shrink-0 h-5 w-5 text-gray-400'
                       aria-hidden='true'
                     />
@@ -104,7 +99,7 @@ const Activity = () => {
         </nav>
       </div>
 
-      {/* Activity table (small breakpoint and up) */}
+      {/* Uncaptured table (small breakpoint and up) */}
       <div className='hidden sm:block'>
         <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
           <div className='flex flex-col mt-2'>
@@ -122,7 +117,7 @@ const Activity = () => {
                       User
                     </th>
                     <th className='px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                      Completed
+                      Action
                     </th>
                   </tr>
                 </thead>
@@ -135,7 +130,7 @@ const Activity = () => {
                             to={`/admin/orders/${order.id}`}
                             className='group inline-flex space-x-2 truncate text-sm'
                           >
-                            <UserIcon
+                            <CreditCardIcon
                               className='flex-shrink-0 h-5 w-5 text-gray-400 group-hover:text-gray-500'
                               aria-hidden='true'
                             />
@@ -182,4 +177,4 @@ const Activity = () => {
   );
 };
 
-export default Activity;
+export default Uncaptured;

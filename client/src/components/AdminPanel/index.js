@@ -5,12 +5,10 @@ import {
   HomeIcon,
   CreditCardIcon,
   UserGroupIcon,
-  DocumentReportIcon,
+  UserAddIcon,
   ShoppingCartIcon,
   TagIcon,
   CogIcon,
-  QuestionMarkCircleIcon,
-  ShieldCheckIcon,
   ViewListIcon,
 } from '@heroicons/react/outline';
 
@@ -53,7 +51,7 @@ const AdminPanel = ({
     {
       name: 'Memberships',
       href: '/admin/memberships',
-      icon: DocumentReportIcon,
+      icon: UserAddIcon,
       current: false,
     },
     {
