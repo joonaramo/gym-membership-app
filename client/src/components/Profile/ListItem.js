@@ -15,7 +15,8 @@ const ListItem = ({
 }) => {
   const [editState, setEditState] = useState(false);
   const [updatedValue, setUpdatedValue] = useState(value);
-  const updateField = () => {
+  const updateField = (e) => {
+    e.preventDefault();
     if (updatedValue !== value) {
       setUpdatedObject({ ...updatedObject, [name]: updatedValue });
       setHasUnsavedChanges(true);
@@ -26,7 +27,10 @@ const ListItem = ({
     setUpdatedValue(value);
   }, [value]);
   return (
-    <div className='py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 lg:px-8'>
+    <form
+      onSubmit={(e) => updateField(e)}
+      className='py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 lg:px-8'
+    >
       <dt className='text-sm font-medium text-gray-500'>{title}</dt>
       {editState ? (
         <>
@@ -42,7 +46,7 @@ const ListItem = ({
             />
           </dd>
           <dd className='flex mt-1 text-sm text-gray-900 sm:mt-0'>
-            <button onClick={() => updateField()}>
+            <button type='submit'>
               <CheckIcon className='h-6 w-6' aria-hidden='true' />
             </button>
           </dd>
@@ -61,14 +65,20 @@ const ListItem = ({
           </dd>
           {editable && (
             <dd className='flex mt-1 text-sm text-gray-900 sm:mt-0'>
-              <button onClick={() => setEditState(true)}>
+              <button
+                type='button'
+                onClick={(e) => {
+                  e.preventDefault();
+                  setEditState(true);
+                }}
+              >
                 <PencilAltIcon className='h-6 w-6' aria-hidden='true' />
               </button>
             </dd>
           )}
         </>
       )}
-    </div>
+    </form>
   );
 };
 

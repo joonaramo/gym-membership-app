@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { check, validationResult } = require('express-validator');
+const { check } = require('express-validator');
 const { checkAuth, checkAdmin } = require('../../utils/middleware');
 const { format } = require('date-fns');
 const User = require('../../models/user');
@@ -51,7 +51,10 @@ router.get('/:id', checkAuth, async (req, res, next) => {
           model: 'Product',
         },
       });
-    res.json(user);
+    if (user) {
+      return res.json(user);
+    }
+    res.status(404).json({ error: 'Not found' });
   } catch (err) {
     next(err);
   }
@@ -69,10 +72,19 @@ router.patch(
     check('city', 'City is required').exists(),
     check('birth_date', 'Birth date is required').isDate(),
   ],
-  checkAdmin,
+  checkAuth,
   async (req, res, next) => {
     try {
-      const user = await User.findById(req.params.id)
+      let id;
+      if (req.params.id === req.user.id) {
+        id = req.user.id;
+      } else {
+        if (!req.user.is_admin) {
+          return res.status(403).json({ error: 'Forbidden' });
+        }
+        id = req.params.id;
+      }
+      const user = await User.findById(id)
         .populate('memberships')
         .populate({
           path: 'orders',
@@ -81,6 +93,9 @@ router.patch(
             model: 'Product',
           },
         });
+      if (!user) {
+        return res.status(404).json({ error: 'Not found' });
+      }
       const {
         email,
         first_name,
@@ -106,5 +121,15 @@ router.patch(
     }
   }
 );
+
+router.delete('/:id', checkAdmin, async (req, res, next) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) return res.status(404).json({ error: 'Not found' });
+    res.status(204).end();
+  } catch (err) {
+    next(err);
+  }
+});
 
 module.exports = router;

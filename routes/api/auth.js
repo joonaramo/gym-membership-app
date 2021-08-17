@@ -50,7 +50,7 @@ router.post(
       }
 
       const saltRounds = 10;
-      passwordHash = await bcrypt.hash(password, saltRounds);
+      const passwordHash = await bcrypt.hash(password, saltRounds);
 
       user = new User({
         email,

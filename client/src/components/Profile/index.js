@@ -8,19 +8,10 @@ import { loadUser, updateUser } from '../../actions/auth';
 import DateListItem from './DateListItem';
 import Notification from './Notification';
 import Alert from '../Auth/Alert';
+import Loading from '../UI/Loading';
 
-const Profile = ({ auth: { user }, loadUser, updateUser }) => {
-  const [updatedUser, setUpdatedUser] = useState({
-    id: undefined,
-    email: undefined,
-    first_name: undefined,
-    last_name: undefined,
-    phone_number: undefined,
-    street_address: undefined,
-    postal_code: undefined,
-    city: undefined,
-    birth_date: undefined,
-  });
+const Profile = ({ auth: { user, loading }, loadUser, updateUser }) => {
+  const [updatedObject, setUpdatedObject] = useState();
   const [hasUnSavedChanges, setHasUnsavedChanges] = useState(false);
 
   useEffect(() => {
@@ -29,7 +20,7 @@ const Profile = ({ auth: { user }, loadUser, updateUser }) => {
 
   useEffect(() => {
     if (user) {
-      setUpdatedUser({
+      setUpdatedObject({
         id: user.id,
         email: user.email,
         first_name: user.first_name,
@@ -45,15 +36,17 @@ const Profile = ({ auth: { user }, loadUser, updateUser }) => {
 
   const save = async () => {
     try {
-      await updateUser(updatedUser);
+      await updateUser(updatedObject);
       setHasUnsavedChanges(false);
     } catch (err) {
       console.log(err);
     }
   };
-  if (!user) {
-    return null;
+
+  if (loading || !updatedObject) {
+    return <Loading color='auto' />;
   }
+
   return (
     <div className='bg-white shadow overflow-hidden sm:rounded-lg'>
       <div className='px-4 py-5 sm:px-6 lg:px-8'>
@@ -69,73 +62,57 @@ const Profile = ({ auth: { user }, loadUser, updateUser }) => {
           <ListItem
             title='First name'
             name='first_name'
-            value={`${
-              updatedUser.first_name ? updatedUser.first_name : user.first_name
-            }`}
-            updatedUser={updatedUser}
-            setUpdatedUser={setUpdatedUser}
+            value={updatedObject.first_name}
+            updatedObject={updatedObject}
+            setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}
           />
           <ListItem
             title='Last name'
             name='last_name'
-            value={`${
-              updatedUser.last_name ? updatedUser.last_name : user.last_name
-            }`}
-            updatedUser={updatedUser}
-            setUpdatedUser={setUpdatedUser}
+            value={updatedObject.last_name}
+            updatedObject={updatedObject}
+            setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}
           />
           <ListItem
             title='Email address'
             name='email'
-            value={`${updatedUser.email ? updatedUser.email : user.email}`}
-            updatedUser={updatedUser}
-            setUpdatedUser={setUpdatedUser}
+            value={updatedObject.email}
+            updatedObject={updatedObject}
+            setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}
           />
           <ListItem
             title='Phone number'
             name='phone_number'
-            value={`${
-              updatedUser.phone_number
-                ? updatedUser.phone_number
-                : user.phone_number
-            }`}
-            updatedUser={updatedUser}
-            setUpdatedUser={setUpdatedUser}
+            value={updatedObject.phone_number}
+            updatedObject={updatedObject}
+            setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}
           />
           <ListItem
             title='Street address'
             name='street_address'
-            value={`${
-              updatedUser.street_address
-                ? updatedUser.street_address
-                : user.street_address
-            }`}
-            updatedUser={updatedUser}
-            setUpdatedUser={setUpdatedUser}
+            value={updatedObject.street_address}
+            updatedObject={updatedObject}
+            setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}
           />
           <ListItem
             title='Postal code'
             name='postal_code'
-            value={`${
-              updatedUser.postal_code
-                ? updatedUser.postal_code
-                : user.postal_code
-            }`}
-            updatedUser={updatedUser}
-            setUpdatedUser={setUpdatedUser}
+            value={updatedObject.postal_code}
+            updatedObject={updatedObject}
+            setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}
           />
           <ListItem
             title='City'
             name='city'
-            value={`${updatedUser.city ? updatedUser.city : user.city}`}
-            updatedUser={updatedUser}
-            setUpdatedUser={setUpdatedUser}
+            value={updatedObject.city}
+            updatedObject={updatedObject}
+            setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}
           />
           <DateListItem
@@ -145,12 +122,12 @@ const Profile = ({ auth: { user }, loadUser, updateUser }) => {
             previousMonthButtonLabel='<'
             dateFormat='dd/MM/yyyy'
             value={
-              updatedUser.birth_date
-                ? new Date(updatedUser.birth_date)
+              updatedObject.birth_date
+                ? new Date(updatedObject.birth_date)
                 : new Date(user.birth_date)
             }
-            updatedUser={updatedUser}
-            setUpdatedUser={setUpdatedUser}
+            updatedObject={updatedObject}
+            setUpdatedObject={setUpdatedObject}
             setHasUnsavedChanges={setHasUnsavedChanges}
           />
           <div className='py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 lg:px-8'>

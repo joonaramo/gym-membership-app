@@ -1,4 +1,3 @@
-const config = require('../../utils/config');
 const router = require('express').Router();
 const Membership = require('../../models/membership');
 const { check, validationResult } = require('express-validator');

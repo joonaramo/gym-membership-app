@@ -49,7 +49,10 @@ const userSchema = mongoose.Schema({
     type: Date,
     required: true,
   },
-  is_admin: Boolean,
+  is_admin: {
+    type: Boolean,
+    default: false,
+  },
   passwordHash: String,
 });
 
