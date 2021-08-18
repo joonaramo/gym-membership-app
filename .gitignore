@@ -28,6 +28,3 @@ benchmarks/graphs
 
 # Environment variables
 .env
-
-# Build
-build
