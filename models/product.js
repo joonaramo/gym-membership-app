@@ -21,6 +21,14 @@ const productSchema = mongoose.Schema({
     ref: 'Category',
     required: true,
   },
+  featured: {
+    type: Boolean,
+    default: false,
+  },
+  most_popular: {
+    type: Boolean,
+    default: false,
+  },
   membership_length: {
     type: Number,
   },

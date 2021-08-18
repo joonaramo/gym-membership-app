@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAllProducts } from '../../actions/product';
 import Hero from './Hero';
 import ImageSection from './ImageSection/';
 import PricingSection from './PricingSection';
 import Footer from './Footer/';
-import { useSelector } from 'react-redux';
 
 const FrontPage = () => {
   const { settings } = useSelector((state) => state.settings);
+  const { allProducts } = useSelector((state) => state.product);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllProducts());
+  }, []);
   return (
     <>
       <Hero />
@@ -36,7 +42,7 @@ const FrontPage = () => {
         buttonText={'Check the pricing'}
         buttonUrl={'#pricing'}
       />
-      <PricingSection />
+      <PricingSection products={allProducts} />
       <Footer settings={settings} />
     </>
   );

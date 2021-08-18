@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
 import { CheckIcon } from '@heroicons/react/outline';
+import Loading from '../../UI/Loading';
 
 const hobbyFeatures = [
   'Pariatur quod similique',
@@ -21,8 +22,18 @@ const growthFeatures = [
   'Nam ut ipsa nesciunt culpa modi dolor',
 ];
 
-const PricingSection = ({ auth: { isAuthenticated } }) => {
+const PricingSection = ({ auth: { isAuthenticated }, products }) => {
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [mostPopularProduct, setMostPopularProduct] = useState();
   const history = useHistory();
+  useEffect(() => {
+    const featured = products.filter(
+      (product) => product.featured && !product.most_popular
+    );
+    setFeaturedProducts(featured);
+    const mostPopular = products.find((product) => product.most_popular);
+    setMostPopularProduct(mostPopular);
+  }, [products]);
   const addToCart = (productId) => {
     if (isAuthenticated) {
       let cartItemsStorage = [];
@@ -47,6 +58,10 @@ const PricingSection = ({ auth: { isAuthenticated } }) => {
       history.push('/login');
     }
   };
+
+  if (!featuredProducts.length > 0) {
+    return <Loading />;
+  }
   return (
     <div id='pricing' className='bg-gray-900'>
       <div className='pt-12 px-4 sm:px-6 lg:px-8 lg:pt-20'>
@@ -78,11 +93,13 @@ const PricingSection = ({ auth: { isAuthenticated } }) => {
                           className='text-center text-2xl font-medium text-gray-900'
                           id='tier-hobby'
                         >
-                          1 month
+                          {featuredProducts[0].name}
                         </h3>
                         <div className='mt-4 flex items-center justify-center'>
                           <span className='px-3 flex items-start text-6xl tracking-tight text-gray-900'>
-                            <span className='font-extrabold'>40</span>
+                            <span className='font-extrabold'>
+                              {featuredProducts[0].unit_price}
+                            </span>
                           </span>
                           <span className='mt-2 mr-2 text-4xl font-medium'>
                             €
@@ -109,9 +126,7 @@ const PricingSection = ({ auth: { isAuthenticated } }) => {
                       <div className='mt-8'>
                         <div className='rounded-lg shadow-md'>
                           <button
-                            onClick={() =>
-                              addToCart('60df10cad8f8630e2c8cb1f7')
-                            }
+                            onClick={() => addToCart(featuredProducts[0].id)}
                             className='block w-full text-center rounded-lg border border-transparent bg-white px-6 py-3 text-base font-medium text-indigo-600 hover:bg-gray-50'
                             aria-describedby='tier-hobby'
                           >
@@ -142,11 +157,13 @@ const PricingSection = ({ auth: { isAuthenticated } }) => {
                         className='text-center text-3xl font-semibold text-gray-900 sm:-mx-6'
                         id='tier-growth'
                       >
-                        6 months
+                        {mostPopularProduct.name}
                       </h3>
                       <div className='mt-4 flex items-center justify-center'>
                         <span className='px-3 flex items-start text-6xl tracking-tight text-gray-900 sm:text-6xl'>
-                          <span className='font-extrabold'>200</span>
+                          <span className='font-extrabold'>
+                            {mostPopularProduct.unit_price}
+                          </span>
                         </span>
                         <span className='mt-2 mr-2 text-4xl font-medium'>
                           €
@@ -173,7 +190,7 @@ const PricingSection = ({ auth: { isAuthenticated } }) => {
                     <div className='mt-10'>
                       <div className='rounded-lg shadow-md'>
                         <button
-                          onClick={() => addToCart('60f548925fd25335f84dc9e1')}
+                          onClick={() => addToCart(mostPopularProduct.id)}
                           className='block w-full text-center rounded-lg border border-transparent bg-indigo-600 px-6 py-4 text-xl leading-6 font-medium text-white hover:bg-indigo-700'
                           aria-describedby='tier-growth'
                         >
@@ -193,11 +210,13 @@ const PricingSection = ({ auth: { isAuthenticated } }) => {
                           className='text-center text-2xl font-medium text-gray-900'
                           id='tier-scale'
                         >
-                          1 year
+                          {featuredProducts[1].name}
                         </h3>
                         <div className='mt-4 flex items-center justify-center'>
                           <span className='px-3 flex items-start text-6xl tracking-tight text-gray-900'>
-                            <span className='font-extrabold'>360</span>
+                            <span className='font-extrabold'>
+                              {featuredProducts[1].unit_price}{' '}
+                            </span>
                           </span>
                           <span className='mt-2 mr-2 text-4xl font-medium'>
                             €
@@ -224,9 +243,7 @@ const PricingSection = ({ auth: { isAuthenticated } }) => {
                       <div className='mt-8'>
                         <div className='rounded-lg shadow-md'>
                           <button
-                            onClick={() =>
-                              addToCart('60f54a433cd86e67c4dd5205')
-                            }
+                            onClick={() => addToCart(featuredProducts[1].id)}
                             className='block w-full text-center rounded-lg border border-transparent bg-white px-6 py-3 text-base font-medium text-indigo-600 hover:bg-gray-50'
                             aria-describedby='tier-scale'
                           >
