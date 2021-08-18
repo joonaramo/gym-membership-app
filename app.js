@@ -26,7 +26,6 @@ mongoose.connect(config.MONGODB_URI, {
 app.use(cors());
 app.use(middleware.tokenExtractor);
 app.use(express.json());
-app.use(express.static('build'));
 
 app.use('/api/auth', authRouter);
 app.use('/api/orders', ordersRouter);
@@ -37,6 +36,14 @@ app.use('/api/coupons', couponsRouter);
 app.use('/api/memberships', membershipsRouter);
 app.use('/api/settings', settingsRouter);
 app.use('/api/categories', categoriesRouter);
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
 
 const errorHandler = (error, request, response, next) => {
   if (error.name === 'CastError') {
