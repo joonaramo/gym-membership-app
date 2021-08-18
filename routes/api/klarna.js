@@ -15,10 +15,10 @@ router.post('/', checkAuth, async (req, res, next) => {
     locale: 'fi-FI',
     merchant_reference2: req.user.id,
     merchant_urls: {
-      terms: 'http://localhost:3000/terms',
-      checkout: 'http://localhost:3000/checkout',
-      confirmation: 'http://localhost:3000/confirmation',
-      push: 'http://localhost:5000/api/klarna/confirm/{checkout.order.id}',
+      terms: `${config.FRONTEND_URL}/terms`,
+      checkout: `${config.FRONTEND_URL}/checkout`,
+      confirmation: `${config.FRONTEND_URL}/confirmation`,
+      push: `${config.BACKEND_URL}/api/klarna/confirm/{checkout.order.id}`,
     },
   };
 
