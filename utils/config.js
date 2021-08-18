@@ -11,7 +11,7 @@ const MONGODB_URI =
 const KLARNA_API_URL = process.env.KLARNA_API_URL;
 const KLARNA_API_CREDENTIALS = process.env.KLARNA_API_CREDENTIALS;
 const FRONTEND_URL =
-  process.env.NODE_ENV === 'development'
+  process.env.NODE_ENV === 'production'
     ? process.env.FRONTEND_URL
     : process.env.DEV_FRONTEND_URL;
 const BACKEND_URL =
