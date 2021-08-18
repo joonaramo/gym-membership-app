@@ -22,6 +22,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "redux": "^4.1.0",
+    "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0",
     "tailwindcss": "^2.2.7",
     "web-vitals": "^1.1.2",
@@ -53,7 +54,6 @@
   },
   "devDependencies": {
     "autoprefixer": "^9.8.6",
-    "postcss": "^7.0.36",
-    "redux-devtools-extension": "^2.13.9"
+    "postcss": "^7.0.36"
   }
 }
