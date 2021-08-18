@@ -5,7 +5,9 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const MONGODB_URI =
   process.env.NODE_ENV === 'test'
     ? process.env.TEST_MONGODB_URI
-    : process.env.MONGODB_URI;
+    : process.env.NODE_ENV === 'production'
+    ? process.env.MONGODB_URI
+    : process.env.DEV_MONGODB_URI;
 const KLARNA_API_URL = process.env.KLARNA_API_URL;
 const KLARNA_API_CREDENTIALS = process.env.KLARNA_API_CREDENTIALS;
 

@@ -6,7 +6,6 @@ const api = supertest(app);
 
 const helper = require('./products_helper');
 const usersHelper = require('./users_helper');
-const Product = require('../models/product');
 const Category = require('../models/category');
 
 let adminToken;
@@ -73,21 +72,31 @@ describe('POST /api/products', () => {
       .expect(403)
       .expect('Content-Type', /application\/json/);
   });
-  test('authorized admin user can create new product', async () => {
-    const response = await api
-      .post('/api/products')
-      .send(productData)
-      .set('Authorization', `bearer ${adminToken}`)
-      .expect(201)
-      .expect('Content-Type', /application\/json/);
-    expect({
-      reference: response.body.reference,
-      name: response.body.name,
-      category: response.body.category,
-      membership_length: response.body.membership_length,
-      unit_price: response.body.unit_price,
-      tax_rate: response.body.tax_rate,
-    }).toEqual(productData);
+  describe('authorized admin user', () => {
+    test('can create a new product with valid data', async () => {
+      const response = await api
+        .post('/api/products')
+        .send(productData)
+        .set('Authorization', `bearer ${adminToken}`)
+        .expect(201)
+        .expect('Content-Type', /application\/json/);
+      expect({
+        reference: response.body.reference,
+        name: response.body.name,
+        category: response.body.category,
+        membership_length: response.body.membership_length,
+        unit_price: response.body.unit_price,
+        tax_rate: response.body.tax_rate,
+      }).toEqual(productData);
+    });
+    test('can not create a new product with missing fields and receives 400', async () => {
+      await api
+        .post('/api/products')
+        .send({ membership_length: 5, unit_price: 0 })
+        .set('Authorization', `bearer ${adminToken}`)
+        .expect(400)
+        .expect('Content-Type', /application\/json/);
+    });
   });
 });
 

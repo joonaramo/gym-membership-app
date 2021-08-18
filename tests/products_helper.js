@@ -1,46 +1,5 @@
 const Product = require('../models/product');
-const Category = require('../models/category');
-
-const initializeCategory = async () => {
-  await Category.deleteMany({});
-  const newCategory = new Category({
-    name: 'Test Category 1',
-    description: 'This is category for testing',
-  });
-  const category = await newCategory.save();
-  return category;
-};
-
-const productsInDb = async () => {
-  const products = await Product.find({});
-  return products.map((u) => u.toJSON());
-};
-
-// const nonExistingId = async () => {
-//   const user = new User({
-//     email: 'remove@me.com',
-//     first_name: 'Remove',
-//     last_name: 'Me',
-//     phone_number: '10100101',
-//     street_address: '1010 Doe Street',
-//     postal_code: 101010,
-//     city: 'Doe City',
-//     birth_date: Date.now(),
-//   });
-//   await user.save();
-//   await user.remove();
-
-//   return user.id.toString();
-// };
-
-const initializeProducts = async () => {
-  await Product.deleteMany({});
-  const category = await initializeCategory();
-  const productsWithCategory = initialProducts.map((product) => {
-    return { ...product, category };
-  });
-  await Product.insertMany(productsWithCategory);
-};
+const { initializeCategories, categoriesInDb } = require('./categories_helper');
 
 const initialProducts = [
   {
@@ -73,9 +32,24 @@ const initialProducts = [
   },
 ];
 
+const initializeProducts = async () => {
+  await Product.deleteMany({});
+  await initializeCategories();
+  const categories = await categoriesInDb();
+  const category = categories[0];
+  const productsWithCategory = initialProducts.map((product) => {
+    return { ...product, category };
+  });
+  await Product.insertMany(productsWithCategory);
+};
+
+const productsInDb = async () => {
+  const products = await Product.find({});
+  return products.map((p) => p.toJSON());
+};
+
 module.exports = {
   initialProducts,
   initializeProducts,
-  initializeCategory,
   productsInDb,
 };

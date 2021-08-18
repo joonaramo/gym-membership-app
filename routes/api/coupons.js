@@ -47,7 +47,6 @@ router.post(
   [
     check('code', 'Code is required').exists(),
     check('value', 'Value is required').isNumeric(),
-    check('active', 'State is required').isBoolean(),
   ],
   checkAdmin,
   async (req, res, next) => {
