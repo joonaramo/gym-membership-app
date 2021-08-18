@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 
 const middleware = require('./utils/middleware');
 
@@ -37,14 +38,6 @@ app.use('/api/memberships', membershipsRouter);
 app.use('/api/settings', settingsRouter);
 app.use('/api/categories', categoriesRouter);
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
-
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-  });
-}
-
 const errorHandler = (error, request, response, next) => {
   if (error.name === 'CastError') {
     return response.status(400).json({ error: 'malformatted id' });
@@ -70,5 +63,13 @@ const errorHandler = (error, request, response, next) => {
 };
 
 app.use(errorHandler);
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
 
 module.exports = app;
