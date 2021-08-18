@@ -275,6 +275,12 @@ const Navbar = ({
               >
                 Find us
               </a>
+              <Link
+                to='/admin'
+                className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
+              >
+                Admin Panel
+              </Link>
             </div>
             <div className='pt-4 pb-3 border-t border-gray-700'>
               <div className='flex items-center px-5'>
