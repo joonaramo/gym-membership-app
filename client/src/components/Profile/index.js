@@ -21,7 +21,6 @@ const Profile = ({ auth: { user, loading }, loadUser, updateUser }) => {
   useEffect(() => {
     if (user) {
       setUpdatedObject({
-        id: user.id,
         email: user.email,
         first_name: user.first_name,
         last_name: user.last_name,
@@ -158,14 +157,6 @@ const Profile = ({ auth: { user, loading }, loadUser, updateUser }) => {
                             left)
                           </span>
                         </div>
-                        {/* <div className='ml-4 flex-shrink-0'>
-                        <a
-                          href='#'
-                          className='font-medium text-indigo-600 hover:text-indigo-500'
-                        >
-                          Download
-                        </a>
-                      </div> */}
                       </li>
                     ))}
                 </ul>
@@ -198,14 +189,6 @@ const Profile = ({ auth: { user, loading }, loadUser, updateUser }) => {
                           Order ID: {order.id}
                         </span>
                       </div>
-                      {/* <div className='ml-4 flex-shrink-0'>
-                      <a
-                        href='#'
-                        className='font-medium text-indigo-600 hover:text-indigo-500'
-                      >
-                        Download
-                      </a>
-                    </div> */}
                     </li>
                   ))}
                 </ul>

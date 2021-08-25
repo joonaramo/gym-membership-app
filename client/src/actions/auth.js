@@ -89,7 +89,6 @@ export const signup =
 
 export const updateUser =
   ({
-    id,
     email,
     first_name,
     last_name,
@@ -111,7 +110,7 @@ export const updateUser =
       birth_date: format(new Date(birth_date), 'yyyy-MM-dd'),
     });
     try {
-      const user = await userService.update(id, body);
+      const user = await userService.update('me', body);
       dispatch({
         type: 'UPDATE_USER',
         payload: user,

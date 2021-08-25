@@ -2,53 +2,6 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const loginUser = async (user) => {
-  const userForToken = {
-    user: {
-      email: user.email,
-      id: user.id,
-      is_admin: user.is_admin,
-    },
-  };
-
-  const token = jwt.sign(userForToken, process.env.JWT_SECRET);
-
-  return token;
-};
-
-const usersInDb = async () => {
-  const users = await User.find({});
-  return users.map((u) => u.toJSON());
-};
-
-const initializeUsers = async () => {
-  await User.deleteMany({});
-  const usersWithPassword = await Promise.all(
-    initialUsers.map(async (user) => {
-      const passwordHash = await bcrypt.hash('test123', 10);
-      return { ...user, passwordHash };
-    })
-  );
-  await User.insertMany(usersWithPassword);
-};
-
-const nonExistingId = async () => {
-  const user = new User({
-    email: 'remove@me.com',
-    first_name: 'Remove',
-    last_name: 'Me',
-    phone_number: '10100101',
-    street_address: '1010 Doe Street',
-    postal_code: 101010,
-    city: 'Doe City',
-    birth_date: Date.now(),
-  });
-  await user.save();
-  await user.remove();
-
-  return user.id.toString();
-};
-
 const initialUsers = [
   {
     email: 'jester@test.com',
@@ -93,10 +46,39 @@ const initialUsers = [
   },
 ];
 
+const initializeUsers = async () => {
+  await User.deleteMany({});
+  const usersWithPassword = await Promise.all(
+    initialUsers.map(async (user) => {
+      const passwordHash = await bcrypt.hash('test123', 10);
+      return { ...user, passwordHash };
+    })
+  );
+  await User.insertMany(usersWithPassword);
+};
+
+const loginUser = async (user) => {
+  const userForToken = {
+    user: {
+      email: user.email,
+      id: user.id,
+      is_admin: user.is_admin,
+    },
+  };
+
+  const token = jwt.sign(userForToken, process.env.JWT_SECRET);
+
+  return token;
+};
+
+const usersInDb = async () => {
+  const users = await User.find({});
+  return users.map((u) => u.toJSON());
+};
+
 module.exports = {
   loginUser,
   initialUsers,
   initializeUsers,
   usersInDb,
-  nonExistingId,
 };

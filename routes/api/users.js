@@ -76,7 +76,7 @@ router.patch(
   async (req, res, next) => {
     try {
       let id;
-      if (req.params.id === req.user.id) {
+      if (req.params.id === 'me') {
         id = req.user.id;
       } else {
         if (!req.user.is_admin) {

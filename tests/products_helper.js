@@ -38,7 +38,7 @@ const initializeProducts = async () => {
   const categories = await categoriesInDb();
   const category = categories[0];
   const productsWithCategory = initialProducts.map((product) => {
-    return { ...product, category };
+    return { ...product, category: category.id };
   });
   await Product.insertMany(productsWithCategory);
 };

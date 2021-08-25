@@ -110,7 +110,7 @@ router.post(
 
       if (!user) {
         return res
-          .status(400)
+          .status(401)
           .json({ errors: [{ msg: 'Invalid credentials' }] });
       }
 
@@ -118,7 +118,7 @@ router.post(
 
       if (!passwordCorrect) {
         return res
-          .status(400)
+          .status(401)
           .json({ errors: [{ msg: 'Invalid credentials' }] });
       }
 
