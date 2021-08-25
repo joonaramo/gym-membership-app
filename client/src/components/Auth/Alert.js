@@ -1,14 +1,14 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { ExclamationIcon, XIcon, ThumbUpIcon } from '@heroicons/react/solid';
-import { setNotification } from '../../actions/notification';
-import { classNames } from '../../utils/helpers';
+import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { ExclamationIcon, XIcon, ThumbUpIcon } from '@heroicons/react/solid'
+import { setNotification } from '../../actions/notification'
+import { classNames } from '../../utils/helpers'
 
 const Alert = () => {
   const { message, type = 'ERROR' } = useSelector(
     (state) => state.notification
-  );
-  const dispatch = useDispatch();
+  )
+  const dispatch = useDispatch()
   if (message) {
     return (
       <div className='z-50 fixed bottom-0 inset-x-0 pb-2 sm:pb-5'>
@@ -56,9 +56,9 @@ const Alert = () => {
           </div>
         </div>
       </div>
-    );
+    )
   }
-  return null;
-};
+  return null
+}
 
-export default Alert;
+export default Alert

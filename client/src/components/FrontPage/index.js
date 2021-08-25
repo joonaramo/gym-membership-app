@@ -1,18 +1,18 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { getAllProducts } from '../../actions/product';
-import Hero from './Hero';
-import ImageSection from './ImageSection/';
-import PricingSection from './PricingSection';
-import Footer from './Footer/';
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { getAllProducts } from '../../actions/product'
+import Hero from './Hero'
+import ImageSection from './ImageSection/'
+import PricingSection from './PricingSection'
+import Footer from './Footer/'
 
 const FrontPage = () => {
-  const { settings } = useSelector((state) => state.settings);
-  const { allProducts } = useSelector((state) => state.product);
-  const dispatch = useDispatch();
+  const { settings } = useSelector((state) => state.settings)
+  const { allProducts } = useSelector((state) => state.product)
+  const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(getAllProducts());
-  }, []);
+    dispatch(getAllProducts())
+  }, [])
   return (
     <>
       <Hero />
@@ -34,7 +34,7 @@ const FrontPage = () => {
           'https://images.unsplash.com/photo-1507398941214-572c25f4b1dc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1920&q=60&blend=6366F1&sat=-100&blend-mode=multiply'
         }
         reversed={false}
-        title={"We won't make you go bankrupt"}
+        title={'We won\'t make you go bankrupt'}
         subtitle={'Affordable pricing'}
         content={
           'We offer you multiple different options for paying your membership. You can go with one month plan if you are still unsure, or as long as one year if you are already fully determined.'
@@ -45,7 +45,7 @@ const FrontPage = () => {
       <PricingSection products={allProducts} />
       <Footer settings={settings} />
     </>
-  );
-};
+  )
+}
 
-export default FrontPage;
+export default FrontPage

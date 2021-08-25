@@ -1,5 +1,5 @@
-import React from 'react';
-import { classNames } from '../../../utils/helpers';
+import React from 'react'
+import { classNames } from '../../../utils/helpers'
 
 const Text = ({
   reversed,
@@ -36,7 +36,7 @@ const Text = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Text;
+export default Text

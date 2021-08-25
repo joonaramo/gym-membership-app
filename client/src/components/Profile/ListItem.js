@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { PencilAltIcon, CheckIcon } from '@heroicons/react/outline';
-import { format } from 'date-fns';
-import { classNames } from '../../utils/helpers';
+import React, { useState, useEffect } from 'react'
+import { PencilAltIcon, CheckIcon } from '@heroicons/react/outline'
+import { format } from 'date-fns'
+import { classNames } from '../../utils/helpers'
 
 const ListItem = ({
   title,
@@ -13,19 +13,19 @@ const ListItem = ({
   setHasUnsavedChanges,
   editable = true,
 }) => {
-  const [editState, setEditState] = useState(false);
-  const [updatedValue, setUpdatedValue] = useState(value);
+  const [editState, setEditState] = useState(false)
+  const [updatedValue, setUpdatedValue] = useState(value)
   const updateField = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (updatedValue !== value) {
-      setUpdatedObject({ ...updatedObject, [name]: updatedValue });
-      setHasUnsavedChanges(true);
+      setUpdatedObject({ ...updatedObject, [name]: updatedValue })
+      setHasUnsavedChanges(true)
     }
-    setEditState(false);
-  };
+    setEditState(false)
+  }
   useEffect(() => {
-    setUpdatedValue(value);
-  }, [value]);
+    setUpdatedValue(value)
+  }, [value])
   return (
     <form
       onSubmit={(e) => updateField(e)}
@@ -68,8 +68,8 @@ const ListItem = ({
               <button
                 type='button'
                 onClick={(e) => {
-                  e.preventDefault();
-                  setEditState(true);
+                  e.preventDefault()
+                  setEditState(true)
                 }}
               >
                 <PencilAltIcon className='h-6 w-6' aria-hidden='true' />
@@ -79,7 +79,7 @@ const ListItem = ({
         </>
       )}
     </form>
-  );
-};
+  )
+}
 
-export default ListItem;
+export default ListItem

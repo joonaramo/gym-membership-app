@@ -1,65 +1,65 @@
-import usersService from '../services/users';
-import { setNotification } from './notification';
+import usersService from '../services/users'
+import { setNotification } from './notification'
 
 export const getUser = (userId) => async (dispatch) => {
   try {
-    const user = await usersService.get(userId);
+    const user = await usersService.get(userId)
     dispatch({
       type: 'GET_USER',
       payload: user,
-    });
+    })
   } catch (err) {
     dispatch({
       type: 'GET_USER_FAILED',
-    });
-    const errors = err.response.data.errors;
+    })
+    const errors = err.response.data.errors
     if (errors) {
-      errors.forEach((error) => dispatch(setNotification(error.msg, 3000)));
+      errors.forEach((error) => dispatch(setNotification(error.msg, 3000)))
     }
   }
-};
+}
 
 export const getUsers = (page, limit) => async (dispatch) => {
   try {
-    const users = await usersService.getAll(page, limit);
+    const users = await usersService.getAll(page, limit)
     dispatch({
       type: 'GET_USERS',
       payload: users,
-    });
+    })
   } catch (err) {
-    const errors = err.response.data.errors;
+    const errors = err.response.data.errors
     if (errors) {
-      errors.forEach((error) => dispatch(setNotification(error.msg, 3000)));
+      errors.forEach((error) => dispatch(setNotification(error.msg, 3000)))
     }
   }
-};
+}
 
 export const getAllUsers = () => async (dispatch) => {
   try {
-    const users = await usersService.getAll();
+    const users = await usersService.getAll()
     dispatch({
       type: 'GET_ALL_USERS',
       payload: users,
-    });
+    })
   } catch (err) {
-    const errors = err.response.data.errors;
+    const errors = err.response.data.errors
     if (errors) {
-      errors.forEach((error) => dispatch(setNotification(error.msg, 3000)));
+      errors.forEach((error) => dispatch(setNotification(error.msg, 3000)))
     }
   }
-};
+}
 
 export const updateUser = (id, userData) => async (dispatch) => {
   try {
-    const user = await usersService.update(id, userData);
+    const user = await usersService.update(id, userData)
     dispatch({
       type: 'UPDATE_SINGLE_USER',
       payload: user,
-    });
+    })
   } catch (err) {
-    const error = err.response.data.error;
+    const error = err.response.data.error
     if (error) {
-      dispatch(setNotification(error, 3000));
+      dispatch(setNotification(error, 3000))
     }
   }
-};
+}

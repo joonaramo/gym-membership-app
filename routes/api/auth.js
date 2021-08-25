@@ -51,6 +51,14 @@ router.post(
 
       const saltRounds = 10;
       const passwordHash = await bcrypt.hash(password, saltRounds);
+      let is_admin = false;
+
+      const usersCount = await User.estimatedDocumentCount();
+
+      // Set first created user as admin
+      if (usersCount === 0) {
+        is_admin = true;
+      }
 
       user = new User({
         email,
@@ -60,6 +68,7 @@ router.post(
         phone_number,
         street_address,
         postal_code,
+        is_admin,
         city,
         birth_date: format(new Date(birth_date), 'yyyy-MM-dd'),
       });

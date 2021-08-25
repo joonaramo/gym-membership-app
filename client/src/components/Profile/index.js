@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { CheckIcon } from '@heroicons/react/solid';
-import { connect } from 'react-redux';
-import { formatDistance } from 'date-fns';
-import ListItem from './ListItem';
-import { classNames } from '../../utils/helpers';
-import { loadUser, updateUser } from '../../actions/auth';
-import DateListItem from './DateListItem';
-import Notification from './Notification';
-import Alert from '../Auth/Alert';
-import Loading from '../UI/Loading';
+import React, { useState, useEffect } from 'react'
+import { CheckIcon } from '@heroicons/react/solid'
+import { connect } from 'react-redux'
+import { formatDistance } from 'date-fns'
+import ListItem from './ListItem'
+import { classNames } from '../../utils/helpers'
+import { loadUser, updateUser } from '../../actions/auth'
+import DateListItem from './DateListItem'
+import Notification from './Notification'
+import Alert from '../Auth/Alert'
+import Loading from '../UI/Loading'
 
 const Profile = ({ auth: { user, loading }, loadUser, updateUser }) => {
-  const [updatedObject, setUpdatedObject] = useState();
-  const [hasUnSavedChanges, setHasUnsavedChanges] = useState(false);
+  const [updatedObject, setUpdatedObject] = useState()
+  const [hasUnSavedChanges, setHasUnsavedChanges] = useState(false)
 
   useEffect(() => {
-    loadUser();
-  }, []);
+    loadUser()
+  }, [])
 
   useEffect(() => {
     if (user) {
@@ -29,21 +29,21 @@ const Profile = ({ auth: { user, loading }, loadUser, updateUser }) => {
         postal_code: user.postal_code,
         city: user.city,
         birth_date: user.birth_date,
-      });
+      })
     }
-  }, [user]);
+  }, [user])
 
   const save = async () => {
     try {
-      await updateUser(updatedObject);
-      setHasUnsavedChanges(false);
+      await updateUser(updatedObject)
+      setHasUnsavedChanges(false)
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
-  };
+  }
 
   if (loading || !updatedObject) {
-    return <Loading color='auto' />;
+    return <Loading color='auto' />
   }
 
   return (
@@ -202,11 +202,11 @@ const Profile = ({ auth: { user, loading }, loadUser, updateUser }) => {
         </dl>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
-});
+})
 
-export default connect(mapStateToProps, { loadUser, updateUser })(Profile);
+export default connect(mapStateToProps, { loadUser, updateUser })(Profile)

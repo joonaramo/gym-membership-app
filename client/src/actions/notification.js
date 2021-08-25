@@ -3,11 +3,11 @@ export const setNotification = (message, timeout, type) => {
     const timeoutId = setTimeout(() => {
       dispatch({
         type: 'DELETE_NOTIFICATION',
-      });
-    }, timeout);
+      })
+    }, timeout)
     dispatch({
       type: 'CREATE_NOTIFICATION',
       payload: { message, type, timeoutId },
-    });
-  };
-};
+    })
+  }
+}

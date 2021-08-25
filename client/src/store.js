@@ -1,16 +1,16 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
+import { createStore, combineReducers, applyMiddleware } from 'redux'
+import { composeWithDevTools } from 'redux-devtools-extension'
+import thunk from 'redux-thunk'
 
-import authReducer from './reducers/auth';
-import userReducer from './reducers/user';
-import notificationReducer from './reducers/notification';
-import productReducer from './reducers/product';
-import orderReducer from './reducers/order';
-import membershipReducer from './reducers/membership';
-import couponReducer from './reducers/coupon';
-import settingsReducer from './reducers/settings';
-import categoryReducer from './reducers/category';
+import authReducer from './reducers/auth'
+import userReducer from './reducers/user'
+import notificationReducer from './reducers/notification'
+import productReducer from './reducers/product'
+import orderReducer from './reducers/order'
+import membershipReducer from './reducers/membership'
+import couponReducer from './reducers/coupon'
+import settingsReducer from './reducers/settings'
+import categoryReducer from './reducers/category'
 
 const reducer = combineReducers({
   auth: authReducer,
@@ -22,8 +22,8 @@ const reducer = combineReducers({
   coupon: couponReducer,
   category: categoryReducer,
   settings: settingsReducer,
-});
+})
 
-const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
+const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
 
-export default store;
+export default store

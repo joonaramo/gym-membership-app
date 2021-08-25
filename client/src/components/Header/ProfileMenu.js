@@ -1,8 +1,8 @@
-import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, Transition } from '@headlessui/react';
-import { UserCircleIcon } from '@heroicons/react/outline';
-import { classNames } from '../../utils/helpers';
+import React, { Fragment } from 'react'
+import { Link } from 'react-router-dom'
+import { Menu, Transition } from '@headlessui/react'
+import { UserCircleIcon } from '@heroicons/react/outline'
+import { classNames } from '../../utils/helpers'
 
 const ProfileMenu = ({ isAuthenticated, logOut, links, buttons }) => {
   return (
@@ -72,7 +72,7 @@ const ProfileMenu = ({ isAuthenticated, logOut, links, buttons }) => {
         </>
       )}
     </Menu>
-  );
-};
+  )
+}
 
-export default ProfileMenu;
+export default ProfileMenu

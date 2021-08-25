@@ -1,13 +1,13 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import * as yup from 'yup';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import { signup } from '../../actions/auth';
-import { useHistory } from 'react-router';
-import { format } from 'date-fns';
-import DatePickerField from './DatePickerField';
-import Alert from './Alert';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import * as yup from 'yup'
+import { Formik, Field, Form, ErrorMessage } from 'formik'
+import { signup } from '../../actions/auth'
+import { useHistory } from 'react-router'
+import { format } from 'date-fns'
+import DatePickerField from './DatePickerField'
+import Alert from './Alert'
 
 const initialValues = {
   email: '',
@@ -19,7 +19,7 @@ const initialValues = {
   postal_code: '',
   city: '',
   birth_date: new Date(),
-};
+}
 
 const validationSchema = yup.object({
   email: yup
@@ -41,10 +41,10 @@ const validationSchema = yup.object({
   street_address: yup.string().required('Street address is required'),
   city: yup.string().required('City is required'),
   postal_code: yup.string().required('Postal code is required'),
-});
+})
 
 const SignUp = ({ auth: { isAuthenticated }, signup }) => {
-  const history = useHistory();
+  const history = useHistory()
 
   const onSubmit = async (values) => {
     const {
@@ -57,7 +57,7 @@ const SignUp = ({ auth: { isAuthenticated }, signup }) => {
       postal_code,
       city,
       birth_date,
-    } = values;
+    } = values
     await signup({
       email,
       password,
@@ -69,11 +69,11 @@ const SignUp = ({ auth: { isAuthenticated }, signup }) => {
       city,
       birth_date: format(birth_date, 'yyyy-MM-dd'),
       history,
-    });
-  };
+    })
+  }
 
   if (isAuthenticated) {
-    history.push('/profile');
+    history.push('/profile')
   }
 
   return (
@@ -104,7 +104,7 @@ const SignUp = ({ auth: { isAuthenticated }, signup }) => {
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={(values) => {
-              onSubmit(values);
+              onSubmit(values)
             }}
           >
             <Form className='space-y-6'>
@@ -300,6 +300,7 @@ const SignUp = ({ auth: { isAuthenticated }, signup }) => {
 
               <div>
                 <button
+                  id='submit-signup'
                   type='submit'
                   className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
                 >
@@ -312,11 +313,11 @@ const SignUp = ({ auth: { isAuthenticated }, signup }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
-});
+})
 
-export default connect(mapStateToProps, { signup })(SignUp);
+export default connect(mapStateToProps, { signup })(SignUp)

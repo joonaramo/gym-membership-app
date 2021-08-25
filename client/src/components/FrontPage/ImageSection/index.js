@@ -1,6 +1,6 @@
-import React from 'react';
-import Image from './Image';
-import Text from './Text';
+import React from 'react'
+import Image from './Image'
+import Text from './Text'
 
 const ImageSection = ({
   reversed,
@@ -23,7 +23,7 @@ const ImageSection = ({
         buttonUrl={buttonUrl}
       />
     </div>
-  );
-};
+  )
+}
 
-export default ImageSection;
+export default ImageSection

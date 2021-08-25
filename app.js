@@ -38,6 +38,12 @@ app.use('/api/memberships', membershipsRouter);
 app.use('/api/settings', settingsRouter);
 app.use('/api/categories', categoriesRouter);
 
+// Include testing route if in testing mode
+if (process.env.NODE_ENV === 'test') {
+  const testingRouter = require('./routes/api/testing');
+  app.use('/api/testing', testingRouter);
+}
+
 const errorHandler = (error, request, response, next) => {
   if (error.name === 'CastError') {
     return response.status(400).json({ error: 'malformatted id' });

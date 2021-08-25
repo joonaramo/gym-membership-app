@@ -1,5 +1,5 @@
-import React from 'react';
-import { SpeakerphoneIcon } from '@heroicons/react/outline';
+import React from 'react'
+import { SpeakerphoneIcon } from '@heroicons/react/outline'
 
 const Notification = ({ save }) => {
   return (
@@ -33,7 +33,7 @@ const Notification = ({ save }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Notification;
+export default Notification

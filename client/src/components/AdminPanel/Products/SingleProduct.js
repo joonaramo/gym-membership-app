@@ -1,36 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   getProduct,
   removeProduct,
   updateProduct,
-} from '../../../actions/product';
-import { getCoupons } from '../../../actions/coupon';
-import ListItem from '../../Profile/ListItem';
-import Notification from '../../Profile/Notification';
-import { useHistory, useParams } from 'react-router';
-import Loading from '../../UI/Loading';
-import NotFound from '../UI/NotFound';
-import ListListItem from '../../UI/ListListItem';
-import SelectListItem from '../../UI/SelectListItem';
-import { getAllCategories } from '../../../actions/category';
+} from '../../../actions/product'
+import { getCoupons } from '../../../actions/coupon'
+import ListItem from '../../Profile/ListItem'
+import Notification from '../../Profile/Notification'
+import { useHistory, useParams } from 'react-router'
+import Loading from '../../UI/Loading'
+import NotFound from '../UI/NotFound'
+import ListListItem from '../../UI/ListListItem'
+import SelectListItem from '../../UI/SelectListItem'
+import { getAllCategories } from '../../../actions/category'
 
 const SingleProduct = ({ setCurrent }) => {
-  const [updatedObject, setUpdatedObject] = useState();
-  const [hasUnSavedChanges, setHasUnsavedChanges] = useState(false);
-  const { product } = useSelector((state) => state.product);
-  const { coupons } = useSelector((state) => state.coupon);
-  const { allCategories } = useSelector((state) => state.category);
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const { id } = useParams();
+  const [updatedObject, setUpdatedObject] = useState()
+  const [hasUnSavedChanges, setHasUnsavedChanges] = useState(false)
+  const { product } = useSelector((state) => state.product)
+  const { coupons } = useSelector((state) => state.coupon)
+  const { allCategories } = useSelector((state) => state.category)
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const { id } = useParams()
 
   useEffect(() => {
-    dispatch(getProduct(id));
-    dispatch(getCoupons(1, 10));
-    dispatch(getAllCategories());
-    setCurrent('Products');
-  }, [dispatch, id]);
+    dispatch(getProduct(id))
+    dispatch(getCoupons(1, 10))
+    dispatch(getAllCategories())
+    setCurrent('Products')
+  }, [dispatch, id])
 
   useEffect(() => {
     if (product) {
@@ -45,28 +45,28 @@ const SingleProduct = ({ setCurrent }) => {
         tax_rate: product.tax_rate,
         membership_length: product.membership_length,
         valid_coupons: product.valid_coupons,
-      });
+      })
     }
-  }, [product]);
+  }, [product])
 
   const save = () => {
-    dispatch(updateProduct(id, updatedObject));
-    setHasUnsavedChanges(false);
-  };
+    dispatch(updateProduct(id, updatedObject))
+    setHasUnsavedChanges(false)
+  }
 
   const remove = () => {
     if (window.confirm('Are you sure you want to remove this product?')) {
-      dispatch(removeProduct(id));
-      history.push('/admin/products');
+      dispatch(removeProduct(id))
+      history.push('/admin/products')
     }
-  };
+  }
 
   if (product.failed) {
-    return <NotFound />;
+    return <NotFound />
   }
 
   if (product.loading || !updatedObject) {
-    return <Loading color='auto' />;
+    return <Loading color='auto' />
   }
 
   return (
@@ -179,7 +179,7 @@ const SingleProduct = ({ setCurrent }) => {
         {hasUnSavedChanges && <Notification save={save} />}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default SingleProduct;
+export default SingleProduct

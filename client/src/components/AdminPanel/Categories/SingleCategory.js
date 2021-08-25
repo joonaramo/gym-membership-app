@@ -1,33 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router';
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory, useParams } from 'react-router'
 import {
   getAllCategories,
   getCategory,
   removeCategory,
   updateCategory,
-} from '../../../actions/category';
-import ListItem from '../../Profile/ListItem';
-import Notification from '../../Profile/Notification';
-import Loading from '../../UI/Loading';
-import NotFound from '../UI/NotFound';
-import SelectListItem from '../../UI/SelectListItem';
-import { ShoppingCartIcon, ViewListIcon } from '@heroicons/react/outline';
-import ViewOnlyList from '../../UI/ViewOnlyList';
+} from '../../../actions/category'
+import ListItem from '../../Profile/ListItem'
+import Notification from '../../Profile/Notification'
+import Loading from '../../UI/Loading'
+import NotFound from '../UI/NotFound'
+import SelectListItem from '../../UI/SelectListItem'
+import { ShoppingCartIcon, ViewListIcon } from '@heroicons/react/outline'
+import ViewOnlyList from '../../UI/ViewOnlyList'
 
 const SingleCategory = ({ setCurrent }) => {
-  const [updatedObject, setUpdatedObject] = useState();
-  const [hasUnSavedChanges, setHasUnsavedChanges] = useState(false);
-  const { category, allCategories } = useSelector((state) => state.category);
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const { id } = useParams();
+  const [updatedObject, setUpdatedObject] = useState()
+  const [hasUnSavedChanges, setHasUnsavedChanges] = useState(false)
+  const { category, allCategories } = useSelector((state) => state.category)
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const { id } = useParams()
 
   useEffect(() => {
-    dispatch(getCategory(id));
-    dispatch(getAllCategories());
-    setCurrent('Categories');
-  }, [dispatch, id]);
+    dispatch(getCategory(id))
+    dispatch(getAllCategories())
+    setCurrent('Categories')
+  }, [dispatch, id])
 
   useEffect(() => {
     if (category) {
@@ -35,28 +35,28 @@ const SingleCategory = ({ setCurrent }) => {
         id: category.id,
         name: category.name,
         description: category.description,
-      });
+      })
     }
-  }, [category]);
+  }, [category])
 
   const save = () => {
-    dispatch(updateCategory(id, updatedObject));
-    setHasUnsavedChanges(false);
-  };
+    dispatch(updateCategory(id, updatedObject))
+    setHasUnsavedChanges(false)
+  }
 
   const remove = () => {
     if (window.confirm('Are you sure you want to remove this category?')) {
-      dispatch(removeCategory(id));
-      history.push('/admin/categories');
+      dispatch(removeCategory(id))
+      history.push('/admin/categories')
     }
-  };
+  }
 
   if (category.failed) {
-    return <NotFound />;
+    return <NotFound />
   }
 
   if (category.loading || !updatedObject) {
-    return <Loading color='auto' />;
+    return <Loading color='auto' />
   }
 
   return (
@@ -127,7 +127,7 @@ const SingleCategory = ({ setCurrent }) => {
         {hasUnSavedChanges && <Notification save={save} />}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default SingleCategory;
+export default SingleCategory

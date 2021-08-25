@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router';
-import { getCoupon, removeCoupon, updateCoupon } from '../../../actions/coupon';
-import { getOrders } from '../../../actions/order';
-import ListItem from '../../Profile/ListItem';
-import Notification from '../../Profile/Notification';
-import Toggle from './Toggle';
-import Loading from '../../UI/Loading';
-import NotFound from '../UI/NotFound';
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory, useParams } from 'react-router'
+import { getCoupon, removeCoupon, updateCoupon } from '../../../actions/coupon'
+import { getOrders } from '../../../actions/order'
+import ListItem from '../../Profile/ListItem'
+import Notification from '../../Profile/Notification'
+import Toggle from './Toggle'
+import Loading from '../../UI/Loading'
+import NotFound from '../UI/NotFound'
 
 const SingleCoupon = ({ setCurrent }) => {
-  const [updatedObject, setUpdatedObject] = useState();
-  const [hasUnSavedChanges, setHasUnsavedChanges] = useState(false);
-  const { coupon } = useSelector((state) => state.coupon);
-  const { orders } = useSelector((state) => state.order);
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const { id } = useParams();
+  const [updatedObject, setUpdatedObject] = useState()
+  const [hasUnSavedChanges, setHasUnsavedChanges] = useState(false)
+  const { coupon } = useSelector((state) => state.coupon)
+  const { orders } = useSelector((state) => state.order)
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const { id } = useParams()
 
   useEffect(() => {
-    dispatch(getCoupon(id));
-    dispatch(getOrders());
-    setCurrent('Coupons');
-  }, [dispatch, id]);
+    dispatch(getCoupon(id))
+    dispatch(getOrders())
+    setCurrent('Coupons')
+  }, [dispatch, id])
 
   useEffect(() => {
     if (coupon) {
@@ -32,46 +32,46 @@ const SingleCoupon = ({ setCurrent }) => {
         code: coupon.code,
         value: coupon.value,
         active: coupon.active,
-      });
+      })
     }
-  }, [coupon]);
+  }, [coupon])
 
   const getOrdersWithKlarnaId = (order_ids) => {
     return orders.filter(
       (order) => order_ids && order_ids.includes(order.order_id)
-    );
-  };
+    )
+  }
 
   const toggle = () => {
     setUpdatedObject({
       ...updatedObject,
       active: !updatedObject.active,
-    });
+    })
     if (updatedObject.active === coupon.active) {
-      setHasUnsavedChanges(true);
+      setHasUnsavedChanges(true)
     } else {
-      setHasUnsavedChanges(false);
+      setHasUnsavedChanges(false)
     }
-  };
+  }
 
   const save = () => {
-    dispatch(updateCoupon(id, updatedObject));
-    setHasUnsavedChanges(false);
-  };
+    dispatch(updateCoupon(id, updatedObject))
+    setHasUnsavedChanges(false)
+  }
 
   const remove = () => {
     if (window.confirm('Are you sure you want to remove this coupon?')) {
-      dispatch(removeCoupon(id));
-      history.push('/admin/coupons');
+      dispatch(removeCoupon(id))
+      history.push('/admin/coupons')
     }
-  };
+  }
 
   if (coupon.failed) {
-    return <NotFound />;
+    return <NotFound />
   }
 
   if (coupon.loading || !updatedObject) {
-    return <Loading color='auto' />;
+    return <Loading color='auto' />
   }
 
   return (
@@ -146,7 +146,7 @@ const SingleCoupon = ({ setCurrent }) => {
         {hasUnSavedChanges && <Notification save={save} />}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default SingleCoupon;
+export default SingleCoupon

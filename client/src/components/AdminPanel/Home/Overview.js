@@ -1,5 +1,5 @@
-import React from 'react';
-import Card from './Card';
+import React from 'react'
+import Card from './Card'
 
 const Overview = ({ cards }) => {
   return (
@@ -11,7 +11,7 @@ const Overview = ({ cards }) => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Overview;
+export default Overview

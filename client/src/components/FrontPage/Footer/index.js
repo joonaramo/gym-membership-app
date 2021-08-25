@@ -1,5 +1,5 @@
-import React from 'react';
-import GoogleMaps from './GoogleMaps';
+import React from 'react'
+import GoogleMaps from './GoogleMaps'
 
 const Footer = ({ settings }) => {
   const navigation = {
@@ -40,7 +40,7 @@ const Footer = ({ settings }) => {
         ),
       },
     ],
-  };
+  }
 
   return (
     <footer id='find-us' className='bg-gray-800'>
@@ -54,9 +54,11 @@ const Footer = ({ settings }) => {
               Where are we?
             </h2>
           </div>
-          <div className='mt-4'>
-            <GoogleMaps settings={settings} />
-          </div>
+          {process.env.NODE_ENV !== 'development' && (
+            <div className='mt-4'>
+              <GoogleMaps settings={settings} />
+            </div>
+          )}
         </div>
         <div className='relative mt-8'>
           <div
@@ -90,7 +92,7 @@ const Footer = ({ settings }) => {
         </p>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

@@ -1,25 +1,25 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router';
-import { Link } from 'react-router-dom';
-import { getOrder, removeOrder } from '../../../actions/order';
-import { setNotification } from '../../../actions/notification';
-import klarnaService from '../../../services/klarna';
-import ListItem from '../../Profile/ListItem';
-import DateListItem from '../../Profile/DateListItem';
-import Loading from '../../UI/Loading';
-import NotFound from '../UI/NotFound';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory, useParams } from 'react-router'
+import { Link } from 'react-router-dom'
+import { getOrder, removeOrder } from '../../../actions/order'
+import { setNotification } from '../../../actions/notification'
+import klarnaService from '../../../services/klarna'
+import ListItem from '../../Profile/ListItem'
+import DateListItem from '../../Profile/DateListItem'
+import Loading from '../../UI/Loading'
+import NotFound from '../UI/NotFound'
 
 const SingleOrder = ({ setCurrent }) => {
-  const { order } = useSelector((state) => state.order);
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const { id } = useParams();
+  const { order } = useSelector((state) => state.order)
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const { id } = useParams()
 
   useEffect(() => {
-    dispatch(getOrder(id));
-    setCurrent('Orders');
-  }, [dispatch, id]);
+    dispatch(getOrder(id))
+    setCurrent('Orders')
+  }, [dispatch, id])
 
   const remove = () => {
     if (
@@ -27,33 +27,33 @@ const SingleOrder = ({ setCurrent }) => {
         'Are you sure you want to cancel/refund and remove this order?'
       )
     ) {
-      dispatch(removeOrder(id, history));
+      dispatch(removeOrder(id, history))
     }
-  };
+  }
 
   const capture = async () => {
     const captureData = {
       order_amount: order.klarna.order_amount,
       order_lines: order.klarna.order_lines,
-    };
+    }
     try {
       const { message } = await klarnaService.capture(
         order.klarna.order_id,
         captureData
-      );
-      dispatch(setNotification(message, 3000, 'SUCCESS'));
-      dispatch(getOrder(id));
+      )
+      dispatch(setNotification(message, 3000, 'SUCCESS'))
+      dispatch(getOrder(id))
     } catch (err) {
-      dispatch(setNotification('Order capture failed', 3000));
+      dispatch(setNotification('Order capture failed', 3000))
     }
-  };
+  }
 
   if (order.failed) {
-    return <NotFound />;
+    return <NotFound />
   }
 
   if (order.loading) {
-    return <Loading color='auto' />;
+    return <Loading color='auto' />
   }
 
   return (
@@ -221,7 +221,7 @@ const SingleOrder = ({ setCurrent }) => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default SingleOrder;
+export default SingleOrder

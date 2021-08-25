@@ -1,14 +1,14 @@
-import React from 'react';
-import * as yup from 'yup';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import { createCoupon } from '../../../actions/coupon';
-import { useDispatch } from 'react-redux';
+import React from 'react'
+import * as yup from 'yup'
+import { Formik, Field, Form, ErrorMessage } from 'formik'
+import { createCoupon } from '../../../actions/coupon'
+import { useDispatch } from 'react-redux'
 
 const initialValues = {
   code: '',
   value: 0,
   active: true,
-};
+}
 
 const validationSchema = yup.object({
   code: yup.string().required('Code is required'),
@@ -20,13 +20,13 @@ const validationSchema = yup.object({
     .boolean('State must be a number')
     .typeError('State must be a number')
     .required('State is required'),
-});
+})
 
 const CreateCoupon = ({ setCreating }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const onSubmit = async (values) => {
-    dispatch(createCoupon(values, setCreating));
-  };
+    dispatch(createCoupon(values, setCreating))
+  }
   return (
     <>
       <div className='flex-1 flex justify-between max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
@@ -45,7 +45,7 @@ const CreateCoupon = ({ setCreating }) => {
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={(values) => {
-            onSubmit(values);
+            onSubmit(values)
           }}
         >
           <Form className='space-y-6'>
@@ -99,7 +99,7 @@ const CreateCoupon = ({ setCreating }) => {
         </Formik>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default CreateCoupon;
+export default CreateCoupon

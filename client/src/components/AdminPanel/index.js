@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Route, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
+import React, { useState } from 'react'
+import { Route, Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
 import {
   HomeIcon,
   CreditCardIcon,
@@ -10,18 +10,18 @@ import {
   TagIcon,
   CogIcon,
   ViewListIcon,
-} from '@heroicons/react/outline';
+} from '@heroicons/react/outline'
 
-import Sidebar from './Sidebar';
-import Header from './Header';
-import PageHeader from './PageHeader';
+import Sidebar from './Sidebar'
+import Header from './Header'
+import PageHeader from './PageHeader'
 
 const AdminPanel = ({
   component: Component,
   auth: { isAuthenticated, user, loading },
   ...rest
 }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const [navigation, setNavigation] = useState([
     { name: 'Home', href: '/admin', icon: HomeIcon, current: true },
     {
@@ -60,7 +60,7 @@ const AdminPanel = ({
       icon: TagIcon,
       current: false,
     },
-  ]);
+  ])
   const [secondaryNavigation, setSecondaryNavigation] = useState([
     {
       name: 'Settings',
@@ -68,24 +68,24 @@ const AdminPanel = ({
       icon: CogIcon,
       current: false,
     },
-  ]);
+  ])
 
   const setCurrent = (name) => {
     const updatedNavigation = navigation.map((item) => {
       return {
         ...item,
         current: item.name === name ? true : false,
-      };
-    });
-    setNavigation(updatedNavigation);
+      }
+    })
+    setNavigation(updatedNavigation)
     const updatedSecondaryNavigation = secondaryNavigation.map((item) => {
       return {
         ...item,
         current: item.name === name ? true : false,
-      };
-    });
-    setSecondaryNavigation(updatedSecondaryNavigation);
-  };
+      }
+    })
+    setSecondaryNavigation(updatedSecondaryNavigation)
+  }
 
   return (
     <Route
@@ -126,11 +126,11 @@ const AdminPanel = ({
         )
       }
     />
-  );
-};
+  )
+}
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
-});
+})
 
-export default connect(mapStateToProps)(AdminPanel);
+export default connect(mapStateToProps)(AdminPanel)

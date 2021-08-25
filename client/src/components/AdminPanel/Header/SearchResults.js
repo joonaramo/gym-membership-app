@@ -1,62 +1,62 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 const SearchResults = ({ searchResults, setSearchResults, name }) => {
-  const [title, setTitle] = useState('');
-  const [subtitle, setSubtitle] = useState('');
-  const path = name.toLowerCase();
+  const [title, setTitle] = useState('')
+  const [subtitle, setSubtitle] = useState('')
+  const path = name.toLowerCase()
   useEffect(() => {
     switch (name) {
       case 'Users':
-        setTitle('full_name');
-        setSubtitle('email');
-        setSearchResults([]);
-        break;
+        setTitle('full_name')
+        setSubtitle('email')
+        setSearchResults([])
+        break
       case 'Products':
-        setTitle('name');
-        setSubtitle('reference');
-        setSearchResults([]);
-        break;
+        setTitle('name')
+        setSubtitle('reference')
+        setSearchResults([])
+        break
       case 'Orders':
-        setTitle('id');
-        setSubtitle('user');
-        setSearchResults([]);
-        break;
+        setTitle('id')
+        setSubtitle('user')
+        setSearchResults([])
+        break
       case 'Memberships':
-        setTitle('id');
-        setSubtitle('user');
-        setSearchResults([]);
-        break;
+        setTitle('id')
+        setSubtitle('user')
+        setSearchResults([])
+        break
       case 'Coupons':
-        setTitle('code');
-        setSubtitle('value');
-        setSearchResults([]);
-        break;
+        setTitle('code')
+        setSubtitle('value')
+        setSearchResults([])
+        break
       case 'Categories':
-        setTitle('name');
-        setSubtitle('description');
-        setSearchResults([]);
-        break;
+        setTitle('name')
+        setSubtitle('description')
+        setSearchResults([])
+        break
       default:
-        break;
+        break
     }
-  }, [name]);
+  }, [name])
 
   const getTitle = (res) => {
-    return res[title];
-  };
+    return res[title]
+  }
 
   const getSubtitle = (res) => {
     if (subtitle === 'value') {
-      return `${res[subtitle]}€`;
+      return `${res[subtitle]}€`
     } else if (subtitle === 'user') {
-      return res[subtitle].full_name;
+      return res[subtitle].full_name
     }
-    return res[subtitle];
-  };
+    return res[subtitle]
+  }
 
   if (!searchResults.length > 0) {
-    return null;
+    return null
   }
 
   return (
@@ -92,7 +92,7 @@ const SearchResults = ({ searchResults, setSearchResults, name }) => {
       </div>
       <div className='mt-6'></div>
     </div>
-  );
-};
+  )
+}
 
-export default SearchResults;
+export default SearchResults

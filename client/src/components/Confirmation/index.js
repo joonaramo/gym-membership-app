@@ -1,45 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import klarnaService from '../../services/klarna';
+import React, { useState, useEffect } from 'react'
+import klarnaService from '../../services/klarna'
 
 const Confirmation = () => {
-  const [html, setHTML] = useState('');
+  const [html, setHTML] = useState('')
 
   useEffect(() => {
     const getHtml = async () => {
       try {
         const { html_snippet } = await klarnaService.confirm(
           localStorage.getItem('kco_id')
-        );
-        setHTML(html_snippet);
-        localStorage.setItem('cart_products', '[]');
-        localStorage.setItem('cart_quantities', '[]');
+        )
+        setHTML(html_snippet)
+        localStorage.setItem('cart_products', '[]')
+        localStorage.setItem('cart_quantities', '[]')
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
-    };
-    getHtml();
-  }, []);
+    }
+    getHtml()
+  }, [])
 
   useEffect(() => {
-    setDangerousHtml(html);
-  }, [html]);
+    setDangerousHtml(html)
+  }, [html])
 
-  let checkoutRef = null;
+  let checkoutRef = null
   function setDangerousHtml(html) {
     if (checkoutRef === null) {
-      return;
+      return
     }
 
-    const range = document.createRange();
+    const range = document.createRange()
 
-    range.selectNodeContents(checkoutRef);
-    range.deleteContents();
+    range.selectNodeContents(checkoutRef)
+    range.deleteContents()
 
-    checkoutRef.appendChild(range.createContextualFragment(html));
+    checkoutRef.appendChild(range.createContextualFragment(html))
   }
   return (
     <div ref={(ref) => (checkoutRef = ref)} suppressHydrationWarning={true} />
-  );
-};
+  )
+}
 
-export default Confirmation;
+export default Confirmation

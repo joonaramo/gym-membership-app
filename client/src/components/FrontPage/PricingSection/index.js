@@ -1,66 +1,66 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { useHistory } from 'react-router';
-import { CheckIcon } from '@heroicons/react/outline';
-import Loading from '../../UI/Loading';
+import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
+import { useHistory } from 'react-router'
+import { CheckIcon } from '@heroicons/react/outline'
+import Loading from '../../UI/Loading'
 
 const hobbyFeatures = [
   'Pariatur quod similique',
   'Sapiente libero doloribus',
   'Vel ipsa esse repudiandae',
-];
+]
 const scaleFeatures = [
   'Pariatur quod similique',
   'Sapiente libero doloribus',
   'Vel ipsa esse repudiandae',
-];
+]
 const growthFeatures = [
   'Quia rem est sed impedit magnam',
   'Dolorem vero ratione voluptates',
   'Qui sed ab doloribus voluptatem dolore',
   'Laborum commodi molestiae id et fugiat',
   'Nam ut ipsa nesciunt culpa modi dolor',
-];
+]
 
 const PricingSection = ({ auth: { isAuthenticated }, products }) => {
-  const [featuredProducts, setFeaturedProducts] = useState([]);
-  const [mostPopularProduct, setMostPopularProduct] = useState();
-  const history = useHistory();
+  const [featuredProducts, setFeaturedProducts] = useState([])
+  const [mostPopularProduct, setMostPopularProduct] = useState()
+  const history = useHistory()
   useEffect(() => {
     const featured = products.filter(
       (product) => product.featured && !product.most_popular
-    );
-    setFeaturedProducts(featured);
-    const mostPopular = products.find((product) => product.most_popular);
-    setMostPopularProduct(mostPopular);
-  }, [products]);
+    )
+    setFeaturedProducts(featured)
+    const mostPopular = products.find((product) => product.most_popular)
+    setMostPopularProduct(mostPopular)
+  }, [products])
   const addToCart = (productId) => {
     if (isAuthenticated) {
-      let cartItemsStorage = [];
-      let cartQuantitiesStorage = [];
+      let cartItemsStorage = []
+      let cartQuantitiesStorage = []
       if (localStorage.getItem('cart_products')) {
-        cartItemsStorage = JSON.parse(localStorage.getItem('cart_products'));
+        cartItemsStorage = JSON.parse(localStorage.getItem('cart_products'))
       }
       if (localStorage.getItem('cart_quantities')) {
         cartQuantitiesStorage = JSON.parse(
           localStorage.getItem('cart_quantities')
-        );
+        )
       }
-      cartItemsStorage.push(productId);
-      cartQuantitiesStorage.push(1);
-      localStorage.setItem('cart_products', JSON.stringify(cartItemsStorage));
+      cartItemsStorage.push(productId)
+      cartQuantitiesStorage.push(1)
+      localStorage.setItem('cart_products', JSON.stringify(cartItemsStorage))
       localStorage.setItem(
         'cart_quantities',
         JSON.stringify(cartQuantitiesStorage)
-      );
-      history.push('/cart');
+      )
+      history.push('/cart')
     } else {
-      history.push('/login');
+      history.push('/login')
     }
-  };
+  }
 
   if (!featuredProducts.length > 0) {
-    return <Loading />;
+    return <Loading />
   }
   return (
     <div id='pricing' className='bg-gray-900'>
@@ -260,11 +260,11 @@ const PricingSection = ({ auth: { isAuthenticated }, products }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
-});
+})
 
-export default connect(mapStateToProps)(PricingSection);
+export default connect(mapStateToProps)(PricingSection)

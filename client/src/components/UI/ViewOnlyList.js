@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react'
+import { Link } from 'react-router-dom'
 
 const ViewOnlyList = ({ title, listItems, itemIcon, path }) => {
   return (
@@ -28,7 +28,7 @@ const ViewOnlyList = ({ title, listItems, itemIcon, path }) => {
         )}
       </dd>
     </div>
-  );
-};
+  )
+}
 
-export default ViewOnlyList;
+export default ViewOnlyList

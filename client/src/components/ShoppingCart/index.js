@@ -1,59 +1,59 @@
-import React, { useState, useEffect } from 'react';
-import klarnaService from '../../services/klarna';
-import { useHistory } from 'react-router';
-import { useDispatch } from 'react-redux';
-import CartItem from './CartItem';
-import couponsService from '../../services/coupons';
-import { setNotification } from '../../actions/notification';
-import { CreditCardIcon } from '@heroicons/react/solid';
+import React, { useState, useEffect } from 'react'
+import klarnaService from '../../services/klarna'
+import { useHistory } from 'react-router'
+import { useDispatch } from 'react-redux'
+import CartItem from './CartItem'
+import couponsService from '../../services/coupons'
+import { setNotification } from '../../actions/notification'
+import { CreditCardIcon } from '@heroicons/react/solid'
 
 const ShoppingCart = () => {
-  const [cartItems, setCartItems] = useState([]);
-  const [cartQuantities, setCartQuantities] = useState([]);
-  const [subTotal, setSubTotal] = useState(0);
-  const [coupon, setCoupon] = useState('');
-  const [couponValue, setCouponValue] = useState(0);
-  const history = useHistory();
-  const dispatch = useDispatch();
+  const [cartItems, setCartItems] = useState([])
+  const [cartQuantities, setCartQuantities] = useState([])
+  const [subTotal, setSubTotal] = useState(0)
+  const [coupon, setCoupon] = useState('')
+  const [couponValue, setCouponValue] = useState(0)
+  const history = useHistory()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (localStorage.getItem('cart_products')) {
-      setCartItems(JSON.parse(localStorage.getItem('cart_products')));
+      setCartItems(JSON.parse(localStorage.getItem('cart_products')))
     }
     if (localStorage.getItem('cart_quantities')) {
-      setCartQuantities(JSON.parse(localStorage.getItem('cart_quantities')));
+      setCartQuantities(JSON.parse(localStorage.getItem('cart_quantities')))
     }
-  }, []);
+  }, [])
 
   const checkoutOrder = async () => {
     const { order_id } = await klarnaService.create({
       products: cartItems,
       quantities: cartQuantities,
       coupon,
-    });
-    localStorage.setItem('kco_id', order_id);
-    history.push('/checkout');
-  };
+    })
+    localStorage.setItem('kco_id', order_id)
+    history.push('/checkout')
+  }
 
   const checkCoupon = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      const { value, active } = await couponsService.getByCode(coupon);
+      const { value, active } = await couponsService.getByCode(coupon)
       if (active) {
-        setCouponValue(value);
+        setCouponValue(value)
       } else {
-        setCoupon('');
+        setCoupon('')
       }
     } catch (err) {
-      dispatch(setNotification('Invalid coupon', 3000));
-      setCoupon('');
+      dispatch(setNotification('Invalid coupon', 3000))
+      setCoupon('')
     }
-  };
+  }
 
   const removeCoupon = () => {
-    setCouponValue(0);
-    setCoupon('');
-  };
+    setCouponValue(0)
+    setCoupon('')
+  }
 
   return (
     <div className='flex justify-center my-6'>
@@ -211,7 +211,7 @@ const ShoppingCart = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ShoppingCart;
+export default ShoppingCart

@@ -1,28 +1,28 @@
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
-import PrivateRoute from './PrivateRoute';
-import LogIn from './Auth/LogIn';
-import SignUp from './Auth/SignUp';
-import Checkout from './Checkout';
-import Confirmation from './Confirmation';
-import FrontPage from './FrontPage';
-import Profile from './Profile';
-import ShoppingCart from './ShoppingCart';
-import AdminPanel from './AdminPanel';
-import Home from './AdminPanel/Home';
-import Users from './AdminPanel/Users';
-import SingleUser from './AdminPanel/Users/SingleUser';
-import Products from './AdminPanel/Products';
-import SingleProduct from './AdminPanel/Products/SingleProduct';
-import Orders from './AdminPanel/Orders';
-import SingleOrder from './AdminPanel/Orders/SingleOrder';
-import Memberships from './AdminPanel/Memberships';
-import SingleMembership from './AdminPanel/Memberships/SingleMembership';
-import Coupons from './AdminPanel/Coupons';
-import SingleCoupon from './AdminPanel/Coupons/SingleCoupon';
-import Settings from './AdminPanel/Settings';
-import Categories from './AdminPanel/Categories';
-import SingleCategory from './AdminPanel/Categories/SingleCategory';
+import React from 'react'
+import { Route, Switch } from 'react-router-dom'
+import PrivateRoute from './PrivateRoute'
+import LogIn from './Auth/LogIn'
+import SignUp from './Auth/SignUp'
+import Checkout from './Checkout'
+import Confirmation from './Confirmation'
+import FrontPage from './FrontPage'
+import Profile from './Profile'
+import ShoppingCart from './ShoppingCart'
+import AdminPanel from './AdminPanel'
+import Home from './AdminPanel/Home'
+import Users from './AdminPanel/Users'
+import SingleUser from './AdminPanel/Users/SingleUser'
+import Products from './AdminPanel/Products'
+import SingleProduct from './AdminPanel/Products/SingleProduct'
+import Orders from './AdminPanel/Orders'
+import SingleOrder from './AdminPanel/Orders/SingleOrder'
+import Memberships from './AdminPanel/Memberships'
+import SingleMembership from './AdminPanel/Memberships/SingleMembership'
+import Coupons from './AdminPanel/Coupons'
+import SingleCoupon from './AdminPanel/Coupons/SingleCoupon'
+import Settings from './AdminPanel/Settings'
+import Categories from './AdminPanel/Categories'
+import SingleCategory from './AdminPanel/Categories/SingleCategory'
 
 const Router = () => {
   return (
@@ -57,7 +57,7 @@ const Router = () => {
         component={SingleCategory}
       />
     </Switch>
-  );
-};
+  )
+}
 
-export default Router;
+export default Router

@@ -1,5 +1,5 @@
-import React from 'react';
-import { classNames } from '../../../utils/helpers';
+import React from 'react'
+import { classNames } from '../../../utils/helpers'
 
 const Image = ({ reversed, imageUrl }) => {
   return (
@@ -11,7 +11,7 @@ const Image = ({ reversed, imageUrl }) => {
     >
       <img className='w-full h-full object-cover' src={imageUrl} alt='' />
     </div>
-  );
-};
+  )
+}
 
-export default Image;
+export default Image

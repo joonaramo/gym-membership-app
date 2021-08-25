@@ -1,5 +1,5 @@
-import React from 'react';
-import { classNames } from '../../utils/helpers';
+import React from 'react'
+import { classNames } from '../../utils/helpers'
 
 const Loading = ({ color = 'black', fullScreen = false }) => {
   return (
@@ -15,7 +15,7 @@ const Loading = ({ color = 'black', fullScreen = false }) => {
         <div className='w-5 h-5 bg-gray-800 rounded-full animate-bounce'></div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Loading;
+export default Loading

@@ -1,15 +1,15 @@
-import axios from 'axios';
-import { API_URL } from '../utils/constants';
+import axios from 'axios'
+import { API_URL } from '../utils/constants'
 
 const getByCode = async (code) => {
-  const { data } = await axios.get(`${API_URL}/coupons/code/${code}`);
-  return data;
-};
+  const { data } = await axios.get(`${API_URL}/coupons/code/${code}`)
+  return data
+}
 
 const get = async (couponId) => {
-  const { data } = await axios.get(`${API_URL}/coupons/${couponId}`);
-  return data;
-};
+  const { data } = await axios.get(`${API_URL}/coupons/${couponId}`)
+  return data
+}
 
 const getAll = async (page, limit) => {
   const { data } = await axios.get(`${API_URL}/coupons`, {
@@ -17,26 +17,26 @@ const getAll = async (page, limit) => {
       page,
       limit,
     },
-  });
-  return data;
-};
+  })
+  return data
+}
 
 const update = async (couponId, couponData) => {
   const { data } = await axios.put(
     `${API_URL}/coupons/${couponId}`,
     couponData
-  );
-  return data;
-};
+  )
+  return data
+}
 
 const create = async (couponData) => {
-  const { data } = await axios.post(`${API_URL}/coupons`, couponData);
-  return data;
-};
+  const { data } = await axios.post(`${API_URL}/coupons`, couponData)
+  return data
+}
 
 const remove = async (couponId) => {
-  await axios.delete(`${API_URL}/coupons/${couponId}`);
-};
+  await axios.delete(`${API_URL}/coupons/${couponId}`)
+}
 
 const couponsService = {
   getByCode,
@@ -45,6 +45,6 @@ const couponsService = {
   update,
   create,
   remove,
-};
+}
 
-export default couponsService;
+export default couponsService

@@ -1,8 +1,8 @@
-import React from 'react';
-import { useHistory } from 'react-router';
+import React from 'react'
+import { useHistory } from 'react-router'
 
 const NotFound = () => {
-  const history = useHistory();
+  const history = useHistory()
   return (
     <div className='max-w-max mx-auto'>
       <main className='sm:flex'>
@@ -29,7 +29,7 @@ const NotFound = () => {
         </div>
       </main>
     </div>
-  );
-};
+  )
+}
 
-export default NotFound;
+export default NotFound

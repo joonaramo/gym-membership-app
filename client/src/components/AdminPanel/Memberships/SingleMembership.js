@@ -1,30 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router';
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory, useParams } from 'react-router'
 import {
   getMembership,
   removeMembership,
   updateMembership,
-} from '../../../actions/membership';
-import ListItem from '../../Profile/ListItem';
-import Notification from '../../Profile/Notification';
-import DateListItem from '../../Profile/DateListItem';
-import Loading from '../../UI/Loading';
-import NotFound from '../UI/NotFound';
+} from '../../../actions/membership'
+import ListItem from '../../Profile/ListItem'
+import Notification from '../../Profile/Notification'
+import DateListItem from '../../Profile/DateListItem'
+import Loading from '../../UI/Loading'
+import NotFound from '../UI/NotFound'
 
 const SingleMembership = ({ setCurrent }) => {
-  const [updatedObject, setUpdatedObject] = useState();
-  const [hasUnSavedChanges, setHasUnsavedChanges] = useState(false);
-  const { membership } = useSelector((state) => state.membership);
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const { id } = useParams();
+  const [updatedObject, setUpdatedObject] = useState()
+  const [hasUnSavedChanges, setHasUnsavedChanges] = useState(false)
+  const { membership } = useSelector((state) => state.membership)
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const { id } = useParams()
 
   useEffect(() => {
-    dispatch(getMembership(id));
-    setCurrent('Memberships');
-  }, [dispatch, id]);
+    dispatch(getMembership(id))
+    setCurrent('Memberships')
+  }, [dispatch, id])
 
   useEffect(() => {
     if (membership) {
@@ -32,28 +32,28 @@ const SingleMembership = ({ setCurrent }) => {
         id: membership.id,
         start_date: membership.start_date,
         end_date: membership.end_date,
-      });
+      })
     }
-  }, [membership]);
+  }, [membership])
 
   const save = () => {
-    dispatch(updateMembership(id, updatedObject));
-    setHasUnsavedChanges(false);
-  };
+    dispatch(updateMembership(id, updatedObject))
+    setHasUnsavedChanges(false)
+  }
 
   const remove = () => {
     if (window.confirm('Are you sure you want to remove this membership?')) {
-      dispatch(removeMembership(id));
-      history.push('/admin/memberships');
+      dispatch(removeMembership(id))
+      history.push('/admin/memberships')
     }
-  };
+  }
 
   if (membership.failed) {
-    return <NotFound />;
+    return <NotFound />
   }
 
   if (membership.loading || !updatedObject) {
-    return <Loading color='auto' />;
+    return <Loading color='auto' />
   }
 
   return (
@@ -130,7 +130,7 @@ const SingleMembership = ({ setCurrent }) => {
         {hasUnSavedChanges && <Notification save={save} />}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default SingleMembership;
+export default SingleMembership

@@ -1,12 +1,13 @@
-import { Switch } from '@headlessui/react';
+import React from 'react'
+import { Switch } from '@headlessui/react'
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
 
 const Toggle = ({ title, subtitle, enabled, handleChange }) => {
   return (
-    <Switch.Group as='div' className='flex items-center'>
+    <Switch.Group as="div" className="flex items-center">
       <Switch
         checked={enabled}
         onChange={handleChange}
@@ -16,21 +17,21 @@ const Toggle = ({ title, subtitle, enabled, handleChange }) => {
         )}
       >
         <span
-          aria-hidden='true'
+          aria-hidden="true"
           className={classNames(
             enabled ? 'translate-x-5' : 'translate-x-0',
             'pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200'
           )}
         />
       </Switch>
-      <Switch.Label as='span' className='ml-3'>
-        <span className='text-sm font-medium text-gray-900'>{title} </span>
+      <Switch.Label as="span" className="ml-3">
+        <span className="text-sm font-medium text-gray-900">{title} </span>
         {subtitle && (
-          <span className='text-sm text-gray-500'>({subtitle})</span>
+          <span className="text-sm text-gray-500">({subtitle})</span>
         )}
       </Switch.Label>
     </Switch.Group>
-  );
-};
+  )
+}
 
-export default Toggle;
+export default Toggle

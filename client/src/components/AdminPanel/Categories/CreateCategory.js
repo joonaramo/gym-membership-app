@@ -1,24 +1,24 @@
-import React from 'react';
-import * as yup from 'yup';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import { createCategory } from '../../../actions/category';
-import { useDispatch } from 'react-redux';
+import React from 'react'
+import * as yup from 'yup'
+import { Formik, Field, Form, ErrorMessage } from 'formik'
+import { createCategory } from '../../../actions/category'
+import { useDispatch } from 'react-redux'
 
 const initialValues = {
   name: '',
   description: '',
-};
+}
 
 const validationSchema = yup.object({
   name: yup.string().required('Name is required'),
   description: yup.string().required('Description is required'),
-});
+})
 
 const CreateCategory = ({ setCreating, allCategories }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const onSubmit = async (values) => {
-    dispatch(createCategory(values, setCreating));
-  };
+    dispatch(createCategory(values, setCreating))
+  }
   return (
     <>
       <div className='flex-1 flex justify-between max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
@@ -37,7 +37,7 @@ const CreateCategory = ({ setCreating, allCategories }) => {
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={(values) => {
-            onSubmit(values);
+            onSubmit(values)
           }}
         >
           <Form className='space-y-6'>
@@ -115,7 +115,7 @@ const CreateCategory = ({ setCreating, allCategories }) => {
         </Formik>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default CreateCategory;
+export default CreateCategory

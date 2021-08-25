@@ -1,8 +1,8 @@
-import React from 'react';
-import * as yup from 'yup';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import { createProduct } from '../../../actions/product';
-import { useDispatch } from 'react-redux';
+import React from 'react'
+import * as yup from 'yup'
+import { Formik, Field, Form, ErrorMessage } from 'formik'
+import { createProduct } from '../../../actions/product'
+import { useDispatch } from 'react-redux'
 
 const initialValues = {
   reference: '',
@@ -10,7 +10,7 @@ const initialValues = {
   membership_length: '',
   unit_price: '',
   tax_rate: '',
-};
+}
 
 const validationSchema = yup.object({
   reference: yup.string().required('Reference is required'),
@@ -26,14 +26,14 @@ const validationSchema = yup.object({
     .number('Tax rate must be a number')
     .typeError('Tax rate must be a number')
     .required('Tax rate is required'),
-});
+})
 
 const CreateProduct = ({ setCreating, allCategories }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const onSubmit = (values) => {
-    dispatch(createProduct(values));
-    setCreating(false);
-  };
+    dispatch(createProduct(values))
+    setCreating(false)
+  }
   return (
     <>
       <div className='flex-1 flex justify-between max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
@@ -52,7 +52,7 @@ const CreateProduct = ({ setCreating, allCategories }) => {
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={(values) => {
-            onSubmit(values);
+            onSubmit(values)
           }}
         >
           <Form className='space-y-6'>
@@ -186,7 +186,7 @@ const CreateProduct = ({ setCreating, allCategories }) => {
         </Formik>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default CreateProduct;
+export default CreateProduct

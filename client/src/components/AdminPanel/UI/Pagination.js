@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const Pagination = ({
   pagingCounter,
@@ -43,7 +43,7 @@ const Pagination = ({
         )}
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default Pagination;
+export default Pagination

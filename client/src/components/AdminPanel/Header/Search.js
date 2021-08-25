@@ -1,78 +1,78 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllUsers } from '../../../actions/user';
-import { getAllProducts } from '../../../actions/product';
-import { getAllOrders } from '../../../actions/order';
-import { getAllMemberships } from '../../../actions/membership';
-import { getAllCoupons } from '../../../actions/coupon';
-import { getAllCategories } from '../../../actions/category';
-import { SearchIcon } from '@heroicons/react/solid';
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllUsers } from '../../../actions/user'
+import { getAllProducts } from '../../../actions/product'
+import { getAllOrders } from '../../../actions/order'
+import { getAllMemberships } from '../../../actions/membership'
+import { getAllCoupons } from '../../../actions/coupon'
+import { getAllCategories } from '../../../actions/category'
+import { SearchIcon } from '@heroicons/react/solid'
 
 const Search = ({ name, setSearchResults }) => {
-  const [searchValue, setSearchValue] = useState('');
-  const { allUsers } = useSelector((state) => state.user);
-  const { allProducts } = useSelector((state) => state.product);
-  const { allOrders } = useSelector((state) => state.order);
-  const { allMemberships } = useSelector((state) => state.membership);
-  const { allCoupons } = useSelector((state) => state.coupon);
-  const { allCategories } = useSelector((state) => state.category);
-  const dispatch = useDispatch();
+  const [searchValue, setSearchValue] = useState('')
+  const { allUsers } = useSelector((state) => state.user)
+  const { allProducts } = useSelector((state) => state.product)
+  const { allOrders } = useSelector((state) => state.order)
+  const { allMemberships } = useSelector((state) => state.membership)
+  const { allCoupons } = useSelector((state) => state.coupon)
+  const { allCategories } = useSelector((state) => state.category)
+  const dispatch = useDispatch()
   useEffect(() => {
     switch (name) {
       case 'Users':
-        search(allUsers, getAllUsers);
-        break;
+        search(allUsers, getAllUsers)
+        break
       case 'Products':
-        search(allProducts, getAllProducts);
-        break;
+        search(allProducts, getAllProducts)
+        break
       case 'Orders':
-        search(allOrders, getAllOrders);
-        break;
+        search(allOrders, getAllOrders)
+        break
       case 'Memberships':
-        search(allMemberships, getAllMemberships);
-        break;
+        search(allMemberships, getAllMemberships)
+        break
       case 'Coupons':
-        search(allCoupons, getAllCoupons);
-        break;
+        search(allCoupons, getAllCoupons)
+        break
       case 'Categories':
-        search(allCategories, getAllCategories);
-        break;
+        search(allCategories, getAllCategories)
+        break
       default:
-        break;
+        break
     }
-  }, [searchValue]);
+  }, [searchValue])
 
   useEffect(() => {
-    setSearchValue('');
-  }, [name]);
+    setSearchValue('')
+  }, [name])
 
   const search = (arrToSearch, getArr) => {
     if (!arrToSearch.length > 0) {
-      dispatch(getArr());
+      dispatch(getArr())
     }
     if (!searchValue) {
-      setSearchResults([]);
+      setSearchResults([])
     } else {
-      console.log(arrToSearch);
+      console.log(arrToSearch)
       let searchResults = arrToSearch.filter((obj) => {
         const objMatchesText = (text, obj) => {
           if (typeof obj === 'string') {
-            return obj.toLowerCase().includes(text.toLowerCase());
+            return obj.toLowerCase().includes(text.toLowerCase())
           }
           if (obj) {
-            return Object.values(obj).some((val) => objMatchesText(text, val));
+            return Object.values(obj).some((val) => objMatchesText(text, val))
           }
-          return false;
-        };
-        if (objMatchesText(searchValue, obj)) {
-          return true;
-        } else {
-          return false;
+          return false
         }
-      });
-      setSearchResults(searchResults);
+        if (objMatchesText(searchValue, obj)) {
+          return true
+        } else {
+          return false
+        }
+      })
+      setSearchResults(searchResults)
     }
-  };
+  }
 
   return (
     <div className='flex-1 flex'>
@@ -99,7 +99,7 @@ const Search = ({ name, setSearchResults }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Search;
+export default Search

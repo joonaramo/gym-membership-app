@@ -1,28 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { CheckIcon } from '@heroicons/react/solid';
-import { useDispatch, useSelector } from 'react-redux';
-import { formatDistance } from 'date-fns';
-import { classNames } from '../../../utils/helpers';
-import { updateUser } from '../../../actions/user';
-import ListItem from '../../Profile/ListItem';
-import DateListItem from '../../Profile/DateListItem';
-import Notification from '../../Profile/Notification';
-import { getUser } from '../../../actions/user';
-import { useParams } from 'react-router';
-import Loading from '../../UI/Loading';
-import NotFound from '../UI/NotFound';
+import React, { useState, useEffect } from 'react'
+import { CheckIcon } from '@heroicons/react/solid'
+import { useDispatch, useSelector } from 'react-redux'
+import { formatDistance } from 'date-fns'
+import { classNames } from '../../../utils/helpers'
+import { updateUser } from '../../../actions/user'
+import ListItem from '../../Profile/ListItem'
+import DateListItem from '../../Profile/DateListItem'
+import Notification from '../../Profile/Notification'
+import { getUser } from '../../../actions/user'
+import { useParams } from 'react-router'
+import Loading from '../../UI/Loading'
+import NotFound from '../UI/NotFound'
 
 const SingleUser = ({ setCurrent }) => {
-  const [updatedObject, setUpdatedObject] = useState();
-  const [hasUnSavedChanges, setHasUnsavedChanges] = useState(false);
-  const { user } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
-  const { id } = useParams();
+  const [updatedObject, setUpdatedObject] = useState()
+  const [hasUnSavedChanges, setHasUnsavedChanges] = useState(false)
+  const { user } = useSelector((state) => state.user)
+  const dispatch = useDispatch()
+  const { id } = useParams()
 
   useEffect(() => {
-    dispatch(getUser(id));
-    setCurrent('Users');
-  }, [dispatch, id]);
+    dispatch(getUser(id))
+    setCurrent('Users')
+  }, [dispatch, id])
 
   useEffect(() => {
     if (user.id) {
@@ -36,21 +36,21 @@ const SingleUser = ({ setCurrent }) => {
         postal_code: user.postal_code,
         city: user.city,
         birth_date: user.birth_date,
-      });
+      })
     }
-  }, [user]);
+  }, [user])
 
   const save = () => {
-    dispatch(updateUser(id, updatedObject));
-    setHasUnsavedChanges(false);
-  };
+    dispatch(updateUser(id, updatedObject))
+    setHasUnsavedChanges(false)
+  }
 
   if (user.failed) {
-    return <NotFound />;
+    return <NotFound />
   }
 
   if (user.loading || !updatedObject) {
-    return <Loading color='auto' />;
+    return <Loading color='auto' />
   }
 
   return (
@@ -210,7 +210,7 @@ const SingleUser = ({ setCurrent }) => {
         {hasUnSavedChanges && <Notification save={save} />}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default SingleUser;
+export default SingleUser

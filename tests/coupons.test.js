@@ -52,7 +52,7 @@ describe('GET /api/coupons/:id', () => {
     singleCoupon = coupons[0];
   });
   test('unauthorized user can not get a single coupon and receives 401', async () => {
-    const response = await api
+    await api
       .get(`/api/coupons/${singleCoupon.id}`)
       .expect(401)
       .expect('Content-Type', /application\/json/);
