@@ -22,8 +22,8 @@ describe('Gym Membership App', function () {
     cy.get('#maps_lat').type('60.943232')
     cy.get('#maps_lng').type('23.362551')
     cy.get('#facebook_url').type('https://facebook.com')
-    cy.get('#twitter_url').type('https://twitter.com')
     cy.get('#instagram_url').type('https://instagram.com')
+    cy.get('#twitter_url').type('https://twitter.com')
 
     cy.get('#submit-settings').click()
     cy.contains('The best and')
@@ -71,6 +71,74 @@ describe('Gym Membership App', function () {
 
       cy.get('#submit-signup').click()
       cy.contains('Your Profile')
+    })
+
+    describe('when user has signed up', () => {
+      beforeEach(() => {
+        cy.request('POST', 'http://localhost:5000/api/auth/signup', {
+          email: 'john@example.com',
+          password: 'test123',
+          first_name: 'John',
+          last_name: 'Doe',
+          phone_number: '0401234567',
+          street_address: '123 Test Street',
+          postal_code: 12345,
+          city: 'Test City',
+          birth_date: '1990-01-01',
+        })
+      })
+      it('user can log in', () => {
+        cy.visit('http://localhost:3000')
+        cy.get('#headlessui-menu-button-1').click()
+        cy.contains('Log in').click()
+        cy.get('#email').type('john@example.com')
+        cy.get('#password').type('test123')
+
+        cy.get('#submit-login').click()
+        cy.contains('Your Profile')
+      })
+
+      describe('when user has logged in', () => {
+        beforeEach(() => {
+          cy.request('POST', 'http://localhost:5000/api/auth/login', {
+            email: 'john@example.com',
+            password: 'test123',
+          }).then((response) =>
+            localStorage.setItem('token', response.body.token)
+          )
+        })
+        it('user can access admin panel', () => {
+          cy.visit('http://localhost:3000')
+          cy.contains('Admin Panel').click()
+          cy.contains('Admin Panel')
+          cy.contains('Overview')
+        })
+        it('user can access admin panel', () => {
+          cy.visit('http://localhost:3000')
+          cy.contains('Admin Panel').click()
+          cy.contains('Admin Panel')
+          cy.contains('Overview')
+        })
+        it('user can create new categories and products', () => {
+          // New category
+          cy.visit('http://localhost:3000/admin/categories')
+          cy.contains('New category').click()
+          cy.get('#name').type('Test Category 1')
+          cy.get('#description').type('This is a testing category')
+          cy.get('#submit-button').click()
+          // New product
+          cy.visit('http://localhost:3000/admin/products')
+          cy.contains('New product').click()
+          cy.get('#name').type('Test Product 1')
+          cy.get('#reference').type('GYM-01')
+          cy.get('#category').select('Test Category 1')
+          cy.get('#membership_length').type('1')
+          cy.get('#unit_price').type('100')
+          cy.get('#tax_rate').type('10')
+          cy.get('#submit-button').click()
+        })
+        // describe one category and product created
+      })
     })
   })
 })

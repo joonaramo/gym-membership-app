@@ -36,18 +36,18 @@ const CreateProduct = ({ setCreating, allCategories }) => {
   }
   return (
     <>
-      <div className='flex-1 flex justify-between max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
-        <h2 className='text-lg leading-6 font-medium text-gray-900'>
+      <div className="flex-1 flex justify-between max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-lg leading-6 font-medium text-gray-900">
           Create a product
         </h2>
         <button
           onClick={() => setCreating(false)}
-          className='inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50'
+          className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
         >
           Cancel
         </button>
       </div>
-      <div className='py-8 px-4 shadow sm:rounded-lg sm:px-10'>
+      <div className="py-8 px-4 shadow sm:rounded-lg sm:px-10">
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -55,60 +55,60 @@ const CreateProduct = ({ setCreating, allCategories }) => {
             onSubmit(values)
           }}
         >
-          <Form className='space-y-6'>
+          <Form className="space-y-6">
             <div>
               <label
-                className='block text-sm font-medium text-gray-700'
-                htmlFor='name'
+                className="block text-sm font-medium text-gray-700"
+                htmlFor="name"
               >
                 Name
               </label>
-              <div className='mt-1'>
+              <div className="mt-1">
                 <Field
-                  id='name'
-                  name='name'
-                  type='text'
-                  autoComplete='name'
+                  id="name"
+                  name="name"
+                  type="text"
+                  autoComplete="name"
                   required
-                  className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm'
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm"
                 />
               </div>
-              <ErrorMessage name='name' />
+              <ErrorMessage name="name" />
             </div>
             <div>
               <label
-                className='block text-sm font-medium text-gray-700'
-                htmlFor='reference'
+                className="block text-sm font-medium text-gray-700"
+                htmlFor="reference"
               >
                 Reference
               </label>
-              <div className='mt-1'>
+              <div className="mt-1">
                 <Field
-                  id='reference'
-                  name='reference'
-                  type='text'
-                  autoComplete='reference'
+                  id="reference"
+                  name="reference"
+                  type="text"
+                  autoComplete="reference"
                   required
-                  className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm'
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm"
                 />
               </div>
-              <ErrorMessage name='reference' />
+              <ErrorMessage name="reference" />
             </div>
             <div>
               <label
-                className='block text-sm font-medium text-gray-700'
-                htmlFor='category'
+                className="block text-sm font-medium text-gray-700"
+                htmlFor="category"
               >
                 Category
               </label>
-              <div className='mt-1'>
+              <div className="mt-1">
                 <Field
-                  as='select'
-                  id='category'
-                  name='category'
-                  className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm'
+                  as="select"
+                  id="category"
+                  name="category"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm"
                 >
-                  <option value=''>Select (optional)</option>
+                  <option value="">Select (optional)</option>
                   {allCategories.map((category) => (
                     <option key={category.id} value={category.id}>
                       {category.name}
@@ -116,68 +116,69 @@ const CreateProduct = ({ setCreating, allCategories }) => {
                   ))}
                 </Field>
               </div>
-              <ErrorMessage name='category' />
+              <ErrorMessage name="category" />
             </div>
             <div>
               <label
-                className='block text-sm font-medium text-gray-700'
-                htmlFor='membership_length'
+                className="block text-sm font-medium text-gray-700"
+                htmlFor="membership_length"
               >
                 Membership length
               </label>
-              <div className='mt-1'>
+              <div className="mt-1">
                 <Field
-                  id='membership_length'
-                  name='membership_length'
-                  type='number'
-                  autoComplete='membership_length'
-                  className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                  id="membership_length"
+                  name="membership_length"
+                  type="number"
+                  autoComplete="membership_length"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
-              <ErrorMessage name='membership_length' />
+              <ErrorMessage name="membership_length" />
             </div>
             <div>
               <label
-                className='block text-sm font-medium text-gray-700'
-                htmlFor='unit_price'
+                className="block text-sm font-medium text-gray-700"
+                htmlFor="unit_price"
               >
                 Price
               </label>
-              <div className='mt-1'>
+              <div className="mt-1">
                 <Field
-                  id='unit_price'
-                  name='unit_price'
-                  type='number'
-                  autoComplete='unit_price'
+                  id="unit_price"
+                  name="unit_price"
+                  type="number"
+                  autoComplete="unit_price"
                   required
-                  className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
-              <ErrorMessage name='unit_price' />
+              <ErrorMessage name="unit_price" />
             </div>
             <div>
               <label
-                className='block text-sm font-medium text-gray-700'
-                htmlFor='tax_rate'
+                className="block text-sm font-medium text-gray-700"
+                htmlFor="tax_rate"
               >
                 Tax rate
               </label>
-              <div className='mt-1'>
+              <div className="mt-1">
                 <Field
-                  id='tax_rate'
-                  name='tax_rate'
-                  type='number'
-                  autoComplete='tax_rate'
+                  id="tax_rate"
+                  name="tax_rate"
+                  type="number"
+                  autoComplete="tax_rate"
                   required
-                  className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm'
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm"
                 />
               </div>
-              <ErrorMessage name='tax_rate' />
+              <ErrorMessage name="tax_rate" />
             </div>
             <div>
               <button
-                type='submit'
-                className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500'
+                type="submit"
+                id="submit-button"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
               >
                 Create
               </button>
