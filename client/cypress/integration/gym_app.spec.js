@@ -1,6 +1,7 @@
 describe('Gym Membership App', function () {
   beforeEach(() => {
     cy.request('POST', 'http://localhost:5000/api/testing/reset')
+    localStorage.removeItem('_klarna_sdid_ch')
     cy.visit('http://localhost:3000')
   })
 
@@ -99,19 +100,15 @@ describe('Gym Membership App', function () {
       })
 
       describe('when user has logged in', () => {
+        let token
         beforeEach(() => {
           cy.request('POST', 'http://localhost:5000/api/auth/login', {
             email: 'john@example.com',
             password: 'test123',
-          }).then((response) =>
+          }).then((response) => {
             localStorage.setItem('token', response.body.token)
-          )
-        })
-        it('user can access admin panel', () => {
-          cy.visit('http://localhost:3000')
-          cy.contains('Admin Panel').click()
-          cy.contains('Admin Panel')
-          cy.contains('Overview')
+            token = response.body.token
+          })
         })
         it('user can access admin panel', () => {
           cy.visit('http://localhost:3000')
@@ -137,7 +134,86 @@ describe('Gym Membership App', function () {
           cy.get('#tax_rate').type('10')
           cy.get('#submit-button').click()
         })
-        // describe one category and product created
+        describe('when one category and product has been created', () => {
+          beforeEach(() => {
+            cy.request({
+              method: 'POST',
+              url: 'http://localhost:5000/api/categories',
+              body: {
+                name: 'Test Category 1',
+                description: 'This is a testing category',
+              },
+              headers: {
+                Authorization: `bearer ${token}`,
+              },
+            }).then((response) => {
+              cy.request({
+                method: 'POST',
+                url: 'http://localhost:5000/api/products',
+                body: {
+                  name: 'Test Product 1',
+                  featured: true,
+                  most_popular: true,
+                  reference: 'GYM-01',
+                  membership_length: 1,
+                  tax_rate: 10,
+                  unit_price: 100,
+                  category: response.body.id,
+                },
+                headers: {
+                  Authorization: `bearer ${token}`,
+                },
+              })
+            })
+          })
+          it('product is listed on front page', () => {
+            cy.visit('http://localhost:3000')
+            cy.contains('Test Product 1')
+          })
+          it('product can be bought', () => {
+            cy.visit('http://localhost:3000')
+            cy.contains('Join now').click()
+            cy.contains('Proceed to checkout').click()
+            cy.wait(3000)
+            cy.get('#klarna-checkout-iframe').then(function ($iframe) {
+              const $doc = $iframe.contents()
+              if ($doc.find('#billing-email')[0]) {
+                console.log($doc.find('#billing-email')[0])
+                cy.wrap($doc.find('#billing-email')[0]).type(
+                  'youremail@email.com'
+                )
+                cy.wrap($doc.find('#billing-postal_code')[0]).type('28100')
+                cy.wrap($doc.find('#button-primary')[0]).click()
+              }
+            })
+            cy.wait(3000)
+            cy.get('#klarna-checkout-iframe').then(function ($iframe) {
+              const $doc = $iframe.contents()
+              if ($doc.find('#billing-national_identification_number')[0]) {
+                cy.wrap(
+                  $doc.find('#billing-national_identification_number')[0]
+                ).type('190122-829F')
+                cy.wrap($doc.find('#billing-given_name')[0]).type(
+                  'Testperson-fi'
+                )
+                cy.wrap($doc.find('#billing-family_name')[0]).type('Approved')
+                cy.wrap($doc.find('#billing-street_address')[0]).type(
+                  'Kirjurinluodontie 5'
+                )
+                cy.wrap($doc.find('#billing-phone')[0]).type('0401234567')
+                cy.wrap($doc.find('#button-primary')[0]).click()
+              }
+              cy.wrap(
+                $doc.find('button[data-cid="button.buy_button"]')[0]
+              ).click()
+            })
+            cy.wait(10000)
+            cy.get('#klarna-checkout-iframe').then(function ($iframe) {
+              const $doc = $iframe.contents()
+              cy.wrap($doc.find('#page')[0]).contains('Ostoksesi on valmis')
+            })
+          })
+        })
       })
     })
   })
