@@ -14,6 +14,8 @@ jobs:
         with:
           node-version: '12.x'
       - name: npm install
-        run: npm run install:full
+        run: npm install && npm install --prefix client
       - name: lint
         run: npm run lint
+      - name: integration test
+        run: npm test
