@@ -8,6 +8,12 @@ on:
 jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-18.04
+    env:
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      DEV_MONGODB_URI: ${{ secrets.DEV_MONGODB_URI }}
+      TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      KLARNA_API_CREDENTIALS: ${{ secrets.KLARNA_API_CREDENTIALS }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
