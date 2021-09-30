@@ -8,16 +8,16 @@ const MONGODB_URI =
     : process.env.NODE_ENV === 'production'
     ? process.env.MONGODB_URI
     : process.env.DEV_MONGODB_URI;
-const KLARNA_API_URL = process.env.KLARNA_API_URL;
+const KLARNA_API_URL = 'https://api.playground.klarna.com';
 const KLARNA_API_CREDENTIALS = process.env.KLARNA_API_CREDENTIALS;
 const FRONTEND_URL =
   process.env.NODE_ENV === 'production'
-    ? process.env.FRONTEND_URL
-    : process.env.DEV_FRONTEND_URL;
+    ? 'https://whispering-waters-22674.herokuapp.com'
+    : 'http://localhost:3000';
 const BACKEND_URL =
   process.env.NODE_ENV === 'production'
-    ? process.env.BACKEND_URL
-    : process.env.DEV_BACKEND_URL;
+    ? 'https://whispering-waters-22674.herokuapp.com/api'
+    : 'http://localhost:5000';
 
 const AXIOS_CONFIG = {
   headers: {
