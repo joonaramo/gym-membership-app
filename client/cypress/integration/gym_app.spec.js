@@ -198,9 +198,16 @@ describe('Gym Membership App', function () {
                 )
                 cy.wrap($doc.find('#billing-family_name')[0]).type('Approved')
                 cy.wrap($doc.find('#billing-street_address')[0]).type(
-                  'Kirjurinluodontie 5'
+                  'Kiväärikatu 10'
                 )
                 cy.wrap($doc.find('#billing-phone')[0]).type('0401234567')
+              }
+              cy.wrap($doc.find('#button-primary')[0]).click()
+            })
+            cy.wait(3000)
+            cy.get('#klarna-checkout-iframe').then(function ($iframe) {
+              const $doc = $iframe.contents()
+              if ($doc.find('#button-primary')[0]) {
                 cy.wrap($doc.find('#button-primary')[0]).click()
               }
               cy.wrap(
