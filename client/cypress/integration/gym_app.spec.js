@@ -210,6 +210,10 @@ describe('Gym Membership App', function () {
               if ($doc.find('#button-primary')[0]) {
                 cy.wrap($doc.find('#button-primary')[0]).click()
               }
+            })
+            cy.wait(3000)
+            cy.get('#klarna-checkout-iframe').then(function ($iframe) {
+              const $doc = $iframe.contents()
               cy.wrap(
                 $doc.find('button[data-cid="button.buy_button"]')[0]
               ).click()
