@@ -53,10 +53,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
-       - name: 'Upload screenshots and videos to Slack'
-         uses: trymbill/cypress-slack-video-upload-action@v1.3.0
-         if: failure()
-         with:
-           token: ${{ secrets.SLACK_TOKEN }}
-           channels: 'engineering-ops'
-           message-text: 'Cypress tests failed! They have been placed in this thread, good luck.'
+      - name: 'Upload screenshots and videos to Slack'
+        uses: trymbill/cypress-slack-video-upload-action@v1.3.0
+        if: failure()
+        with:
+          token: ${{ secrets.SLACK_TOKEN }}
+          channels: 'engineering-ops'
+          message-text: 'Cypress tests failed! They have been placed in this thread, good luck.'
