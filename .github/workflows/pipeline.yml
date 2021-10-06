@@ -10,13 +10,13 @@ on:
 
 jobs:
   simple_deployment_pipeline:
-    runs-on: ubuntu-18.04
     env:
       MONGODB_URI: ${{ secrets.MONGODB_URI }}
       DEV_MONGODB_URI: ${{ secrets.DEV_MONGODB_URI }}
       TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
       KLARNA_API_CREDENTIALS: ${{ secrets.KLARNA_API_CREDENTIALS }}
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -36,7 +36,7 @@ jobs:
           command: npm run cypress:run --prefix client
           start: npm run start:test, npm run client
           wait-on: http://localhost:3000
-       - name: deploy
+      - name: deploy
         if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message)), '#skip') }}
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
@@ -46,3 +46,18 @@ jobs:
           healthcheck: 'https://whispering-waters-22674.herokuapp.com/ping'
           checkstring: 'pong'
           rollbackonhealthcheckfailed: true
+      - uses: actions/checkout@v2
+      - name: Bump version and push tag
+        if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message)), '#skip') }}
+        uses: anothrNick/github-tag-action@1.33.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+      - name: 'Upload screenshots and videos to Slack'
+        uses: trymbill/cypress-slack-video-upload-action@v1.3.0
+        if: failure()
+        with:
+          token: ${{ secrets.SLACK_TOKEN }}
+          channels: 'gym-membership-app'
+          workdir: 'client/cypress'
+          message-text: 'Cypress tests failed! They have been placed in this thread, good luck.'

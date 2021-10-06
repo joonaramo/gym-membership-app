@@ -174,58 +174,75 @@ describe('Gym Membership App', function () {
             cy.visit('http://localhost:3000')
             cy.contains('Join now').click()
             cy.contains('Proceed to checkout').click()
-            cy.wait(3000)
-            cy.switchToIframe('#klarna-checkout-iframe')
-              .find('#billing-email')
-              .type('test@gymlifio.com')
-            cy.switchToIframe('#klarna-checkout-iframe')
-              .find('#billing-postal_code')
-              .type('28100')
-            cy.switchToIframe('#klarna-checkout-iframe')
-              .find('#button-primary')
-              .click()
-
-            // cy.switchToIframe('#klarna-checkout-iframe')
-            //   .find('#billing-given_name')
-            //   .type('Testperson-fi')
-            // cy.switchToIframe('#klarna-checkout-iframe')
-            //   .find('#billing-family_name')
-            //   .type('Approved')
-            // cy.switchToIframe('#klarna-checkout-iframe')
-            //   .find('#billing-street_address')
-            //   .type('Kirjurinluodontie 5')
-            // cy.switchToIframe('#klarna-checkout-iframe')
-            //   .find('#billing-phone')
-            //   .type('0401234567')
-            // cy.switchToIframe('#klarna-checkout-iframe')
-            //   .find('#button-primary')
-            //   .click()
-
-            cy.switchToIframe('#klarna-checkout-iframe')
-              .find('#payment-selector-pay_now')
-              .click()
             cy.wait(5000)
-            cy.switchToIframe('#klarna-checkout-iframe')
-              .find('#pgw-iframe-paynow_card')
-              .then(($cardIframe) => {
-                const $doc = $cardIframe.contents()
-                cy.wrap($doc.find('#cardNumber')[0]).type('4111 1111 1111 1111')
-                cy.wrap($doc.find('#expire')[0]).type('1225')
-                cy.wrap($doc.find('#securityCode')[0]).type('123', {
-                  force: true,
-                  delay: 150,
-                })
+            cy.get('#klarna-checkout-iframe').then(($frame) => {
+              const content = $frame.contents()
+
+              if (content.find('#billing-email').length) {
                 cy.switchToIframe('#klarna-checkout-iframe')
-                  .find('button[data-cid="button.buy_button"]')
+                  .find('#billing-email')
+                  .type('test@gymlifio.com')
+                cy.switchToIframe('#klarna-checkout-iframe')
+                  .find('#billing-postal_code')
+                  .type('28100')
+                cy.switchToIframe('#klarna-checkout-iframe')
+                  .find('#button-primary')
                   .click()
-                cy.switchToIframe('#klarna-fullscreen-iframe')
-                  .contains('Ohita tämä vaihe')
+              } else {
+                cy.switchToIframe('#klarna-checkout-iframe')
+                  .find('#button-primary')
                   .click()
-                cy.wait(10000)
-                cy.switchToIframe('#klarna-checkout-iframe').find(
-                  '#confirmation-container'
-                )
+              }
+              cy.get('#klarna-checkout-iframe').then(($frame) => {
+                const content = $frame.contents()
+                if (content.find('#billing-given_name').length) {
+                  cy.switchToIframe('#klarna-checkout-iframe')
+                    .find('#billing-given_name')
+                    .type('Testperson-fi')
+                  cy.switchToIframe('#klarna-checkout-iframe')
+                    .find('#billing-family_name')
+                    .type('Approved')
+                  cy.switchToIframe('#klarna-checkout-iframe')
+                    .find('#billing-street_address')
+                    .type('Kirjurinluodontie 5')
+                  cy.switchToIframe('#klarna-checkout-iframe')
+                    .find('#billing-phone')
+                    .type('0401234567')
+                  cy.switchToIframe('#klarna-checkout-iframe')
+                    .find('#button-primary')
+                    .click()
+                }
+
+                cy.switchToIframe('#klarna-checkout-iframe')
+                  .find('#payment-selector-pay_now')
+                  .click()
+                cy.wait(5000)
+
+                cy.switchToIframe('#klarna-checkout-iframe')
+                  .find('#pgw-iframe-paynow_card')
+                  .then(($cardIframe) => {
+                    const $doc = $cardIframe.contents()
+                    cy.wrap($doc.find('#cardNumber')[0]).type(
+                      '4111 1111 1111 1111'
+                    )
+                    cy.wrap($doc.find('#expire')[0]).type('1225')
+                    cy.wrap($doc.find('#securityCode')[0]).type('123', {
+                      force: true,
+                      delay: 150,
+                    })
+                    cy.switchToIframe('#klarna-checkout-iframe')
+                      .find('button[data-cid="button.buy_button"]')
+                      .click()
+                    cy.switchToIframe('#klarna-fullscreen-iframe')
+                      .contains('Ohita tämä vaihe')
+                      .click()
+                    cy.wait(10000)
+                    cy.switchToIframe('#klarna-checkout-iframe').find(
+                      '#confirmation-container'
+                    )
+                  })
               })
+            })
           })
         })
       })
