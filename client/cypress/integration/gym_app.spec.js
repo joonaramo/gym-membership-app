@@ -177,13 +177,14 @@ describe('Gym Membership App', function () {
             cy.wait(3000)
             cy.switchToIframe('#klarna-checkout-iframe')
               .find('#billing-email')
-              .type('youremail@email.com')
+              .type('test@gymlifio.com')
             cy.switchToIframe('#klarna-checkout-iframe')
               .find('#billing-postal_code')
               .type('28100')
             cy.switchToIframe('#klarna-checkout-iframe')
               .find('#button-primary')
               .click()
+
             // cy.switchToIframe('#klarna-checkout-iframe')
             //   .find('#billing-given_name')
             //   .type('Testperson-fi')
@@ -199,6 +200,7 @@ describe('Gym Membership App', function () {
             // cy.switchToIframe('#klarna-checkout-iframe')
             //   .find('#button-primary')
             //   .click()
+
             cy.switchToIframe('#klarna-checkout-iframe')
               .find('#payment-selector-pay_now')
               .click()
@@ -209,13 +211,16 @@ describe('Gym Membership App', function () {
                 const $doc = $cardIframe.contents()
                 cy.wrap($doc.find('#cardNumber')[0]).type('4111 1111 1111 1111')
                 cy.wrap($doc.find('#expire')[0]).type('1225')
-                cy.wrap($doc.find('#securityCode')[0]).type('123')
+                cy.wrap($doc.find('#securityCode')[0]).type('123', {
+                  force: true,
+                  delay: 150,
+                })
                 cy.switchToIframe('#klarna-checkout-iframe')
                   .find('button[data-cid="button.buy_button"]')
                   .click()
-                // cy.switchToIframe('#klarna-fullscreen-iframe')
-                //   .contains('Ohita tämä vaihe')
-                //   .click()
+                cy.switchToIframe('#klarna-fullscreen-iframe')
+                  .contains('Ohita tämä vaihe')
+                  .click()
                 cy.wait(10000)
                 cy.switchToIframe('#klarna-checkout-iframe').find(
                   '#confirmation-container'
