@@ -47,7 +47,6 @@ router.post('/', checkAuth, async (req, res, next) => {
           discountAmount = coupon.value;
           discountApplied = true;
         }
-        console.log(discountAmount, 'discount');
         orderLine['total_amount'] =
           orderLine.quantity * orderLine.unit_price - discountAmount;
         orderLine['total_tax_amount'] =
