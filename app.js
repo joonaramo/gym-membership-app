@@ -38,6 +38,11 @@ app.use('/api/memberships', membershipsRouter);
 app.use('/api/settings', settingsRouter);
 app.use('/api/categories', categoriesRouter);
 
+// Health check route
+app.get('/ping', (req, res) => {
+  res.send('pong');
+});
+
 // Include testing route if in testing mode
 if (process.env.NODE_ENV === 'test') {
   const testingRouter = require('./routes/api/testing');

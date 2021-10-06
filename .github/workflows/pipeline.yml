@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
 
 jobs:
   simple_deployment_pipeline:
@@ -23,6 +26,8 @@ jobs:
         run: npm install && npm install --prefix client
       - name: lint
         run: npm run lint
+      - name: build
+        run: npm run build --prefix client
       - name: integration tests
         run: npm test
       - name: e2e tests
@@ -31,3 +36,13 @@ jobs:
           command: npm run cypress:run --prefix client
           start: npm run start:test, npm run client
           wait-on: http://localhost:3000
+       - name: deploy
+        if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message)), '#skip') }}
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: 'whispering-waters-22674'
+          heroku_email: 'joona00ramo@gmail.com'
+          healthcheck: 'https://whispering-waters-22674.herokuapp.com/ping'
+          checkstring: 'pong'
+          rollbackonhealthcheckfailed: true
