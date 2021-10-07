@@ -174,7 +174,7 @@ describe('Gym Membership App', function () {
             cy.visit('http://localhost:3000')
             cy.contains('Join now').click()
             cy.contains('Proceed to checkout').click()
-            cy.wait(5000)
+            cy.wait(10000)
             cy.get('#klarna-checkout-iframe').then(($frame) => {
               const content = $frame.contents()
 
