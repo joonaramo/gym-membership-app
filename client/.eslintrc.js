@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['react-app'],
+  extends: ['react-app', 'plugin:cypress/recommended'],
   rules: {
     // indent: ['error', 2, { SwitchCase: 1 }],
     quotes: ['error', 'single'],
@@ -11,11 +11,11 @@ module.exports = {
     'no-console': 0,
     'react/prop-types': 0,
     'react-hooks/exhaustive-deps': 0,
+    'cypress/no-unnecessary-waiting': 0,
   },
   env: {
     browser: true,
     es6: true,
-    'cypress/globals': true,
   },
   // extends: ['eslint:recommended', 'plugin:react/recommended'],
   // parserOptions: {
