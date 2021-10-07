@@ -43,6 +43,11 @@ app.get('/ping', (req, res) => {
   res.send('pong');
 });
 
+// App version
+app.get('/version', (req, res) => {
+  res.send('1'); // change this string to ensure a new version deployed
+});
+
 // Include testing route if in testing mode
 if (process.env.NODE_ENV === 'test') {
   const testingRouter = require('./routes/api/testing');
