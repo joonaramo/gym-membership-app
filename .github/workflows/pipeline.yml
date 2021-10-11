@@ -53,6 +53,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
+          RELEASE_BRANCHES: main
       - name: 'Upload screenshots and videos to Slack'
         uses: trymbill/cypress-slack-video-upload-action@v1.3.0
         if: failure()
