@@ -18,7 +18,37 @@ const ListItem = ({
   const updateField = (e) => {
     e.preventDefault()
     if (updatedValue !== value) {
-      setUpdatedObject({ ...updatedObject, [name]: updatedValue })
+      if (name === 'api_key' || name === 'lat' || name === 'lng') {
+        setUpdatedObject({
+          ...updatedObject,
+          maps: {
+            ...updatedObject.maps,
+            [name]: updatedValue,
+          },
+        })
+      } else if (
+        name === 'facebook' ||
+        name === 'instagram' ||
+        name === 'twitter'
+      ) {
+        setUpdatedObject({
+          ...updatedObject,
+          social_urls: {
+            ...updatedObject.social_urls,
+            [name]: updatedValue,
+          },
+        })
+      } else if (name === 'welcome_email' || name === 'order_email') {
+        setUpdatedObject({
+          ...updatedObject,
+          [name]: {
+            ...updatedObject[name],
+            message: updatedValue,
+          },
+        })
+      } else {
+        setUpdatedObject({ ...updatedObject, [name]: updatedValue })
+      }
       setHasUnsavedChanges(true)
     }
     setEditState(false)
@@ -29,12 +59,12 @@ const ListItem = ({
   return (
     <form
       onSubmit={(e) => updateField(e)}
-      className='py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 lg:px-8'
+      className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 lg:px-8"
     >
-      <dt className='text-sm font-medium text-gray-500'>{title}</dt>
+      <dt className="text-sm font-medium text-gray-500">{title}</dt>
       {editState ? (
         <>
-          <dd className='mt-1 text-sm text-gray-900 sm:mt-0'>
+          <dd className="mt-1 text-sm text-gray-900 sm:mt-0">
             <input
               id={name}
               name={name}
@@ -42,12 +72,12 @@ const ListItem = ({
               value={updatedValue}
               onChange={(e) => setUpdatedValue(e.target.value)}
               required
-              className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+              className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
           </dd>
-          <dd className='flex mt-1 text-sm text-gray-900 sm:mt-0'>
-            <button type='submit'>
-              <CheckIcon className='h-6 w-6' aria-hidden='true' />
+          <dd className="flex mt-1 text-sm text-gray-900 sm:mt-0">
+            <button type="submit">
+              <CheckIcon className="h-6 w-6" aria-hidden="true" />
             </button>
           </dd>
         </>
@@ -64,15 +94,15 @@ const ListItem = ({
               : value}
           </dd>
           {editable && (
-            <dd className='flex mt-1 text-sm text-gray-900 sm:mt-0'>
+            <dd className="flex mt-1 text-sm text-gray-900 sm:mt-0">
               <button
-                type='button'
+                type="button"
                 onClick={(e) => {
                   e.preventDefault()
                   setEditState(true)
                 }}
               >
-                <PencilAltIcon className='h-6 w-6' aria-hidden='true' />
+                <PencilAltIcon className="h-6 w-6" aria-hidden="true" />
               </button>
             </dd>
           )}
