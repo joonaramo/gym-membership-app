@@ -129,7 +129,7 @@ const Settings = ({ setCurrent }) => {
           />
           <ListItem
             title="Google Maps API Key"
-            name="maps_api_key"
+            name="api_key"
             type="text"
             value={updatedObject.maps.api_key}
             updatedObject={updatedObject}
@@ -138,7 +138,7 @@ const Settings = ({ setCurrent }) => {
           />
           <ListItem
             title="Google Maps Latitude"
-            name="maps_lat"
+            name="lat"
             type="number"
             value={updatedObject.maps.lat}
             updatedObject={updatedObject}
@@ -147,7 +147,7 @@ const Settings = ({ setCurrent }) => {
           />
           <ListItem
             title="Google Maps Longitude"
-            name="maps_lng"
+            name="lng"
             type="number"
             value={updatedObject.maps.lng}
             updatedObject={updatedObject}
@@ -156,7 +156,7 @@ const Settings = ({ setCurrent }) => {
           />
           <ListItem
             title="Facebook URL"
-            name="facebook_url"
+            name="facebook"
             type="text"
             value={updatedObject.social_urls.facebook}
             updatedObject={updatedObject}
@@ -165,7 +165,7 @@ const Settings = ({ setCurrent }) => {
           />
           <ListItem
             title="Instagram URL"
-            name="instagram_url"
+            name="instagram"
             type="text"
             value={updatedObject.social_urls.instagram}
             updatedObject={updatedObject}
@@ -174,7 +174,7 @@ const Settings = ({ setCurrent }) => {
           />
           <ListItem
             title="Twitter URL"
-            name="twitter_url"
+            name="twitter"
             type="text"
             value={updatedObject.social_urls.twitter}
             updatedObject={updatedObject}
