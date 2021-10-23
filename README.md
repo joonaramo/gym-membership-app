@@ -18,6 +18,13 @@ Made as a project for the [Full Stack Open course](https://fullstackopen.com/en/
 ## Notes
 - Sometimes the Cypress test fails. This is caused by lack of native iframe support in the library; one of the tests checks the Klarna purchase flow and sometimes if the payment iframe loads slowly, Cypress can not find the child elements of the iframe. As a workaround I have added multiple cy.wait() calls to wait for the iframe to update.
 
+## Demo
+Demo version of the app is deployed to Heroku and is available at https://whispering-waters-22674.herokuapp.com
+
+Admin credentials:  
+Email: admin@demo.com  
+Password: 4k6NyUyV9eDLFMd
+
 
 
 
